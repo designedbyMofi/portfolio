@@ -458,16 +458,37 @@ function Footer() {
 
 function ScrolledHeader({ active }: { active: PortfolioView }) {
   const [visible, setVisible] = useState(false);
+  const [onDarkBackground, setOnDarkBackground] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const update = () => setVisible(window.scrollY > 360);
+    let frame = 0;
+    const update = () => {
+      setVisible(window.scrollY > 360);
+      const header = headerRef.current;
+      if (!header) return;
+      const previousPointerEvents = header.style.pointerEvents;
+      header.style.pointerEvents = 'none';
+      const elementUnderHeader = document.elementFromPoint(window.innerWidth / 2, 30);
+      header.style.pointerEvents = previousPointerEvents;
+      setOnDarkBackground(Boolean(elementUnderHeader?.closest('.footer')));
+    };
+    const scheduleUpdate = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(update);
+    };
     update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+    };
   }, []);
 
   return (
-    <div className={`scrolled-header${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
+    <div ref={headerRef} className={`scrolled-header${visible ? ' is-visible' : ''}${onDarkBackground ? ' is-on-dark' : ''}`} aria-hidden={!visible}>
       <div className="scrolled-header__content">
         <img src="/assets/portrait.png" alt="" />
         <span>Mofifoluwa</span><span className="scrolled-header__muted">/</span>

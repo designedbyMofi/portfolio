@@ -200,8 +200,10 @@ main { position: relative; z-index: 2; background: var(--canvas); box-shadow: 0 
 .scrolled-header.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .scrolled-header__content { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; font-size: 16px; line-height: 28px; font-weight: 500; }
 .scrolled-header__content img { width: 28px; height: 28px; border: 1.5px solid white; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
-.scrolled-header__content > span { color: #fff; mix-blend-mode: difference; }
-.scrolled-header__muted { opacity: .62; }
+.scrolled-header__content > span { color: var(--ink); }
+.scrolled-header__muted { color: var(--shade-400); opacity: 1; }
+.scrolled-header.is-on-dark .scrolled-header__content > span { color: var(--shade-100); }
+.scrolled-header.is-on-dark .scrolled-header__muted { color: rgba(243,241,241,.62); }
 .scrolled-header a { display: inline-flex; align-items: center; justify-content: center; min-height: min(32px, 1.85vw, 3.13dvh); padding: min(4px, .23vw, .39dvh) min(12px, .69vw, 1.17dvh); border: .5px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(0,0,0,.32); -webkit-backdrop-filter: blur(12px) saturate(1.15); backdrop-filter: blur(12px) saturate(1.15); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 4px 10px rgba(30,27,36,.08); color: #f3f1f1; font-size: clamp(12px, min(.81vw, 1.37dvh), 14px); line-height: clamp(20px, min(1.39vw, 2.34dvh), 24px); font-weight: 400; text-decoration: none; transition: background .16s ease, color .16s ease, transform .16s ease; }
 .scrolled-header a:hover, .scrolled-header a:focus-visible { background: rgba(0,0,0,.6); color: white; outline: 0; }
 .scrolled-header a:active { transform: translateY(1px); }
