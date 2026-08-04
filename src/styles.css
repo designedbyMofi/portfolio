@@ -206,9 +206,9 @@ main { position: relative; z-index: 2; background: var(--canvas); box-shadow: 0 
 .scrolled-header a:active { transform: translateY(1px); }
 
 .preview { position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; overflow: auto; isolation: isolate; padding: 80px 40px; background: rgba(232,228,227,.8); -webkit-backdrop-filter: blur(40px); backdrop-filter: blur(40px); animation: fade-in .22s ease; }
-.preview__close { position: fixed; z-index: 100; top: 40px; right: 40px; width: 48px; height: 48px; border: .5px solid var(--shade-200); border-radius: 50%; background: rgba(0,0,0,.32); display: grid; place-items: center; cursor: pointer; transition: background .15s ease; }
+.preview__close { position: fixed; z-index: 100; top: 40px; right: 40px; width: 40px; height: 40px; border: .5px solid var(--shade-200); border-radius: 50%; background: rgba(0,0,0,.32); display: grid; place-items: center; cursor: pointer; transition: background .15s ease; }
 .preview__close:hover { background: rgba(0,0,0,.48); }
-.preview__close img { width: 24px; height: 24px; }
+.preview__close img { width: 20px; height: 20px; }
 .preview__layout { display: flex; align-items: center; justify-content: center; gap: 100px; width: min-content; max-width: 100%; animation: preview-arrive .38s cubic-bezier(.2,.8,.2,1) both; }
 .preview__layout.has-shared-origin { animation: none; }
 .preview__layout.has-shared-origin .preview__details { animation: preview-details-enter .4s .34s cubic-bezier(.2,.8,.2,1) both; }
@@ -496,8 +496,8 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .resume-shell .profile__heading { margin-bottom: 32px; }
   .resume-rule { width: 100%; margin-top: 32px; }
   .preview { display: block; padding: 84px 24px 48px; }
-  .preview__close { top: 24px; right: 24px; width: 36px; height: 36px; }
-  .preview__close img { width: 20px; height: 20px; }
+  .preview__close { top: 24px; right: 24px; width: 32px; height: 32px; }
+  .preview__close img { width: 18px; height: 18px; }
   .preview__layout { width: 100%; flex-direction: column; gap: 40px; }
   .preview__media--mobile > img { width: 200px; height: 444px; border-radius: 20px; }
   .preview__media--web > img { width: min(100%, 320px); border-radius: 12px; }
