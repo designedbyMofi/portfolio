@@ -120,7 +120,7 @@ const experiences: Experience[] = [
   { company: 'Netact Services Inc.', website: 'https://netactsi.com/', location: 'Canada', period: 'July 2022 - Aug 2023', role: 'Creative Designer' },
 ];
 
-const competencies = ['Product Strategy', 'User Experience Design', 'Design Systems', 'Information Architecture', 'User Research', 'Interaction Design', 'Design Leadership', 'Prototyping'];
+const competencies = ['Product Strategy', 'User Experience Design', 'Design Systems', 'Information Architecture', 'User Research', 'Interaction Design', 'Design Leadership', 'Cross-functional Collaboration', 'Workshop Facilitation', 'Prototyping'];
 const toolsList = ['Figma, FigJam', 'Adobe Creative Suite', 'Claude Code', 'Google Analytics', 'Mixpanel', 'Hotjar', 'ChatGPT', 'Notion', 'Jira'];
 
 function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: PreviewOrigin, image: HTMLImageElement) => void }) {
@@ -271,7 +271,6 @@ function ResumeAside() {
   const groups = [
     ['Core Competencies', competencies],
     ['Tools', toolsList],
-    ['Languages', ['English (Native)', 'Spanish (Basic)']],
   ] as const;
 
   return (
