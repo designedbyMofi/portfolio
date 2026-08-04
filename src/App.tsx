@@ -359,7 +359,6 @@ function ExperienceCard({ experience }: { experience: Experience }) {
       {experience.results && <div className="experience-card__results"><strong>The result?</strong><ul>{experience.results.map((result) => <li key={result}>{result}</li>)}</ul></div>}
       {experience.website && companyHover && (
         <>
-          <span className="experience-card__hover-cursor" style={pointerStyle} aria-hidden="true"><img src="/assets/company-hover-cursor.svg" alt="" /><img src="/assets/company-hover-cursor-lines.svg" alt="" /></span>
           <span className="experience-card__hover-chip" style={pointerStyle} aria-hidden="true">{new URL(experience.website).hostname.replace(/^www\./, '')}</span>
         </>
       )}
