@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type FocusEvent as ReactFocusEvent } from 'react';
 import { flushSync } from 'react-dom';
 import { getCalApi } from '@calcom/embed-react';
 
@@ -305,20 +305,65 @@ function ResumePage() {
       <div className="resume-layout">
         <ResumeAside />
         <section className="resume-experience" aria-label="Work experience">
-          {experiences.map((experience) => (
-            <article className="experience-card" key={`${experience.company}-${experience.period}`} tabIndex={0}>
-              <div className="experience-card__heading">
-                <div>{experience.website ? <a className="experience-card__company" href={experience.website} target="_blank" rel="noreferrer">{experience.company}</a> : <strong>{experience.company}</strong>}<span>, {experience.location}</span></div>
-                <time>{experience.period}</time>
-              </div>
-              <p className="experience-card__role">{experience.role}</p>
-              {experience.description && <p className="experience-card__description">{experience.description}</p>}
-              {experience.results && <div className="experience-card__results"><strong>The result?</strong><ul>{experience.results.map((result) => <li key={result}>{result}</li>)}</ul></div>}
-            </article>
-          ))}
+          {experiences.map((experience) => <ExperienceCard experience={experience} key={`${experience.company}-${experience.period}`} />)}
         </section>
       </div>
     </div>
+  );
+}
+
+function ExperienceCard({ experience }: { experience: Experience }) {
+  const cardRef = useRef<HTMLElement>(null);
+  const [companyHover, setCompanyHover] = useState(false);
+  const [pointer, setPointer] = useState({ x: 69, y: 35 });
+  const pointerStyle = {
+    '--company-hover-x': `${pointer.x}px`,
+    '--company-hover-y': `${pointer.y}px`,
+  } as CSSProperties;
+
+  const updatePointer = (event: ReactPointerEvent<HTMLElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    setPointer({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+  };
+
+  const showAtCompany = (event: ReactFocusEvent<HTMLElement>) => {
+    const card = cardRef.current;
+    const company = event.currentTarget.getBoundingClientRect();
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    setPointer({ x: company.left - rect.left + company.width / 2 + 14, y: company.top - rect.top + company.height / 2 });
+    setCompanyHover(true);
+  };
+
+  const hideOnBlur = (event: ReactFocusEvent<HTMLElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setCompanyHover(false);
+  };
+
+  return (
+    <article className="experience-card" ref={cardRef}>
+      <div className="experience-card__heading">
+        <div>
+          {experience.website ? (
+            <span className="experience-card__company-trigger" onPointerEnter={() => setCompanyHover(true)} onPointerMove={updatePointer} onPointerLeave={() => setCompanyHover(false)} onFocus={showAtCompany} onBlur={hideOnBlur}>
+              <a className="experience-card__company" href={experience.website} target="_blank" rel="noreferrer">{experience.company}</a>
+            </span>
+          ) : <strong>{experience.company}</strong>}
+          <span>, {experience.location}</span>
+        </div>
+        <time>{experience.period}</time>
+      </div>
+      <p className="experience-card__role">{experience.role}</p>
+      {experience.description && <p className="experience-card__description">{experience.description}</p>}
+      {experience.results && <div className="experience-card__results"><strong>The result?</strong><ul>{experience.results.map((result) => <li key={result}>{result}</li>)}</ul></div>}
+      {experience.website && companyHover && (
+        <>
+          <span className="experience-card__hover-cursor" style={pointerStyle} aria-hidden="true"><img src="/assets/company-hover-cursor.svg" alt="" /><img src="/assets/company-hover-cursor-lines.svg" alt="" /></span>
+          <span className="experience-card__hover-chip" style={pointerStyle} aria-hidden="true">{new URL(experience.website).hostname.replace(/^www\./, '')}</span>
+        </>
+      )}
+    </article>
   );
 }
 
