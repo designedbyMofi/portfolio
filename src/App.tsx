@@ -283,9 +283,7 @@ function ResumeAside() {
       ))}
       <section className="resume-aside__group">
         <h2>Education</h2>
-        <a className="resume-education" href="https://run.edu.ng" target="_blank" rel="noreferrer">
-          <span>Bsc. Computer Science</span><img src="/assets/icon-external.svg" alt="" />
-        </a>
+        <div className="resume-education"><span>Bsc. Computer Science</span></div>
         <p>Redeemer’s University, Nigeria</p>
       </section>
       <div className="resume-download">
