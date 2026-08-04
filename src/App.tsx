@@ -574,7 +574,7 @@ function FloatingNavigation({ active, onNavigate, filter, onFilter, muted, onMut
               }}
             >
               <span>{tab === 'resume' ? 'Résumé' : tab[0].toUpperCase() + tab.slice(1)}</span>
-              {tab === 'shots' && active === 'shots' && <img className="shots-toggle__icon" src="/assets/nav-active-icon.svg" alt="" />}
+              {tab === 'shots' && active === 'shots' && <span className="shots-toggle__icon" aria-hidden="true" />}
             </button>
           ))}
         </div>
