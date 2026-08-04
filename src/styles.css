@@ -53,8 +53,8 @@ main { position: relative; z-index: 2; background: var(--canvas); box-shadow: 0 
 .resume-download button:first-child { width: 32px; padding: 6px; }
 .resume-download img { width: 18px; height: 18px; }
 .resume-experience { grid-area: 1 / 1; width: 688px; justify-self: center; display: flex; flex-direction: column; gap: 40px; }
-.experience-card { position: relative; width: 100%; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; background: var(--canvas); color: var(--shade-600); font-size: 14px; line-height: 24px; outline: 0; transition: background .18s ease; }
-.experience-card:hover, .experience-card:focus-visible { background: var(--shade-100); }
+.experience-card { position: relative; width: 100%; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; background: var(--canvas); color: var(--shade-600); font-size: 14px; line-height: 24px; outline: 0; transition: background .18s ease, box-shadow .18s ease; }
+.experience-card:hover, .experience-card:focus-visible { background: var(--shade-100); box-shadow: 0 8px 20px rgba(30,27,36,.05); }
 .experience-card:hover .experience-card__heading strong, .experience-card:focus-visible .experience-card__heading strong { text-decoration-color: var(--ink); }
 .experience-card + .experience-card::before { content: ''; position: absolute; top: -21px; left: 0; width: 100%; height: 1px; background: var(--shade-200); pointer-events: none; }
 .experience-card__heading { display: flex; align-items: center; justify-content: space-between; color: var(--shade-600); }
