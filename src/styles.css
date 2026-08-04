@@ -49,8 +49,8 @@ main { position: relative; z-index: 2; background: var(--canvas); box-shadow: 0 
 .resume-education { display: flex; align-items: center; gap: 8px; width: fit-content; color: var(--shade-500); text-decoration: none; font-size: 14px; line-height: 24px; font-weight: 500; }
 .resume-education img { width: 18px; height: 18px; }
 .resume-download { display: flex; gap: 8px; }
-.resume-download button { height: 32px; border: 0; border-radius: 999px; background: rgba(0,0,0,.32); color: var(--canvas); padding: 6px 12px 6px 10px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; line-height: 20px; font-weight: 600; letter-spacing: .24px; cursor: pointer; }
-.resume-download button:first-child { width: 32px; padding: 6px; }
+.resume-download button, .resume-download a { height: 32px; border: 0; border-radius: 999px; background: rgba(0,0,0,.32); color: var(--canvas); padding: 6px 12px 6px 10px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; line-height: 20px; font-weight: 600; letter-spacing: .24px; text-decoration: none; cursor: pointer; }
+.resume-download button:first-child, .resume-download a:first-child { width: 32px; padding: 6px; }
 .resume-download img { width: 18px; height: 18px; }
 .resume-experience { grid-area: 1 / 1; width: 688px; justify-self: center; display: flex; flex-direction: column; gap: 40px; }
 .experience-card { position: relative; width: 100%; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; background: var(--canvas); color: var(--shade-600); font-size: 14px; line-height: 24px; outline: 0; transition: background .18s ease, box-shadow .18s ease; }

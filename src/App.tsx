@@ -289,7 +289,7 @@ function ResumeAside() {
         <p>Redeemer’s University, Nigeria</p>
       </section>
       <div className="resume-download">
-        <button aria-label="Download résumé" onClick={() => window.print()}><img src="/assets/icon-download.svg" alt="" /></button>
+        <a className="resume-download__linkedin" href="https://www.linkedin.com/in/mofifoluwa-olawuyi-04bb73214/" target="_blank" rel="noreferrer" aria-label="Open LinkedIn profile"><img src="/assets/icon-linkedin.svg" alt="" /></a>
         <button onClick={() => window.print()}><img src="/assets/icon-download.svg" alt="" />DOWNLOAD</button>
       </div>
     </aside>
