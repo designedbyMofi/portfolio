@@ -227,9 +227,9 @@ function ProjectPreview({ project, origin, nativeTransition, onClose }: { projec
           )}
           {project.motion === 'carousel' && (
             <div className="preview__carousel-controls" aria-label="Carousel controls">
-              <button className="preview__carousel-button" onClick={() => changeSlide(-1)} aria-label="Previous slide"><span className="carousel-arrow carousel-arrow--prev" aria-hidden="true" /></button>
+              <button className="preview__carousel-button" onClick={() => changeSlide(-1)} aria-label="Previous slide"><span className="carousel-caret" aria-hidden="true">‹</span></button>
               <span className="preview__dots" aria-label="Carousel slides">{carouselProjects.map((item, dot) => <button className={`preview__carousel-dot${dot === carouselIndex ? ' is-active' : ''}`} onClick={() => setCarouselIndex(dot)} aria-label={`Go to slide ${dot + 1}`} key={`${item.image}-${dot}`} />)}</span>
-              <button className="preview__carousel-button" onClick={() => changeSlide(1)} aria-label="Next slide"><span className="carousel-arrow carousel-arrow--next" aria-hidden="true" /></button>
+              <button className="preview__carousel-button" onClick={() => changeSlide(1)} aria-label="Next slide"><span className="carousel-caret" aria-hidden="true">›</span></button>
             </div>
           )}
         </div>
