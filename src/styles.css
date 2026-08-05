@@ -222,15 +222,9 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .floating-nav__capsule { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; pointer-events: auto; }
 .floating-nav__toast { position: absolute; z-index: 5; bottom: 86px; left: 50%; transform: translateX(-50%); padding: 7px 12px; border: .5px solid rgba(255,255,255,.78); border-radius: 999px; background: rgba(255,255,255,.76); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: 0 12px 18px rgba(30,27,36,.1), inset 0 1px 0 rgba(255,255,255,.9); color: var(--shade-600); font-size: 12px; line-height: 20px; font-weight: 500; white-space: nowrap; pointer-events: none; animation: toast-enter .28s cubic-bezier(.16,1,.3,1) both; }
 @keyframes toast-enter { from { opacity: 0; transform: translateX(-50%) translateY(8px) scale(.96); } }
-.floating-nav__avatar { width: 48px; height: 48px; margin-right: 4px; object-fit: cover; border-radius: 50%; border: 3px solid white; box-shadow: 0 12px 12px -2.5px rgba(0,0,0,.06); cursor: pointer; transition: transform .32s cubic-bezier(.16,1,.3,1), box-shadow .32s ease; }
-.floating-nav__avatar:hover { animation: avatar-play .62s cubic-bezier(.16,1,.3,1) both; box-shadow: 0 16px 18px -3px rgba(30,27,36,.16); }
-.floating-nav__avatar:active { transform: translateY(0) scale(.96); }
-@keyframes avatar-play {
-  0% { transform: translateY(0) rotate(0) scale(1); }
-  35% { transform: translateY(-5px) rotate(-8deg) scale(1.06); }
-  65% { transform: translateY(-2px) rotate(5deg) scale(1.03); }
-  100% { transform: translateY(-3px) rotate(-3deg) scale(1.04); }
-}
+.floating-nav__avatar { width: 48px; height: 48px; margin-right: 4px; object-fit: cover; border-radius: 50%; border: 3px solid white; box-shadow: 0 12px 12px -2.5px rgba(0,0,0,.06); cursor: pointer; transition: transform .28s cubic-bezier(.16,1,.3,1), filter .28s ease, box-shadow .28s ease; }
+.floating-nav__avatar:hover { transform: scale(1.07); filter: brightness(1.12) saturate(1.08); box-shadow: 0 0 0 3px rgba(255,255,255,.7), 0 16px 18px -3px rgba(30,27,36,.16); }
+.floating-nav__avatar:active { transform: scale(.96); }
 .floating-nav__tabs { position: relative; display: flex; width: 284px; padding: 4px; border: .5px solid var(--shade-200); border-radius: 999px; background: var(--shade-100); box-shadow: 0 12px 6px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.62); }
 .floating-nav__active-slider { position: absolute; z-index: 0; top: 4px; left: 4px; width: 92px; height: 40px; border: .5px solid rgba(255,255,255,.84); border-radius: 999px; background: linear-gradient(145deg, rgba(255,255,255,.78), rgba(255,255,255,.48)); -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5); box-shadow: 0 1px 1px rgba(30,27,36,.06), inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(124,109,103,.08); transform: translateX(calc(var(--active-index) * 92px)); transition: transform .58s cubic-bezier(.16,1,.3,1), width .3s ease; will-change: transform; pointer-events: none; overflow: hidden; }
 .floating-nav__active-slider::after { content: ''; position: absolute; inset: 1px 12px auto; height: 45%; border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.62), transparent); opacity: .72; }
