@@ -932,7 +932,6 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .case-study__profile .case-study__lede { font-size: 14px; line-height: 23px; }
   .case-study__hero-placeholder { height: 206px; }
   .scrolled-header__content { max-width: calc(100% - 24px); gap: 5px; font-size: 12px; }
-  .scrolled-header__content .scrolled-header__muted:last-of-type { display: none; }
   .scrolled-header__back, .scrolled-header__share { width: 24px; height: 24px; }
 }
 .case-study__simple-section[id] { scroll-margin-top: 80px; }
