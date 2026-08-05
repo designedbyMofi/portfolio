@@ -32,14 +32,14 @@ main > .projects-landing,
 main > .case-study {
   will-change: transform, opacity, filter;
 }
-html:not(.app-ready) main > .content-shell,
-html:not(.app-ready) main > .resume-shell,
-html:not(.app-ready) main > .projects-landing,
-html:not(.app-ready) main > .case-study { animation: screen-enter .9s cubic-bezier(.42,0,.58,1) both; }
+html.initial-shots:not(.app-ready) main > .content-shell,
+html.initial-shots:not(.app-ready) main > .resume-shell,
+html.initial-shots:not(.app-ready) main > .projects-landing,
+html.initial-shots:not(.app-ready) main > .case-study { animation: screen-enter .9s cubic-bezier(.42,0,.58,1) both; }
 .profile__heading,
 .profile__bio { animation: none; will-change: transform, opacity, filter; }
-html:not(.app-ready) .profile__heading { animation: screen-layer-enter .58s cubic-bezier(.42,0,.58,1) .06s both; }
-html:not(.app-ready) .profile__bio { animation: screen-layer-enter .58s cubic-bezier(.42,0,.58,1) .16s both; }
+html.initial-shots:not(.app-ready) .profile__heading { animation: screen-layer-enter .58s cubic-bezier(.42,0,.58,1) .06s both; }
+html.initial-shots:not(.app-ready) .profile__bio { animation: screen-layer-enter .58s cubic-bezier(.42,0,.58,1) .16s both; }
 @keyframes screen-enter {
   from { opacity: 0; filter: blur(14px); transform: translate3d(0, 14px, 0); }
   to { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); }

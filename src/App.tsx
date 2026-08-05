@@ -746,12 +746,16 @@ export default function App() {
   const [projectDetail, setProjectDetail] = useState(() => isVurtCaseStudyPath());
   const [shotFilter, setShotFilter] = useState<ShotFilter>('all');
   const [muted, setMuted] = useState(() => window.localStorage.getItem('portfolio-sounds-muted') === 'true');
+  const initialViewRef = useRef(view);
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => document.documentElement.classList.add('app-ready'));
+    const initialShots = initialViewRef.current === 'shots';
+    if (initialShots) document.documentElement.classList.add('initial-shots');
+    const readyTimer = window.setTimeout(() => document.documentElement.classList.add('app-ready'), 1050);
     return () => {
-      window.cancelAnimationFrame(frame);
+      window.clearTimeout(readyTimer);
       document.documentElement.classList.remove('app-ready');
+      document.documentElement.classList.remove('initial-shots');
     };
   }, []);
 
