@@ -941,3 +941,130 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .case-study__toc { width: calc(100% - 48px); display: block; }
   .case-study__toc > div { margin-top: 10px; gap: 4px 14px; }
 }
+
+/* Projects flow — Figma source of truth (576:3016, 576:4567, 596:5608, 596:3888). */
+.projects-main {
+  min-height: 1520px;
+  background: var(--canvas);
+}
+
+.projects-main .projects-landing {
+  width: 100%;
+  max-width: 1728px;
+  min-height: 1520px;
+  margin: 0 auto;
+  padding: 80px 0 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.projects-main .projects-landing__profile,
+.projects-main .projects-landing__rule {
+  width: 648px;
+  margin: 0;
+}
+
+.projects-main .projects-landing__profile { display: flex; flex-direction: column; gap: 32px; }
+.projects-main .projects-landing__heading { display: flex; align-items: center; gap: 24px; }
+.projects-main .projects-landing__heading img { width: 80px; height: 80px; border: 4px solid #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.projects-main .projects-landing__heading > div { display: flex; flex: 1; flex-direction: column; gap: 4px; }
+.projects-main .projects-landing__heading h1 { margin: 0; font-size: 40px; line-height: normal; letter-spacing: -.4px; }
+.projects-main .projects-landing__heading p { margin: 0; font-size: 14px; line-height: 24px; font-weight: 500; }
+.projects-main .projects-landing__bio { display: block; color: var(--shade-600); font-size: 14px; line-height: 24px; }
+.projects-main .projects-landing__bio p { margin: 0; }
+.projects-main .projects-landing__bio p + p { margin-top: 16px; }
+.projects-main .projects-landing__rule { height: 1px; flex: 0 0 1px; background: var(--shade-200); }
+.projects-main .projects-landing__work { width: 688px; margin: 0; display: flex; flex-direction: column; gap: 20px; }
+.projects-main .projects-landing__card { width: 688px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; }
+.projects-main .projects-landing__card:hover,
+.projects-main .projects-landing__card:focus-visible { background: var(--shade-100); }
+.projects-main .projects-landing__card > span:last-child { display: flex; flex-direction: column; gap: 0; }
+.projects-main .projects-landing__placeholder { width: 648px; height: 320px; flex: 0 0 320px; background: var(--shade-100); border: .5px solid var(--shade-200); border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.projects-main .projects-landing__card h2 { margin: 0; color: var(--ink); font-size: 16px; line-height: 28px; font-weight: 600; }
+.projects-main .projects-landing__card p { margin: 0; color: var(--shade-600); font-size: 14px; line-height: 24px; font-weight: 400; }
+
+.case-study-main { background: var(--canvas); }
+.case-study-main .case-study {
+  position: relative;
+  width: 100%;
+  min-height: 6574px;
+  padding: 120px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  overflow: visible;
+}
+.case-study-main .case-study__hero { position: static; width: 648px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 32px; }
+.case-study-main .case-study__profile { width: 544px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.case-study-main .case-study__profile h1 { width: 544px; max-width: none; margin: 0; color: var(--ink); font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: normal; font-weight: 600; letter-spacing: -.4px; }
+.case-study-main .case-study__profile .case-study__lede { width: 544px; max-width: none; margin: 0; color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 500; }
+.case-study-main .case-study__hero-card { width: 648px; display: flex; flex-direction: column; gap: 20px; }
+.case-study-main .case-study__hero-placeholder,
+.case-study-main .case-study__placeholder { width: 648px; height: 320px; flex: 0 0 320px; border: .5px solid var(--shade-200); border-radius: 12px; background: var(--shade-100); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.case-study-main .case-study__hero-chips { display: flex; align-items: flex-start; gap: 8px; }
+.case-study-main .case-study__hero-chips a,
+.case-study-main .case-study__hero-chips span { width: fit-content; padding: 6px 12px; display: flex; align-items: center; gap: 6px; border: 0; border-radius: 12px; background: var(--shade-100); color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 500; text-decoration: none; }
+.case-study-main .case-study__hero-chips a::before { content: ''; width: 20px; height: 20px; border-radius: 50%; background: #0a9b56; box-shadow: inset 0 0 0 6px var(--shade-100); }
+.case-study-main .case-study__rule { width: 648px; height: 1px; flex: 0 0 1px; background: var(--shade-200); }
+.case-study-main .case-study__toc { position: absolute; top: 710px; left: max(24px, calc(50% - 724px)); width: 240px; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; border: 0; }
+.case-study-main .case-study__toc a { width: 240px; min-height: 40px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; border-radius: 12px; color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 500; text-decoration: none; }
+.case-study-main .case-study__toc a b { width: 16px; color: var(--shade-300); font-family: Geist, Inter, sans-serif; font-size: 12px; line-height: normal; font-weight: 500; }
+.case-study-main .case-study__toc a:first-child { color: var(--shade-600); }
+.case-study-main .case-study__toc a:first-child b { color: var(--shade-600); }
+.case-study-main .case-study__toc a.is-active,
+.case-study-main .case-study__toc a:hover { background: var(--shade-100); }
+.case-study-main .case-study__content { width: 648px; margin: 0; display: flex; flex-direction: column; gap: 40px; }
+.case-study-main .case-study__entry { width: 648px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 88px; }
+.case-study-main .case-study__entry-heading { display: flex; flex-direction: column; gap: 4px; }
+.case-study-main .case-study__entry-heading > span { color: var(--shade-400); font-family: Geist, Inter, sans-serif; font-size: 12px; line-height: 20px; font-weight: 500; }
+.case-study-main .case-study__entry h2 { margin: 0; color: var(--shade-600); font-family: Inter, sans-serif; font-size: 14px; line-height: 24px; font-weight: 600; letter-spacing: 0; }
+.case-study-main .case-study__entry p,
+.case-study-main .case-study__entry li { margin: 0; color: var(--shade-600); font-size: 14px; line-height: 24px; font-weight: 400; }
+.case-study-main .case-study__entry ul { margin: 0; padding-left: 21px; display: flex; flex-direction: column; gap: 0; }
+.case-study-main .case-study__entry--media .case-study__placeholder { margin-top: 0; }
+.vurt-mobile-index { display: none; }
+
+@media (max-width: 700px) {
+  .projects-main { min-height: 1325px; }
+  .projects-main .projects-landing { min-height: 1325px; padding: 32px 0; gap: 32px; }
+  .projects-main .projects-landing__profile,
+  .projects-main .projects-landing__rule { width: calc(100% - 48px); }
+  .projects-main .projects-landing__profile { gap: 16px; }
+  .projects-main .projects-landing__heading { gap: 16px; }
+  .projects-main .projects-landing__heading img { width: 60px; height: 60px; border-width: 3px; }
+  .projects-main .projects-landing__heading h1 { font-size: 28px; line-height: normal; letter-spacing: -.28px; }
+  .projects-main .projects-landing__heading p { font-size: 14px; line-height: 24px; }
+  .projects-main .projects-landing__bio { font-size: 14px; line-height: 24px; }
+  .projects-main .projects-landing__work { width: calc(100% - 24px); gap: 20px; }
+  .projects-main .projects-landing__card { width: 100%; padding: 8px 12px; gap: 12px; }
+  .projects-main .projects-landing__placeholder { width: 100%; height: auto; flex-basis: auto; aspect-ratio: 648 / 320; }
+  .projects-main .projects-landing__card h2 { font-size: 16px; line-height: 28px; }
+  .projects-main .projects-landing__card p { font-size: 14px; line-height: 24px; }
+
+  .case-study-main .case-study { min-height: 7496px; padding: 32px 0 120px; gap: 32px; align-items: center; }
+  .case-study-main .case-study__hero { width: calc(100% - 48px); gap: 32px; }
+  .case-study-main .case-study__profile { width: 100%; gap: 12px; }
+  .case-study-main .case-study__profile h1 { width: 100%; font-size: 28px; line-height: normal; letter-spacing: -.28px; }
+  .case-study-main .case-study__profile .case-study__lede { width: 100%; font-size: 14px; line-height: 24px; }
+  .case-study-main .case-study__hero-card { width: 100%; gap: 20px; }
+  .case-study-main .case-study__hero-placeholder,
+  .case-study-main .case-study__placeholder { width: 100%; height: auto; flex-basis: auto; aspect-ratio: 648 / 320; }
+  .case-study-main .case-study__rule { width: calc(100% - 48px); }
+  .case-study-main .case-study__toc { display: none; }
+  .case-study-main .case-study__content { width: calc(100% - 48px); gap: 32px; }
+  .case-study-main .case-study__entry { width: 100%; gap: 12px; }
+  .case-study-main .case-study__entry-heading > span { font-size: 12px; line-height: 20px; }
+  .case-study-main .case-study__entry h2,
+  .case-study-main .case-study__entry p,
+  .case-study-main .case-study__entry li { font-size: 14px; line-height: 24px; }
+  .vurt-mobile-index { position: fixed; z-index: 24; top: 205px; right: 16px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; pointer-events: none; opacity: 0; transition: opacity .18s ease; }
+  .scrolled-header.is-visible ~ main .vurt-mobile-index,
+  body:has(.scrolled-header.is-visible) .vurt-mobile-index { opacity: 1; }
+  .vurt-mobile-index > span { padding: 6px 12px; border: .5px solid var(--shade-200); border-radius: 12px; background: rgba(255,255,255,.78); color: var(--shade-600); font-size: 12px; line-height: 20px; font-weight: 500; box-shadow: 0 12px 12px rgba(0,0,0,.08); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .vurt-mobile-index > div { display: flex; flex-direction: column; gap: 4px; }
+  .vurt-mobile-index i { width: 4px; height: 30px; border-radius: 100px; background: var(--shade-200); transition: background .18s ease; }
+  .vurt-mobile-index i.is-active { background: var(--shade-500); }
+}
