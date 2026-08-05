@@ -462,7 +462,7 @@ function Footer() {
   );
 }
 
-function ScrolledHeader({ active }: { active: PortfolioView }) {
+function ScrolledHeader({ active, projectDetail, onBack }: { active: PortfolioView; projectDetail: boolean; onBack: () => void }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -475,11 +475,14 @@ function ScrolledHeader({ active }: { active: PortfolioView }) {
   return (
     <div className={`scrolled-header${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
       <div className="scrolled-header__content">
+        {projectDetail && <button className="scrolled-header__back" onClick={onBack} aria-label="Back to projects"><span aria-hidden="true">‹</span></button>}
         <img src="/assets/portrait.png" alt="" />
         <span>Mofifoluwa</span><span className="scrolled-header__muted">/</span>
         <span className="scrolled-header__muted">{active === 'resume' ? 'Résumé' : active === 'projects' ? 'Projects' : 'Shots'}</span>
+        {projectDetail && <><span className="scrolled-header__muted">/</span><span className="scrolled-header__muted">Vurt</span></>}
         <span className="scrolled-header__muted">·</span>
         <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
+        {projectDetail && <button className="scrolled-header__share" onClick={() => navigator.clipboard?.writeText(window.location.href)} aria-label="Copy project link"><img src="/assets/preview-share.svg" alt="" /></button>}
       </div>
     </div>
   );
@@ -488,34 +491,14 @@ function ScrolledHeader({ active }: { active: PortfolioView }) {
 function ProjectsLanding({ onOpenVurt }: { onOpenVurt: () => void }) {
   return (
     <section className="projects-landing" aria-labelledby="projects-title">
-      <div className="projects-landing__profile">
-        <div className="projects-landing__heading">
-          <img src="/assets/portrait.png" alt="Mofifoluwa Olawuyi" data-reveal />
-          <div>
-            <h1 id="projects-title">Mofifoluwa.</h1>
-            <p>Product designer</p>
-          </div>
-        </div>
-        <div className="projects-landing__bio">
-          <p>I design products for messy, high-stakes spaces — fintech, insurance, AI, enterprise SaaS — where the requirements are usually vague and the stakes for getting it wrong are real. My job is turning that ambiguity into something people can actually use.</p>
-          <p>I've led design teams through that whole process, from early research to shipped systems, and I care a lot about what happens after launch: does this still make sense when the product doubles in size? That's usually where I spend my energy — not just the screen in front of me, but the patterns underneath it.</p>
-        </div>
-      </div>
+      <header className="projects-landing__profile">
+        <div className="projects-landing__heading"><img src="/assets/portrait.png" alt="Mofifoluwa Olawuyi" /><div><h1 id="projects-title">Mofifoluwa.</h1><p>Product designer</p></div></div>
+        <div className="projects-landing__bio"><p>I design products for messy, high-stakes spaces — fintech, insurance, AI, enterprise SaaS — where the requirements are usually vague and the stakes for getting it wrong are real. My job is turning that ambiguity into something people can actually use.</p><p>I’ve led teams through that whole process, from early research to shipped systems, and I care a lot about what happens after launch: does this still make sense when the product doubles in size? That’s usually where I spend my energy — not just the screen in front of me, but the patterns underneath it.</p></div>
+      </header>
       <div className="projects-landing__rule" />
-      <div className="projects-landing__work">
-        <p className="projects-landing__eyebrow">My work</p>
-        <div className="projects-landing__cards">
-          <button className="projects-landing__card" onClick={onOpenVurt}>
-            <img src="/assets/vurt-exchange-desktop.png" alt="Vurt exchanger marketplace" data-reveal />
-            <h2>Vurt: Designing trust into currency exchange</h2>
-            <p>Instead of a fixed bank rate, browse real verified exchangers who post their own rates and terms.</p>
-          </button>
-          <article className="projects-landing__card">
-            <div className="projects-landing__placeholder" aria-hidden="true" />
-            <h2>Corddit: Connecting people with similar interests</h2>
-            <p>A community product exploration focused on helping people find and build meaningful connections.</p>
-          </article>
-        </div>
+      <div className="projects-landing__work"><p className="projects-landing__eyebrow">My work</p>
+        <button className="projects-landing__card" onClick={onOpenVurt}><img src="/assets/vurt-exchange-desktop.png" alt="Vurt exchange marketplace" /><span><h2>Vurt: Designing trust into currency exchange</h2><p>A responsive marketplace that makes high-stakes currency exchange easier to compare and safer to complete.</p></span></button>
+        <a className="projects-landing__card" href="https://corddit.com/" target="_blank" rel="noreferrer"><span className="projects-landing__placeholder" /><span><h2>Corddit: Connecting people with similar interests</h2><p>A social product for finding and building communities around shared interests.</p></span></a>
       </div>
     </section>
   );
@@ -525,13 +508,12 @@ function VurtCaseStudy() {
   return (
     <article className="case-study" aria-labelledby="vurt-title">
       <header className="case-study__hero">
-        <div className="case-study__eyebrow"><span>Vurt / QPay</span><span>2021 — 2026</span></div>
-        <div className="case-study__hero-copy"><p className="case-study__kicker">Case study</p><h1 id="vurt-title">Vurt:<br />Designing trust<br />into currency exchange</h1><p className="case-study__lede">I led the redesign of Vurt from a rough mobile exchange app into a responsive platform for customers and exchangers.</p></div>
-        <img className="case-study__hero-image" src="/assets/vurt-exchange-desktop.png" alt="Vurt exchanger marketplace on desktop" data-reveal />
+        <div className="case-study__profile"><h1 id="vurt-title">Vurt v3: Designing trust into currency exchange</h1><p className="case-study__lede">I led the redesign of Vurt from a rough mobile exchange app into a responsive platform for customers and exchangers.</p><span className="case-study__date-chip">2025 — 2026</span></div>
+        <div className="case-study__hero-card"><div className="case-study__hero-placeholder" aria-label="Vurt exchange marketplace preview" /><div className="case-study__hero-chips"><span>vurt.app</span><span>2025 — 2026</span></div></div>
       </header>
 
       <div className="case-study__layout">
-      <nav className="case-study__toc" aria-label="Case study sections"><span>On this page</span><div><a href="#vurt-intro">Intro</a><a href="#vurt-metrics">Metrics</a><a href="#vurt-role">Role</a><a href="#vurt-opportunity">Opportunity</a><a href="#vurt-problem">Problem</a><a href="#vurt-context">Context</a><a href="#vurt-approach">Process</a><a href="#vurt-solution">Solution</a><a href="#vurt-invoice-links">Invoice links</a><a href="#vurt-impact">Impact</a><a href="#vurt-feedback">Feedback from users</a><a href="#vurt-lessons">Lessons learnt</a><a href="#vurt-credits">Credits</a></div></nav>
+      <nav className="case-study__toc" aria-label="Case study sections"><span>On this page</span><div><a href="#vurt-intro">01 Intro</a><a href="#vurt-metrics">02 Metrics</a><a href="#vurt-role">03 My role</a><a href="#vurt-opportunity">04 Opportunity</a><a href="#vurt-problem">05 The problem</a><a href="#vurt-context">06 Context</a><a href="#vurt-approach">07 Process</a><a href="#vurt-solution">08 Solution</a><a href="#vurt-impact">09 Impact</a><a href="#vurt-feedback">10 Feedback from users</a><a href="#vurt-lessons">11 Lessons learnt</a></div></nav>
       <div className="case-study__content">
       <section className="case-study__intro case-study__section" id="vurt-intro">
         <div className="case-study__meta-grid"><div><span className="case-study__label">Role</span><p>Head of Design<br />Design lead · Strategist</p></div><div><span className="case-study__label">Team</span><p>1 PM · 3 developers<br />3 designers</p></div><div><span className="case-study__label">Scope</span><p>Product strategy<br />UX · UI · Design system</p></div></div>
@@ -798,8 +780,8 @@ export default function App() {
   const navigate = (nextView: PortfolioView) => {
     setSelectedProject(null);
     setPreviewOrigin(null);
-    setProjectDetail(false);
     setView(nextView);
+    setProjectDetail(false);
     const nextPath = nextView === 'resume' ? '/resume' : nextView === 'projects' ? '/projects' : '/';
     if (window.location.pathname !== nextPath) window.history.pushState({ view: nextView }, '', nextPath);
     window.requestAnimationFrame(() => {
@@ -808,11 +790,16 @@ export default function App() {
   };
 
   const openVurtCaseStudy = () => {
-    setSelectedProject(null);
-    setPreviewOrigin(null);
-    setProjectDetail(true);
     setView('projects');
+    setProjectDetail(true);
     window.history.pushState({ view: 'projects', project: 'vurt' }, '', '/projects/vurt');
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  };
+
+  const closeVurtCaseStudy = () => {
+    setProjectDetail(false);
+    setView('projects');
+    window.history.pushState({ view: 'projects' }, '', '/projects');
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
   };
 
@@ -870,7 +857,7 @@ export default function App() {
 
   return (
     <>
-      <ScrolledHeader active={view} />
+      <ScrolledHeader active={view} projectDetail={projectDetail} onBack={closeVurtCaseStudy} />
       <main className={view === 'resume' ? 'resume-main' : view === 'projects' ? (projectDetail ? 'case-study-main' : 'projects-main') : 'shots-main'}>
         {view === 'resume' ? <ResumePage /> : view === 'projects' ? (projectDetail ? <VurtCaseStudy /> : <ProjectsLanding onOpenVurt={openVurtCaseStudy} />) : (
           <div className="content-shell">

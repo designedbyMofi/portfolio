@@ -30,6 +30,8 @@ main { position: relative; z-index: 2; background: var(--canvas); box-shadow: 0 
 
 /* Projects landing page */
 .projects-main { background: var(--canvas); }
+.projects-coming-soon { width: min(648px, calc(100% - 48px)); min-height: 620px; margin: 0 auto; padding-top: 120px; }
+.projects-coming-soon h1 { margin: 0; color: var(--ink); font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: 1; font-weight: 600; letter-spacing: -.4px; }
 .projects-landing { width: min(1728px, 100%); margin: 0 auto; padding: 80px max(24px, calc((100% - 648px) / 2)) 120px; display: flex; flex-direction: column; gap: 40px; }
 .projects-landing__profile { display: flex; flex-direction: column; gap: 32px; }
 .projects-landing__heading { display: flex; align-items: center; gap: 24px; }
@@ -836,6 +838,62 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study__toc a { color: var(--shade-500); text-decoration: none; }
 .case-study__toc a:hover, .case-study__toc a:focus-visible { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .case-study__section-number { display: block; margin-bottom: 10px; color: var(--shade-400); font-size: 11px; line-height: 18px; }
+
+/* Projects V2 layouts */
+.projects-main { min-height: 1500px; background: var(--canvas); }
+.projects-landing { width: 100%; max-width: 1728px; margin: 0 auto; padding: 80px 0 120px; color: var(--ink); }
+.projects-landing__profile, .projects-landing__rule, .projects-landing__work { width: min(648px, calc(100% - 48px)); margin-inline: auto; }
+.projects-landing__profile { display: grid; gap: 34px; }
+.projects-landing__heading { display: flex; align-items: center; gap: 16px; }
+.projects-landing__heading img { width: 80px; height: 80px; border: 4px solid #fff; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(30,27,36,.12); }
+.projects-landing__heading h1 { margin: 0; font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: 1; letter-spacing: -.04em; font-weight: 600; }
+.projects-landing__heading p { margin: 8px 0 0; color: var(--shade-400); font-size: 14px; line-height: 20px; }
+.projects-landing__bio { display: grid; gap: 16px; color: var(--shade-500); font-size: 14px; line-height: 24px; }
+.projects-landing__bio p { margin: 0; }
+.projects-landing__rule { height: 1px; margin-top: 56px; background: var(--shade-200); }
+.projects-landing__work { display: grid; gap: 16px; margin-top: 56px; }
+.projects-landing__eyebrow { margin: 0 0 4px; color: var(--shade-400); font-size: 12px; line-height: 20px; font-weight: 600; }
+.projects-landing__card { width: 100%; padding: 16px; display: grid; gap: 16px; border: 0; border-radius: 12px; background: #f3f1f1; color: var(--ink); text-align: left; text-decoration: none; cursor: pointer; transition: background .2s ease; }
+.projects-landing__card:hover, .projects-landing__card:focus-visible { background: #efeded; outline: 0; }
+.projects-landing__card > img, .projects-landing__placeholder { width: 100%; height: 320px; display: block; border-radius: 8px; object-fit: cover; background: #ebe8e7; }
+.projects-landing__placeholder { background: linear-gradient(135deg, #e7e2e2, #f6f3f2 45%, #ded8d7); }
+.projects-landing__card h2 { margin: 0; font-size: 16px; line-height: 28px; font-weight: 600; text-decoration: underline dotted; text-underline-offset: 4px; }
+.projects-landing__card p { margin: 2px 0 0; color: var(--shade-500); font-size: 14px; line-height: 24px; }
+
+.case-study__profile { display: grid; gap: 18px; padding: 40px 0 36px; }
+.case-study__profile h1 { max-width: 648px; font-size: 42px; line-height: 1.02; }
+.case-study__profile .case-study__lede { margin: 0; max-width: 560px; }
+.case-study__date-chip, .case-study__hero-chips span { width: fit-content; padding: 5px 10px; border: 1px solid var(--shade-200); border-radius: 999px; color: var(--shade-500); font-size: 12px; line-height: 18px; }
+.case-study__hero-card { display: grid; gap: 16px; }
+.case-study__hero-placeholder { width: 100%; height: 320px; border-radius: 12px; background: #f3f1f1; box-shadow: 0 14px 30px rgba(30,27,36,.08); }
+.case-study__hero-chips { display: flex; gap: 8px; }
+.scrolled-header__back, .scrolled-header__share { width: 28px; height: 28px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.72); color: var(--shade-500); cursor: pointer; }
+.scrolled-header__back span { font-size: 24px; line-height: 20px; transform: translateY(-1px); }
+.scrolled-header__share img { width: 15px; height: 15px; opacity: .7; }
+
+@media (max-width: 700px) {
+  .projects-main { min-height: 1325px; }
+  .projects-landing { padding: 40px 0 96px; }
+  .projects-landing__profile, .projects-landing__rule, .projects-landing__work { width: calc(100% - 48px); }
+  .projects-landing__profile { gap: 28px; }
+  .projects-landing__heading img { width: 60px; height: 60px; border-width: 3px; }
+  .projects-landing__heading h1 { font-size: 32px; }
+  .projects-landing__heading p { margin-top: 5px; font-size: 13px; }
+  .projects-landing__bio { font-size: 13px; line-height: 22px; }
+  .projects-landing__rule { margin-top: 40px; }
+  .projects-landing__work { margin-top: 40px; gap: 12px; }
+  .projects-landing__card { padding: 12px; gap: 10px; }
+  .projects-landing__card > img, .projects-landing__placeholder { height: 206px; }
+  .projects-landing__card h2 { font-size: 14px; line-height: 24px; }
+  .projects-landing__card p { font-size: 13px; line-height: 22px; }
+  .case-study__profile { padding: 28px 0 28px; gap: 14px; }
+  .case-study__profile h1 { font-size: 36px; line-height: 1.04; }
+  .case-study__profile .case-study__lede { font-size: 14px; line-height: 23px; }
+  .case-study__hero-placeholder { height: 206px; }
+  .scrolled-header__content { max-width: calc(100% - 24px); gap: 5px; font-size: 12px; }
+  .scrolled-header__content .scrolled-header__muted:last-of-type { display: none; }
+  .scrolled-header__back, .scrolled-header__share { width: 24px; height: 24px; }
+}
 .case-study__simple-section[id] { scroll-margin-top: 80px; }
 
 @media (max-width: 700px) {
