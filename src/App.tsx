@@ -536,25 +536,35 @@ const vurtSections = [
 
 function VurtMobileIndex() {
   const [active, setActive] = useState(1);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [mobileIndexTop, setMobileIndexTop] = useState(205);
   useEffect(() => {
+    let frame = 0;
     const update = () => {
+      frame = 0;
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
       let next = 0;
       sections.forEach((section, index) => { if (section.getBoundingClientRect().top <= 230) next = index; });
       setActive(next);
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      setScrollProgress(Math.min(1, Math.max(0, window.scrollY / maxScroll)));
+      const scrollRoot = document.scrollingElement || document.documentElement;
+      const viewportHeight = window.innerHeight;
+      const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
+      const maxScroll = Math.max(1, documentHeight - viewportHeight);
+      const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop || window.scrollY));
+      const scrollbarThumbHeight = Math.min(viewportHeight, Math.max(24, (viewportHeight * viewportHeight) / documentHeight));
+      const scrollbarTrack = Math.max(0, viewportHeight - scrollbarThumbHeight);
+      const nextTop = Math.max(8, Math.min(viewportHeight - 40, scrollbarThumbHeight / 2 + (scrollTop / maxScroll) * scrollbarTrack - 16));
+      setMobileIndexTop(nextTop);
     };
+    const scheduleUpdate = () => { if (!frame) frame = window.requestAnimationFrame(update); };
     update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    return () => {
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
-  const viewportHeight = window.innerHeight;
-  const documentHeight = Math.max(viewportHeight, document.documentElement.scrollHeight);
-  const scrollbarThumbHeight = Math.min(viewportHeight, Math.max(24, (viewportHeight * viewportHeight) / documentHeight));
-  const scrollbarTrack = Math.max(0, viewportHeight - scrollbarThumbHeight);
-  const mobileIndexTop = Math.max(8, Math.min(viewportHeight - 40, scrollbarThumbHeight / 2 + scrollProgress * scrollbarTrack - 16));
   return <aside className="vurt-mobile-index" aria-hidden="true" style={{ top: `${mobileIndexTop}px` }}><span>{vurtSections[active]?.nav}</span></aside>;
 }
 
