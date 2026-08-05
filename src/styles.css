@@ -1334,6 +1334,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .scrolled-header__identity .scrolled-header__crumb:hover,
 .scrolled-header__identity .scrolled-header__crumb:focus-visible { background: transparent; color: var(--shade-600); }
 .scrolled-header__identity .scrolled-header__current { color: var(--shade-600); }
+.scrolled-header__identity .scrolled-header__active { color: var(--shade-600); }
 .scrolled-header__identity > img {
   width: 28px;
   height: 28px;
