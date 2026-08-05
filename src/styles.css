@@ -1343,6 +1343,11 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   transition: background .16s ease, color .16s ease, transform .16s ease;
 }
 .scrolled-header__share { position: relative; }
+.scrolled-header__back.has-tooltip::after,
+.scrolled-header__share.has-tooltip::after {
+  top: calc(100% + 7px);
+  bottom: auto;
+}
 .scrolled-header__back svg { width: 24px; height: 24px; }
 .scrolled-header__share svg { width: 20px; height: 20px; }
 .scrolled-header__back:hover,

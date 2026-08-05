@@ -465,6 +465,15 @@ function Footer() {
 function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active: PortfolioView; projectDetail: boolean; onBack: () => void; onNavigate: (view: PortfolioView) => void }) {
   const [visible, setVisible] = useState(false);
 
+  const shareProject = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      await navigator.share({ title: 'Vurt — Mofifoluwa', url }).catch(() => undefined);
+      return;
+    }
+    await navigator.clipboard?.writeText(url);
+  };
+
   useEffect(() => {
     const update = () => setVisible(window.scrollY > 360);
     update();
@@ -484,7 +493,7 @@ function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active:
           <span className="scrolled-header__muted">·</span>
           <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
         </div>
-        {projectDetail && <button className="scrolled-header__share has-tooltip" data-tooltip="Share" onClick={() => navigator.clipboard?.writeText(window.location.href)} aria-label="Copy project link"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z" /></svg></button>}
+        {projectDetail && <button className="scrolled-header__share has-tooltip" data-tooltip="Share" onClick={shareProject} aria-label="Share project"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z" /></svg></button>}
       </div>
     </div>
   );
