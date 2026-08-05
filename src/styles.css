@@ -1016,6 +1016,11 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study-main .case-study__toc a:first-child b { color: var(--shade-600); }
 .case-study-main .case-study__toc a.is-active,
 .case-study-main .case-study__toc a:hover { background: var(--shade-100); }
+body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
+  position: fixed;
+  z-index: 16;
+  top: 140px;
+}
 .case-study-main .case-study__content { width: 648px; margin: 0; display: flex; flex-direction: column; gap: 40px; }
 .case-study-main .case-study__entry { width: 648px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 88px; }
 .case-study-main .case-study__entry-heading { display: flex; flex-direction: column; gap: 4px; }
@@ -1224,6 +1229,10 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
     width: min(240px, 13.89vw, 23.44dvh);
   }
 
+  body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
+    top: min(140px, 8.1vw, 13.67dvh);
+  }
+
   .case-study-main .case-study__toc a {
     width: min(240px, 13.89vw, 23.44dvh);
     min-height: min(40px, 2.31vw, 3.91dvh);
@@ -1259,4 +1268,77 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 
 @media (min-width: 701px) and (max-width: 1100px) {
   .case-study-main .case-study__toc { display: none; }
+}
+
+/* Vurt scrolled/index state: the top controls occupy the same 648px frame as Figma. */
+.scrolled-header__content.is-project {
+  width: min(648px, calc(100% - 48px));
+  justify-content: space-between;
+  gap: 0;
+}
+.scrolled-header__identity {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 500;
+}
+.scrolled-header__identity > img {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.scrolled-header__identity > a {
+  min-height: 32px;
+  margin-left: 0;
+  padding: 4px 12px;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+}
+.scrolled-header__back,
+.scrolled-header__share {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.scrolled-header__back { background: rgba(0,0,0,.32); color: #fff; }
+.scrolled-header__share { position: relative; background: rgba(0,0,0,.48); color: #fff; }
+.scrolled-header__back span { font-size: 25px; line-height: 20px; transform: translateY(-1px); }
+.scrolled-header__share img { width: 20px; height: 20px; opacity: 1; filter: brightness(0) invert(1); }
+.scrolled-header__back:hover,
+.scrolled-header__share:hover { background: rgba(0,0,0,.6); }
+
+@media (min-width: 1101px) {
+  .scrolled-header__content.is-project { width: min(648px, 37.5vw, 63.28dvh); }
+  .scrolled-header__identity { gap: min(4px, .23vw, .39dvh); font-size: clamp(12.5px, min(.93vw, 1.56dvh), 16px); line-height: clamp(21px, min(1.62vw, 2.73dvh), 28px); }
+  .scrolled-header__identity > img { width: min(28px, 1.62vw, 2.73dvh); height: min(28px, 1.62vw, 2.73dvh); flex-basis: min(28px, 1.62vw, 2.73dvh); border-width: min(1.5px, .087vw, .15dvh); }
+  .scrolled-header__identity > a { min-height: min(32px, 1.85vw, 3.13dvh); padding: min(4px, .23vw, .39dvh) min(12px, .69vw, 1.17dvh); font-size: clamp(12px, min(.81vw, 1.37dvh), 14px); line-height: clamp(20px, min(1.39vw, 2.34dvh), 24px); }
+  .scrolled-header__back,
+  .scrolled-header__share { width: min(32px, 1.85vw, 3.13dvh); height: min(32px, 1.85vw, 3.13dvh); flex-basis: min(32px, 1.85vw, 3.13dvh); }
+  .scrolled-header__back span { font-size: min(25px, 1.45vw, 2.44dvh); }
+  .scrolled-header__share img { width: min(20px, 1.16vw, 1.95dvh); height: min(20px, 1.16vw, 1.95dvh); }
+}
+
+@media (max-width: 700px) {
+  .scrolled-header__content.is-project { width: calc(100% - 24px); }
+  .scrolled-header__identity { gap: 3px; font-size: 12px; line-height: 20px; }
+  .scrolled-header__identity > img { width: 24px; height: 24px; flex-basis: 24px; border-width: 1.5px; }
+  .scrolled-header__identity > a { min-height: 24px; padding: 2px 8px; font-size: 11px; line-height: 20px; }
+  .scrolled-header__back,
+  .scrolled-header__share { width: 24px; height: 24px; flex-basis: 24px; }
+  .scrolled-header__back span { font-size: 20px; }
+  .scrolled-header__share img { width: 15px; height: 15px; }
 }

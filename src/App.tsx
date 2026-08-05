@@ -473,15 +473,17 @@ function ScrolledHeader({ active, projectDetail, onBack }: { active: PortfolioVi
   }, []);
 
   return (
-    <div className={`scrolled-header${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
-      <div className="scrolled-header__content">
+      <div className={`scrolled-header${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
+      <div className={`scrolled-header__content${projectDetail ? ' is-project' : ''}`}>
         {projectDetail && <button className="scrolled-header__back" onClick={onBack} aria-label="Back to projects"><span aria-hidden="true">‹</span></button>}
-        <img src="/assets/portrait.png" alt="" />
-        <span>Mofifoluwa</span><span className="scrolled-header__muted">/</span>
-        <span className="scrolled-header__muted">{active === 'resume' ? 'Résumé' : active === 'projects' ? 'Projects' : 'Shots'}</span>
-        {projectDetail && <><span className="scrolled-header__muted">/</span><span className="scrolled-header__muted">Vurt</span></>}
-        <span className="scrolled-header__muted">·</span>
-        <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
+        <div className="scrolled-header__identity">
+          <img src="/assets/portrait.png" alt="" />
+          <span>Mofifoluwa</span><span className="scrolled-header__muted">/</span>
+          <span className="scrolled-header__muted">{active === 'resume' ? 'Résumé' : active === 'projects' ? 'Projects' : 'Shots'}</span>
+          {projectDetail && <><span className="scrolled-header__muted">/</span><span className="scrolled-header__muted scrolled-header__current">Vurt</span></>}
+          <span className="scrolled-header__muted">·</span>
+          <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
+        </div>
         {projectDetail && <button className="scrolled-header__share" onClick={() => navigator.clipboard?.writeText(window.location.href)} aria-label="Copy project link"><img src="/assets/preview-share.svg" alt="" /></button>}
       </div>
     </div>
