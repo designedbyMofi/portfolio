@@ -462,7 +462,7 @@ function Footer() {
   );
 }
 
-function ScrolledHeader({ active, projectDetail, onBack }: { active: PortfolioView; projectDetail: boolean; onBack: () => void }) {
+function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active: PortfolioView; projectDetail: boolean; onBack: () => void; onNavigate: (view: PortfolioView) => void }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -478,8 +478,8 @@ function ScrolledHeader({ active, projectDetail, onBack }: { active: PortfolioVi
         {projectDetail && <button className="scrolled-header__back" onClick={onBack} aria-label="Back to projects"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z" /></svg></button>}
         <div className="scrolled-header__identity">
           <img src="/assets/portrait.png" alt="" />
-          <span>Mofifoluwa</span><span className="scrolled-header__muted">/</span>
-          <span className="scrolled-header__muted">{active === 'resume' ? 'Résumé' : active === 'projects' ? 'Projects' : 'Shots'}</span>
+          {projectDetail ? <a className="scrolled-header__crumb" href="/" onClick={(event) => { event.preventDefault(); onNavigate('shots'); }}>Mofifoluwa</a> : <span>Mofifoluwa</span>}<span className="scrolled-header__muted">/</span>
+          {projectDetail ? <a className="scrolled-header__crumb" href="/projects" onClick={(event) => { event.preventDefault(); onBack(); }}>Projects</a> : <span className="scrolled-header__muted">{active === 'resume' ? 'Résumé' : active === 'projects' ? 'Projects' : 'Shots'}</span>}
           {projectDetail && <><span className="scrolled-header__muted">/</span><span className="scrolled-header__muted scrolled-header__current">Vurt</span></>}
           <span className="scrolled-header__muted">·</span>
           <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
@@ -876,7 +876,7 @@ export default function App() {
 
   return (
     <>
-      <ScrolledHeader active={view} projectDetail={projectDetail} onBack={closeVurtCaseStudy} />
+      <ScrolledHeader active={view} projectDetail={projectDetail} onBack={closeVurtCaseStudy} onNavigate={navigate} />
       <main className={view === 'resume' ? 'resume-main' : view === 'projects' ? (projectDetail ? 'case-study-main' : 'projects-main') : 'shots-main'}>
         {view === 'resume' ? <ResumePage /> : view === 'projects' ? (projectDetail ? <VurtCaseStudy /> : <ProjectsLanding onOpenVurt={openVurtCaseStudy} />) : (
           <div className="content-shell">
