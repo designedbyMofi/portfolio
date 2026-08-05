@@ -546,8 +546,7 @@ function VurtMobileIndex() {
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);
   }, []);
-  const progress = Math.min(3, Math.floor((active / Math.max(1, vurtSections.length - 1)) * 4));
-  return <aside className="vurt-mobile-index" aria-hidden="true"><span>{vurtSections[active]?.nav}</span><div>{[0, 1, 2, 3].map((step) => <i key={step} className={step === progress ? 'is-active' : ''} />)}</div></aside>;
+  return <aside className="vurt-mobile-index" aria-hidden="true"><span>{vurtSections[active]?.nav}</span></aside>;
 }
 
 function VurtCaseStudy() {
