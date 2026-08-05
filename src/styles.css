@@ -1019,7 +1019,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study-main .case-study__content { width: 648px; margin: 0; display: flex; flex-direction: column; gap: 40px; }
 .case-study-main .case-study__entry { width: 648px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 88px; }
 .case-study-main .case-study__entry-heading { display: flex; flex-direction: column; gap: 4px; }
-.case-study-main .case-study__entry-heading > span { color: var(--shade-400); font-family: Geist, Inter, sans-serif; font-size: 12px; line-height: 20px; font-weight: 500; }
+.case-study-main .case-study__entry-heading > span { color: var(--shade-400); font-family: Geist, Inter, sans-serif; font-size: 12px; line-height: 20px; font-weight: 500; letter-spacing: 0; }
 .case-study-main .case-study__entry h2 { margin: 0; color: var(--shade-600); font-family: Inter, sans-serif; font-size: 14px; line-height: 24px; font-weight: 600; letter-spacing: 0; }
 .case-study-main .case-study__entry p,
 .case-study-main .case-study__entry li { margin: 0; color: var(--shade-600); font-size: 14px; line-height: 24px; font-weight: 400; }
@@ -1252,8 +1252,8 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   }
 
   .case-study-main .case-study__entry-heading > span {
-    font-size: clamp(10.5px, min(.69vw, 1.17dvh), 12px);
-    line-height: clamp(18px, min(1.16vw, 1.95dvh), 20px);
+    font-size: clamp(12px, min(.81vw, 1.37dvh), 14px);
+    line-height: clamp(20px, min(1.39vw, 2.34dvh), 24px);
   }
 }
 
