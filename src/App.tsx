@@ -255,13 +255,13 @@ function ProjectPreview({ project, origin, nativeTransition, onClose }: { projec
   );
 }
 
-function Profile() {
+function Profile({ id }: { id?: string } = {}) {
   return (
     <header className="profile">
       <div className="profile__heading">
         <img className="profile__portrait" src="/assets/portrait.png" alt="Mofifoluwa Olawuyi" data-reveal />
         <div>
-          <h1>Mofifoluwa.</h1>
+          <h1 id={id}>Mofifoluwa.</h1>
           <p className="profile__role">Product designer</p>
         </div>
       </div>
@@ -502,10 +502,7 @@ function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active:
 function ProjectsLanding({ onOpenVurt }: { onOpenVurt: () => void }) {
   return (
     <section className="projects-landing" aria-labelledby="projects-title">
-      <header className="projects-landing__profile">
-        <div className="projects-landing__heading"><img src="/assets/portrait.png" alt="Mofifoluwa Olawuyi" /><div><h1 id="projects-title">Mofifoluwa.</h1><p>Product designer</p></div></div>
-        <div className="projects-landing__bio"><p>I design products for messy, high-stakes spaces — fintech, insurance, AI, enterprise SaaS — where the requirements are usually vague and the stakes for getting it wrong are real. My job is turning that ambiguity into something people can actually use.</p><p>I’ve led teams through that whole process, from early research to shipped systems, and I care a lot about what happens after launch: does this still make sense when the product doubles in size? That’s usually where I spend my energy — not just the screen in front of me, but the patterns underneath it.</p></div>
-      </header>
+      <div className="projects-landing__profile"><Profile id="projects-title" /></div>
       <div className="projects-landing__rule" />
       <div className="projects-landing__work"><p className="projects-landing__eyebrow">My work</p>
         <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder" /><span><h2>Vurt: Designing trust into currency exchange</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></button>
