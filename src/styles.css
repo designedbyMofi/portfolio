@@ -1345,8 +1345,11 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .scrolled-header__share { position: relative; }
 .scrolled-header__back.has-tooltip::after,
 .scrolled-header__share.has-tooltip::after {
-  top: calc(100% + 7px);
+  top: calc(100% + clamp(5px, min(.4vw, .68dvh), 7px));
   bottom: auto;
+  padding: clamp(2px, min(.12vw, .2dvh), 2px) clamp(5px, min(.35vw, .59dvh), 6px);
+  font-size: clamp(10px, min(.64vw, 1.08dvh), 11px);
+  line-height: clamp(13px, min(.81vw, 1.37dvh), 14px);
 }
 .scrolled-header__back svg { width: 24px; height: 24px; }
 .scrolled-header__share svg { width: 20px; height: 20px; }
