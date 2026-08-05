@@ -489,7 +489,7 @@ function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active:
           <img src="/assets/portrait.png" alt="" />
           {projectDetail ? <a className="scrolled-header__crumb" href="/" onClick={(event) => { event.preventDefault(); onNavigate('shots'); }}>Mofifoluwa</a> : <span>Mofifoluwa</span>}<span className="scrolled-header__muted">/</span>
           {projectDetail ? <a className="scrolled-header__crumb" href="/projects" onClick={(event) => { event.preventDefault(); onBack(); }}>Projects</a> : <span className="scrolled-header__muted">{active === 'resume' ? 'Résumé' : active === 'projects' ? 'Projects' : 'Shots'}</span>}
-          {projectDetail && <><span className="scrolled-header__muted">/</span><span className="scrolled-header__muted scrolled-header__current">Vurt</span></>}
+          {projectDetail && <><span className="scrolled-header__muted scrolled-header__vurt-separator">/</span><span className="scrolled-header__muted scrolled-header__current">Vurt</span></>}
           <span className="scrolled-header__muted">·</span>
           <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
         </div>

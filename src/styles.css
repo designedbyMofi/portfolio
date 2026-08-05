@@ -1374,6 +1374,8 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 @media (max-width: 700px) {
   .scrolled-header__content.is-project { width: calc(100% - 24px); }
   .scrolled-header__identity { gap: 4px; font-size: 14px; line-height: 24px; }
+  .scrolled-header__vurt-separator,
+  .scrolled-header__current { display: none; }
   .scrolled-header__identity > img { width: 28px; height: 28px; flex-basis: 28px; border-width: 1.5px; }
   .scrolled-header__identity > a:not(.scrolled-header__crumb) { min-height: 28px; padding: 2px 9px; font-size: 13px; line-height: 24px; }
   .scrolled-header__back,
