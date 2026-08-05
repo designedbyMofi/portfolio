@@ -1140,7 +1140,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   .projects-main .projects-landing__card h2 { font-size: 16px; line-height: 28px; }
   .projects-main .projects-landing__card p { font-size: 14px; line-height: 24px; }
 
-  .case-study-main .case-study { min-height: 7496px; padding: 32px 0 120px; gap: 32px; align-items: center; }
+  .case-study-main .case-study { min-height: 7496px; padding: 88px 0 120px; gap: 32px; align-items: center; }
   .case-study-main .case-study__hero { width: calc(100% - 48px); gap: 32px; }
   .case-study-main .case-study__profile { width: 100%; gap: 12px; }
   .case-study-main .case-study__profile h1 { width: 100%; font-size: 28px; line-height: normal; letter-spacing: -.28px; }
