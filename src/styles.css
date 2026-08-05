@@ -1361,11 +1361,9 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
     align-items: flex-end;
     gap: 8px;
     pointer-events: none;
-    opacity: 0;
+    opacity: 1;
     transition: opacity .18s ease;
   }
-
-  body:has(.scrolled-header.is-visible) .vurt-mobile-index { opacity: 1; }
 
   .vurt-mobile-index > span {
     padding: 6px 12px;
