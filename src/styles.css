@@ -1316,8 +1316,8 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 }
 .scrolled-header__back { background: rgba(0,0,0,.32); color: #fff; }
 .scrolled-header__share { position: relative; background: rgba(0,0,0,.48); color: #fff; }
-.scrolled-header__back span { font-size: 25px; line-height: 20px; transform: translateY(-1px); }
-.scrolled-header__share img { width: 20px; height: 20px; opacity: 1; filter: brightness(0) invert(1); }
+.scrolled-header__back svg { width: 24px; height: 24px; }
+.scrolled-header__share svg { width: 20px; height: 20px; }
 .scrolled-header__back:hover,
 .scrolled-header__share:hover { background: rgba(0,0,0,.6); }
 
@@ -1328,8 +1328,8 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   .scrolled-header__identity > a { min-height: min(32px, 1.85vw, 3.13dvh); padding: min(4px, .23vw, .39dvh) min(12px, .69vw, 1.17dvh); font-size: clamp(12px, min(.81vw, 1.37dvh), 14px); line-height: clamp(20px, min(1.39vw, 2.34dvh), 24px); }
   .scrolled-header__back,
   .scrolled-header__share { width: min(32px, 1.85vw, 3.13dvh); height: min(32px, 1.85vw, 3.13dvh); flex-basis: min(32px, 1.85vw, 3.13dvh); }
-  .scrolled-header__back span { font-size: min(25px, 1.45vw, 2.44dvh); }
-  .scrolled-header__share img { width: min(20px, 1.16vw, 1.95dvh); height: min(20px, 1.16vw, 1.95dvh); }
+  .scrolled-header__back svg { width: min(24px, 1.39vw, 2.34dvh); height: min(24px, 1.39vw, 2.34dvh); }
+  .scrolled-header__share svg { width: min(20px, 1.16vw, 1.95dvh); height: min(20px, 1.16vw, 1.95dvh); }
 }
 
 @media (max-width: 700px) {
@@ -1339,6 +1339,6 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   .scrolled-header__identity > a { min-height: 24px; padding: 2px 8px; font-size: 11px; line-height: 20px; }
   .scrolled-header__back,
   .scrolled-header__share { width: 24px; height: 24px; flex-basis: 24px; }
-  .scrolled-header__back span { font-size: 20px; }
-  .scrolled-header__share img { width: 15px; height: 15px; }
+  .scrolled-header__back svg { width: 18px; height: 18px; }
+  .scrolled-header__share svg { width: 15px; height: 15px; }
 }

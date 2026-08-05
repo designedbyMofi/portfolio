@@ -475,7 +475,7 @@ function ScrolledHeader({ active, projectDetail, onBack }: { active: PortfolioVi
   return (
       <div className={`scrolled-header${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
       <div className={`scrolled-header__content${projectDetail ? ' is-project' : ''}`}>
-        {projectDetail && <button className="scrolled-header__back" onClick={onBack} aria-label="Back to projects"><span aria-hidden="true">‹</span></button>}
+        {projectDetail && <button className="scrolled-header__back" onClick={onBack} aria-label="Back to projects"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z" /></svg></button>}
         <div className="scrolled-header__identity">
           <img src="/assets/portrait.png" alt="" />
           <span>Mofifoluwa</span><span className="scrolled-header__muted">/</span>
@@ -484,7 +484,7 @@ function ScrolledHeader({ active, projectDetail, onBack }: { active: PortfolioVi
           <span className="scrolled-header__muted">·</span>
           <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
         </div>
-        {projectDetail && <button className="scrolled-header__share" onClick={() => navigator.clipboard?.writeText(window.location.href)} aria-label="Copy project link"><img src="/assets/preview-share.svg" alt="" /></button>}
+        {projectDetail && <button className="scrolled-header__share" onClick={() => navigator.clipboard?.writeText(window.location.href)} aria-label="Copy project link"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z" /></svg></button>}
       </div>
     </div>
   );
