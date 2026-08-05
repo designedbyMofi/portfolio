@@ -300,16 +300,20 @@ function ResumeAside() {
   );
 }
 
-function ResumePage() {
+type NavigationDirection = 'forward' | 'backward';
+
+function ResumePage({ direction }: { direction: NavigationDirection }) {
   return (
     <div className="resume-shell">
       <Profile />
-      <div className="resume-rule" />
-      <div className="resume-layout">
-        <ResumeAside />
-        <section className="resume-experience" aria-label="Work experience">
-          {experiences.map((experience) => <ExperienceCard experience={experience} key={`${experience.company}-${experience.period}`} />)}
-        </section>
+      <div className={`portfolio-bottom portfolio-bottom--${direction}`}>
+        <div className="resume-rule" />
+        <div className="resume-layout">
+          <ResumeAside />
+          <section className="resume-experience" aria-label="Work experience">
+            {experiences.map((experience) => <ExperienceCard experience={experience} key={`${experience.company}-${experience.period}`} />)}
+          </section>
+        </div>
       </div>
     </div>
   );
@@ -499,14 +503,16 @@ function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active:
   );
 }
 
-function ProjectsLanding({ onOpenVurt }: { onOpenVurt: () => void }) {
+function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; direction: NavigationDirection }) {
   return (
     <section className="projects-landing" aria-labelledby="projects-title">
       <div className="projects-landing__profile"><Profile id="projects-title" /></div>
-      <div className="projects-landing__rule" />
-      <div className="projects-landing__work"><p className="projects-landing__eyebrow">My work</p>
-        <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder" /><span><h2>Vurt: Designing trust into currency exchange</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></button>
-        <div className="projects-landing__card"><span className="projects-landing__placeholder" /><span><h2>Corddit: Connecting people with similar interests</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></div>
+      <div className={`portfolio-bottom portfolio-bottom--${direction}`}>
+        <div className="projects-landing__rule" />
+        <div className="projects-landing__work"><p className="projects-landing__eyebrow">My work</p>
+          <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder" /><span><h2>Vurt: Designing trust into currency exchange</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></button>
+          <div className="projects-landing__card"><span className="projects-landing__placeholder" /><span><h2>Corddit: Connecting people with similar interests</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></div>
+        </div>
       </div>
     </section>
   );
@@ -738,6 +744,7 @@ export default function App() {
   const [previewOrigin, setPreviewOrigin] = useState<PreviewOrigin | null>(null);
   const [nativePreviewTransition, setNativePreviewTransition] = useState(false);
   const [view, setView] = useState<PortfolioView>(() => viewFromPath());
+  const [navigationDirection, setNavigationDirection] = useState<NavigationDirection>('forward');
   const [projectDetail, setProjectDetail] = useState(() => isVurtCaseStudyPath());
   const [shotFilter, setShotFilter] = useState<ShotFilter>('all');
   const [muted, setMuted] = useState(() => window.localStorage.getItem('portfolio-sounds-muted') === 'true');
@@ -853,6 +860,8 @@ export default function App() {
   }, []);
 
   const navigate = (nextView: PortfolioView) => {
+    const order: PortfolioView[] = ['shots', 'projects', 'resume'];
+    setNavigationDirection(order.indexOf(nextView) >= order.indexOf(view) ? 'forward' : 'backward');
     const nextPath = nextView === 'resume' ? '/resume' : nextView === 'projects' ? '/projects' : '/';
     const updateView = () => {
       setSelectedProject(null);
@@ -941,11 +950,13 @@ export default function App() {
     <>
       <ScrolledHeader active={view} projectDetail={projectDetail} onBack={closeVurtCaseStudy} onNavigate={navigate} />
       <main className={view === 'resume' ? 'resume-main' : view === 'projects' ? (projectDetail ? 'case-study-main' : 'projects-main') : 'shots-main'}>
-        {view === 'resume' ? <ResumePage /> : view === 'projects' ? (projectDetail ? <VurtCaseStudy /> : <ProjectsLanding onOpenVurt={openVurtCaseStudy} />) : (
+        {view === 'resume' ? <ResumePage direction={navigationDirection} /> : view === 'projects' ? (projectDetail ? <VurtCaseStudy /> : <ProjectsLanding onOpenVurt={openVurtCaseStudy} direction={navigationDirection} />) : (
           <div className="content-shell">
             <Profile />
-            <section className="project-grid" id="projects" aria-label="Selected design shots">
-              {visibleProjects.map((project, index) => <ProjectCard key={`${project.image}-${index}`} project={project} onOpen={(origin, image) => openProject(project, origin, image)} />)}
+            <section className={`portfolio-bottom portfolio-bottom--${navigationDirection}`}>
+              <section className="project-grid" id="projects" aria-label="Selected design shots">
+                {visibleProjects.map((project, index) => <ProjectCard key={`${project.image}-${index}`} project={project} onOpen={(origin, image) => openProject(project, origin, image)} />)}
+              </section>
             </section>
           </div>
         )}
