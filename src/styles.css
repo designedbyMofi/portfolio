@@ -1031,7 +1031,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .case-study-main .case-study__entry { width: 648px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 88px; }
 .case-study-main .case-study__entry-heading { display: flex; flex-direction: column; gap: 4px; }
 .case-study-main .case-study__entry-heading > span { color: var(--shade-400); font-family: Inter, sans-serif; font-size: 12px; line-height: 20px; font-weight: 400; letter-spacing: 0; }
-.case-study-main .case-study__entry h2 { margin: 0; color: #1E1B24; font-family: Inter, sans-serif; font-size: 14px; line-height: 24px; font-weight: 600; letter-spacing: 0; }
+.case-study-main .case-study__entry h2 { margin: 0; color: #1E1B24; font-family: Inter, sans-serif; font-size: 14px; line-height: 24px; font-weight: 500; letter-spacing: 0; }
 .case-study-main .case-study__entry p,
 .case-study-main .case-study__entry li { margin: 0; color: var(--shade-600); font-size: 14px; line-height: 24px; font-weight: 400; }
 .case-study-main .case-study__entry ul { margin: 0; padding-left: 21px; display: flex; flex-direction: column; gap: 0; }
