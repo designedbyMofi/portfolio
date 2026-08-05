@@ -1036,7 +1036,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study-main .case-study__hero-chips span { width: fit-content; padding: 6px 12px; display: flex; align-items: center; gap: 6px; border: 0; border-radius: 12px; background: var(--shade-100); color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 500; text-decoration: none; }
 .case-study-main .case-study__hero-chips a { transition: background .18s ease, color .18s ease; }
 .case-study-main .case-study__hero-chips a:hover,
-.case-study-main .case-study__hero-chips a:focus-visible { background: #f3f1f1; color: var(--shade-600); outline: 0; }
+.case-study-main .case-study__hero-chips a:focus-visible { background: var(--shade-200); color: var(--shade-600); outline: 0; }
 .case-study-main .case-study__link-icon { display: none; }
 .case-study-main .case-study__hero-chips a::before { content: ''; width: 20px; height: 20px; flex: 0 0 20px; border-radius: 0; background: currentColor; -webkit-mask: url('/assets/icon-globe.svg') center / contain no-repeat; mask: url('/assets/icon-globe.svg') center / contain no-repeat; box-shadow: none; }
 .case-study-main .case-study__rule { width: 648px; height: 1px; flex: 0 0 1px; background: var(--shade-200); }
