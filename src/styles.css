@@ -984,6 +984,13 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   width: 100%;
   margin: 0;
 }
+.projects-main .projects-landing > .portfolio-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
 
 .projects-main .projects-landing__profile { display: flex; flex-direction: column; gap: 32px; }
 .projects-main .projects-landing__heading { display: flex; align-items: center; gap: 24px; }
@@ -1063,6 +1070,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   .projects-main .projects-landing__profile,
   .projects-main .projects-landing__rule { width: calc(100% - 48px); }
   .projects-main .projects-landing__profile > .profile { width: 100%; }
+  .projects-main .projects-landing > .portfolio-bottom { gap: 32px; }
   .projects-main .projects-landing__profile { gap: 32px; }
   .projects-main .projects-landing__heading { gap: 20px; }
   .projects-main .projects-landing__heading img { width: 64px; height: 64px; border-width: 4px; }
