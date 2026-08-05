@@ -1299,13 +1299,9 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   }
 
   .case-study-main .case-study__toc {
-    top: min(710px, 41.09vw, 69.34dvh);
+    top: min(140px, 8.1vw, 13.67dvh);
     left: max(24px, calc(50% - min(724px, 41.9vw, 70.7dvh)));
     width: min(240px, 13.89vw, 23.44dvh);
-  }
-
-  body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
-    top: min(140px, 8.1vw, 13.67dvh);
   }
 
   .case-study-main .case-study__toc a {
