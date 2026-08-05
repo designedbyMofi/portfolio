@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type FocusEvent as ReactFocusEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type FocusEvent as ReactFocusEvent } from 'react';
 import { flushSync } from 'react-dom';
 import { getCalApi } from '@calcom/embed-react';
 
@@ -552,6 +552,7 @@ function VurtMobileIndex() {
 
 function VurtCaseStudy() {
   const [tocHoverIndex, setTocHoverIndex] = useState<number | null>(null);
+  const [tocActiveIndex, setTocActiveIndex] = useState(7);
   const tocRef = useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     const toc = tocRef.current;
@@ -564,6 +565,12 @@ function VurtCaseStudy() {
     return () => observer.disconnect();
   }, []);
   const navSections = vurtSections.filter((section, index) => section.number !== '08.2' && section.number !== '08.3' && section.number !== '08.4' && section.number !== '08.5' && index < 16);
+  const handleTocClick = (event: ReactMouseEvent<HTMLAnchorElement>, id: string, index: number) => {
+    event.preventDefault();
+    setTocActiveIndex(index);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.history.replaceState(null, '', `#${id}`);
+  };
   return (
     <article className="case-study" aria-labelledby="vurt-title">
       <header className="case-study__hero">
@@ -573,7 +580,7 @@ function VurtCaseStudy() {
       <div className="case-study__rule" />
       <nav ref={tocRef} className="case-study__toc case-study__toc--animated" aria-label="Case study sections" onPointerLeave={() => setTocHoverIndex(null)} style={{ '--popup-hover-index': String(tocHoverIndex ?? 0) } as CSSProperties}>
         <span className={`popup-hover-slider${tocHoverIndex === null ? '' : ' is-visible'}`} aria-hidden="true" />
-        {navSections.map((section, index) => <a key={section.id} href={`#${section.id}`} className={section.number === '08.1' ? 'is-active' : ''} onPointerEnter={() => setTocHoverIndex(index)} onFocus={() => setTocHoverIndex(index)}><b>{section.number.split('.')[0]}</b><span>{section.nav}</span></a>)}
+        {navSections.map((section, index) => <a key={section.id} href={`#${section.id}`} className={index === tocActiveIndex ? 'is-active' : ''} onClick={(event) => handleTocClick(event, section.id, index)} onPointerEnter={() => setTocHoverIndex(index)} onFocus={() => setTocHoverIndex(index)}><b>{section.number.split('.')[0]}</b><span>{section.nav}</span></a>)}
       </nav>
       <div className="case-study__content">
         {vurtSections.map((section) => <section className={`case-study__entry${section.media ? ' case-study__entry--media' : ''}`} id={section.id} data-vurt-section key={section.id}>
