@@ -1017,6 +1017,11 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study-main .case-study__toc a:hover,
 .case-study-main .case-study__toc a:focus-visible { background: var(--shade-100); color: var(--shade-600); outline: 0; }
 .case-study-main .case-study__toc a:hover { background: var(--shade-100); color: var(--shade-600); }
+.case-study-main .case-study__toc--animated { isolation: isolate; overflow: hidden; }
+.case-study-main .case-study__toc--animated .popup-hover-slider { top: 0; left: 0; right: 0; height: 40px; transform: translateY(calc(var(--popup-hover-index) * 40px)); }
+.case-study-main .case-study__toc--animated a { position: relative; z-index: 1; }
+.case-study-main .case-study__toc--animated a:hover,
+.case-study-main .case-study__toc--animated a:focus-visible { background: transparent; }
 body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   position: fixed;
   z-index: 16;

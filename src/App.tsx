@@ -551,6 +551,7 @@ function VurtMobileIndex() {
 }
 
 function VurtCaseStudy() {
+  const [tocHoverIndex, setTocHoverIndex] = useState<number | null>(null);
   const navSections = vurtSections.filter((section, index) => section.number !== '08.2' && section.number !== '08.3' && section.number !== '08.4' && section.number !== '08.5' && index < 16);
   return (
     <article className="case-study" aria-labelledby="vurt-title">
@@ -559,8 +560,9 @@ function VurtCaseStudy() {
         <div className="case-study__hero-card"><div className="case-study__hero-placeholder" aria-label="Vurt exchange marketplace preview" /><div className="case-study__hero-chips"><a href="https://vurt.app/" target="_blank" rel="noreferrer">vurt.app</a><span>2025 - 2026</span></div></div>
       </header>
       <div className="case-study__rule" />
-      <nav className="case-study__toc" aria-label="Case study sections">
-        {navSections.map((section) => <a key={section.id} href={`#${section.id}`} className={section.number === '08.1' ? 'is-active' : ''}><b>{section.number.split('.')[0]}</b><span>{section.nav}</span></a>)}
+      <nav className="case-study__toc case-study__toc--animated" aria-label="Case study sections" onPointerLeave={() => setTocHoverIndex(null)} style={{ '--popup-hover-index': String(tocHoverIndex ?? 0) } as CSSProperties}>
+        <span className={`popup-hover-slider${tocHoverIndex === null ? '' : ' is-visible'}`} aria-hidden="true" />
+        {navSections.map((section, index) => <a key={section.id} href={`#${section.id}`} className={section.number === '08.1' ? 'is-active' : ''} onPointerEnter={() => setTocHoverIndex(index)} onFocus={() => setTocHoverIndex(index)}><b>{section.number.split('.')[0]}</b><span>{section.nav}</span></a>)}
       </nav>
       <div className="case-study__content">
         {vurtSections.map((section) => <section className={`case-study__entry${section.media ? ' case-study__entry--media' : ''}`} id={section.id} data-vurt-section key={section.id}>
