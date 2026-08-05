@@ -307,7 +307,6 @@ function ResumePage({ direction }: { direction: NavigationDirection }) {
     <div className="resume-shell">
       <Profile />
       <div className={`portfolio-bottom portfolio-bottom--${direction}`}>
-        <div className="resume-rule" />
         <div className="resume-layout">
           <ResumeAside />
           <section className="resume-experience" aria-label="Work experience">
@@ -508,7 +507,6 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
     <section className="projects-landing" aria-labelledby="projects-title">
       <div className="projects-landing__profile"><Profile id="projects-title" /></div>
       <div className={`portfolio-bottom portfolio-bottom--${direction}`}>
-        <div className="projects-landing__rule" />
         <div className="projects-landing__work"><p className="projects-landing__eyebrow">My work</p>
           <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder" /><span><h2>Vurt: Designing trust into currency exchange</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></button>
           <div className="projects-landing__card"><span className="projects-landing__placeholder" /><span><h2>Corddit: Connecting people with similar interests</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></div>
