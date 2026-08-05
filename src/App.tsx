@@ -535,18 +535,22 @@ const vurtSections = [
 
 function VurtMobileIndex() {
   const [active, setActive] = useState(1);
+  const [scrollProgress, setScrollProgress] = useState(0);
   useEffect(() => {
     const update = () => {
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
       let next = 0;
       sections.forEach((section, index) => { if (section.getBoundingClientRect().top <= 230) next = index; });
       setActive(next);
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      setScrollProgress(Math.min(1, Math.max(0, window.scrollY / maxScroll)));
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);
   }, []);
-  return <aside className="vurt-mobile-index" aria-hidden="true"><span>{vurtSections[active]?.nav}</span></aside>;
+  const mobileIndexTop = 120 + scrollProgress * Math.max(0, window.innerHeight - 320);
+  return <aside className="vurt-mobile-index" aria-hidden="true" style={{ top: `${mobileIndexTop}px` }}><span>{vurtSections[active]?.nav}</span></aside>;
 }
 
 function VurtCaseStudy() {
