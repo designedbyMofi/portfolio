@@ -1079,7 +1079,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study-main .case-study__link-icon { display: none; }
 .case-study-main .case-study__hero-chips a::before { content: ''; width: 20px; height: 20px; flex: 0 0 20px; border-radius: 0; background: currentColor; -webkit-mask: url('/assets/icon-globe.svg') center / contain no-repeat; mask: url('/assets/icon-globe.svg') center / contain no-repeat; box-shadow: none; }
 .case-study-main .case-study__rule { width: 648px; height: 1px; flex: 0 0 1px; background: var(--shade-200); }
-.case-study-main .case-study__toc { position: absolute; top: 710px; left: max(24px, calc(50% - 724px)); width: 240px; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; border: 0; }
+.case-study-main .case-study__toc { position: fixed; z-index: 16; top: 140px; left: max(24px, calc(50% - 724px)); width: 240px; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; border: 0; }
 .case-study-main .case-study__toc a { width: 240px; min-height: 40px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; border-radius: 12px; color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 400; text-decoration: none; transition: background .18s ease, color .18s ease; }
 .case-study-main .case-study__toc a b { width: 16px; color: var(--shade-300); font-family: Inter, sans-serif; font-size: 12px; line-height: normal; font-weight: 400; }
 .case-study-main .case-study__toc a.is-active,
