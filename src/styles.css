@@ -946,6 +946,8 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   min-height: 1520px;
   background: var(--canvas);
 }
+.projects-main > .projects-landing .profile { width: 100%; margin: 0; }
+.projects-main > .projects-landing .projects-landing__profile { display: none; }
 
 .projects-main .projects-landing {
   width: 100%;

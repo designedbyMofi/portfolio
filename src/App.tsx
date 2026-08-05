@@ -502,6 +502,7 @@ function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active:
 function ProjectsLanding({ onOpenVurt }: { onOpenVurt: () => void }) {
   return (
     <section className="projects-landing" aria-labelledby="projects-title">
+      <Profile />
       <header className="projects-landing__profile">
         <div className="projects-landing__heading"><img src="/assets/portrait.png" alt="Mofifoluwa Olawuyi" /><div><h1 id="projects-title">Mofifoluwa.</h1><p>Product designer</p></div></div>
         <div className="projects-landing__bio"><p>I design products for messy, high-stakes spaces — fintech, insurance, AI, enterprise SaaS — where the requirements are usually vague and the stakes for getting it wrong are real. My job is turning that ambiguity into something people can actually use.</p><p>I've led design teams through that whole process, from early research to shipped systems, and I care a lot about what happens after launch: does this still make sense when the product doubles in size? That's usually where I spend my energy — not just the screen in front of me, but the patterns underneath it.</p></div>
