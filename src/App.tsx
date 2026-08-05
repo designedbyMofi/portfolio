@@ -870,6 +870,8 @@ export default function App() {
   }, []);
 
   const navigate = (nextView: PortfolioView) => {
+    document.documentElement.classList.add('app-ready');
+    document.documentElement.classList.remove('initial-shots');
     const order: PortfolioView[] = ['shots', 'projects', 'resume'];
     setNavigationDirection(order.indexOf(nextView) >= order.indexOf(view) ? 'forward' : 'backward');
     const nextPath = nextView === 'resume' ? '/resume' : nextView === 'projects' ? '/projects' : '/';
@@ -887,23 +889,27 @@ export default function App() {
     } else {
       updateView();
     }
-    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }));
   };
 
   const openVurtCaseStudy = () => {
+    document.documentElement.classList.add('app-ready');
+    document.documentElement.classList.remove('initial-shots');
     setNavigationDirection('forward');
     setView('projects');
     setProjectDetail(true);
     window.history.pushState({ view: 'projects', project: 'vurt' }, '', '/projects/vurt');
-    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }));
   };
 
   const closeVurtCaseStudy = () => {
+    document.documentElement.classList.add('app-ready');
+    document.documentElement.classList.remove('initial-shots');
     setNavigationDirection('backward');
     setProjectDetail(false);
     setView('projects');
     window.history.pushState({ view: 'projects' }, '', '/projects');
-    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }));
   };
 
   const visibleProjects = projects.filter((project) => {
