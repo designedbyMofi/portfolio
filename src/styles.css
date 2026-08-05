@@ -1009,16 +1009,14 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study-main .case-study__hero-chips span { width: fit-content; padding: 6px 12px; display: flex; align-items: center; gap: 6px; border: 0; border-radius: 12px; background: var(--shade-100); color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 500; text-decoration: none; }
 .case-study-main .case-study__hero-chips a::before { content: ''; width: 20px; height: 20px; border-radius: 50%; background: #0a9b56; box-shadow: inset 0 0 0 6px var(--shade-100); }
 .case-study-main .case-study__rule { width: 648px; height: 1px; flex: 0 0 1px; background: var(--shade-200); }
-.case-study-main .case-study__toc { position: absolute; isolation: isolate; overflow: hidden; top: 710px; left: max(24px, calc(50% - 724px)); width: 240px; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; border: 0; }
-.case-study-main .case-study__toc-hover-slider { position: absolute; z-index: 0; top: 0; left: 0; right: 0; height: 40px; border: .5px solid rgba(232,228,227,.88); border-radius: 12px; background: linear-gradient(145deg, rgba(243,241,241,.96), rgba(243,241,241,.78)); box-shadow: inset 0 1px 0 rgba(255,255,255,.94), 0 1px 2px rgba(30,27,36,.04); opacity: 0; transform: translateY(calc(var(--toc-hover-index) * 40px)); transition: transform .38s cubic-bezier(.16,1,.3,1), opacity .12s ease; pointer-events: none; }
-.case-study-main .case-study__toc-hover-slider.is-visible { opacity: 1; }
-.case-study-main .case-study__toc a { position: relative; z-index: 1; width: 240px; min-height: 40px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; border-radius: 12px; color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 500; text-decoration: none; transition: color .18s ease; }
+.case-study-main .case-study__toc { position: absolute; top: 710px; left: max(24px, calc(50% - 724px)); width: 240px; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; border: 0; }
+.case-study-main .case-study__toc a { width: 240px; min-height: 40px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; border-radius: 12px; color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 500; text-decoration: none; transition: background .18s ease, color .18s ease; }
 .case-study-main .case-study__toc a b { width: 16px; color: var(--shade-300); font-family: Inter, sans-serif; font-size: 12px; line-height: normal; font-weight: 400; }
-.case-study-main .case-study__toc a:first-child { color: var(--shade-600); }
-.case-study-main .case-study__toc a:first-child b { color: var(--shade-600); }
-.case-study-main .case-study__toc a.is-active { background: var(--shade-100); }
+.case-study-main .case-study__toc a.is-active,
+.case-study-main .case-study__toc a.is-active b { color: var(--shade-600); }
 .case-study-main .case-study__toc a:hover,
-.case-study-main .case-study__toc a:focus-visible { color: var(--shade-600); outline: 0; }
+.case-study-main .case-study__toc a:focus-visible { background: var(--shade-100); color: var(--shade-600); outline: 0; }
+.case-study-main .case-study__toc a:hover { background: var(--shade-100); color: var(--shade-600); }
 body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   position: fixed;
   z-index: 16;
