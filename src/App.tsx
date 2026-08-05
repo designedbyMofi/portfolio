@@ -466,7 +466,7 @@ function Footer() {
 }
 
 function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active: PortfolioView; projectDetail: boolean; onBack: () => void; onNavigate: (view: PortfolioView) => void }) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(projectDetail);
 
   const shareProject = async () => {
     const url = window.location.href;
@@ -478,11 +478,11 @@ function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active:
   };
 
   useEffect(() => {
-    const update = () => setVisible(window.scrollY > 360);
+    const update = () => setVisible(projectDetail || window.scrollY > 360);
     update();
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);
-  }, []);
+  }, [projectDetail]);
 
   return (
       <div className={`scrolled-header${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
