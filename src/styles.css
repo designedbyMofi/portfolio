@@ -766,9 +766,9 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .shots-filter-menu button { width: 100%; height: 34px; flex-basis: 34px; padding: 6px 12px; justify-content: space-between; font-size: 13px; line-height: 22px; }
   .shots-filter-menu .popup-hover-slider { height: 34px; transform: translateY(calc(var(--popup-hover-index) * 36px)); }
   .scrolled-header { height: 56px; }
-  .scrolled-header__content { gap: 6px; font-size: 13px; line-height: 22px; }
-  .scrolled-header__content img { width: 24px; height: 24px; }
-  .scrolled-header a { min-height: 30px; padding: 4px 10px; font-size: 13px; line-height: 22px; }
+  .scrolled-header__content { gap: 6px; font-size: 14px; line-height: 24px; }
+  .scrolled-header__content img { width: 28px; height: 28px; }
+  .scrolled-header a { min-height: 32px; padding: 4px 10px; font-size: 14px; line-height: 24px; }
 }
 
 @media (max-width: 440px) {
@@ -1373,11 +1373,11 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 
 @media (max-width: 700px) {
   .scrolled-header__content.is-project { width: calc(100% - 24px); }
-  .scrolled-header__identity { gap: 3px; font-size: 12px; line-height: 20px; }
-  .scrolled-header__identity > img { width: 24px; height: 24px; flex-basis: 24px; border-width: 1.5px; }
-  .scrolled-header__identity > a:not(.scrolled-header__crumb) { min-height: 24px; padding: 2px 8px; font-size: 11px; line-height: 20px; }
+  .scrolled-header__identity { gap: 4px; font-size: 14px; line-height: 24px; }
+  .scrolled-header__identity > img { width: 28px; height: 28px; flex-basis: 28px; border-width: 1.5px; }
+  .scrolled-header__identity > a:not(.scrolled-header__crumb) { min-height: 28px; padding: 2px 9px; font-size: 13px; line-height: 24px; }
   .scrolled-header__back,
-  .scrolled-header__share { width: 24px; height: 24px; flex-basis: 24px; }
-  .scrolled-header__back svg { width: 18px; height: 18px; }
-  .scrolled-header__share svg { width: 15px; height: 15px; }
+  .scrolled-header__share { width: 28px; height: 28px; flex-basis: 28px; }
+  .scrolled-header__back svg { width: 21px; height: 21px; }
+  .scrolled-header__share svg { width: 18px; height: 18px; }
 }
