@@ -102,6 +102,7 @@ html.initial-shots:not(.app-ready) .profile__bio { animation: screen-layer-enter
 .profile { width: min(648px, 100%); margin: 0 auto 60px; view-transition-name: portfolio-profile; }
 .profile__heading { display: flex; align-items: center; gap: 24px; margin-bottom: 32px; }
 .profile__portrait { width: 80px; height: 80px; border: 4px solid #fff; border-radius: 50%; object-fit: cover; object-position: center 28%; box-shadow: 0 1px 2px rgba(0,0,0,.05); transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; }
+html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !important; }
 .profile__heading:hover .profile__portrait { transform: rotate(-3deg) translateY(-2px); box-shadow: 0 10px 20px rgba(30,27,36,.1); }
 .profile h1 { margin: 0; font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: 1; font-weight: 600; letter-spacing: -.4px; color: var(--ink); }
 .profile__role { margin: 4px 0 0; color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 500; }
