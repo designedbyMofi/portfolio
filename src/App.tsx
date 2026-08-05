@@ -856,15 +856,22 @@ export default function App() {
   }, []);
 
   const navigate = (nextView: PortfolioView) => {
-    setSelectedProject(null);
-    setPreviewOrigin(null);
-    setView(nextView);
-    setProjectDetail(false);
     const nextPath = nextView === 'resume' ? '/resume' : nextView === 'projects' ? '/projects' : '/';
-    if (window.location.pathname !== nextPath) window.history.pushState({ view: nextView }, '', nextPath);
-    window.requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    const updateView = () => {
+      setSelectedProject(null);
+      setPreviewOrigin(null);
+      setView(nextView);
+      setProjectDetail(false);
+      if (window.location.pathname !== nextPath) window.history.pushState({ view: nextView }, '', nextPath);
+    };
+    const startViewTransition = (document as ViewTransitionDocument).startViewTransition;
+    if (startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const transition = startViewTransition.call(document, () => flushSync(updateView));
+      transition.finished.catch(() => undefined);
+    } else {
+      updateView();
+    }
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
   };
 
   const openVurtCaseStudy = () => {

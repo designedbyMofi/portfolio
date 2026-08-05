@@ -33,7 +33,7 @@ main { position: relative; z-index: 2; background: var(--canvas); box-shadow: 0 
 .projects-coming-soon { width: min(648px, calc(100% - 48px)); min-height: 620px; margin: 0 auto; padding-top: 120px; }
 .projects-coming-soon h1 { margin: 0; color: var(--ink); font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: 1; font-weight: 600; letter-spacing: -.4px; }
 .projects-landing { width: min(1728px, 100%); margin: 0 auto; padding: 80px max(24px, calc((100% - 648px) / 2)) 120px; display: flex; flex-direction: column; gap: 40px; }
-.projects-landing__profile { display: flex; flex-direction: column; gap: 32px; }
+.projects-landing__profile { display: flex; flex-direction: column; gap: 32px; view-transition-name: portfolio-profile; }
 .projects-landing__heading { display: flex; align-items: center; gap: 24px; }
 .projects-landing__heading img { width: 80px; height: 80px; border: 4px solid #fff; border-radius: 50%; object-fit: cover; object-position: center 28%; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
 .projects-landing__heading h1 { margin: 0; color: var(--ink); font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: 1; font-weight: 600; letter-spacing: -.4px; }
@@ -52,7 +52,7 @@ main { position: relative; z-index: 2; background: var(--canvas); box-shadow: 0 
 .projects-landing__placeholder { background: linear-gradient(135deg, #ede8e8 0%, #f5f2f1 45%, #e8e3e3 100%); }
 .projects-landing__card h2 { margin: 0; color: var(--ink); font-size: 16px; line-height: 28px; font-weight: 600; text-decoration: underline dotted var(--shade-400); text-underline-offset: 4px; }
 .projects-landing__card p { margin: 0; color: var(--shade-600); font-size: 14px; line-height: 24px; }
-.profile { width: min(648px, 100%); margin: 0 auto 60px; }
+.profile { width: min(648px, 100%); margin: 0 auto 60px; view-transition-name: portfolio-profile; }
 .profile__heading { display: flex; align-items: center; gap: 24px; margin-bottom: 32px; }
 .profile__portrait { width: 80px; height: 80px; border: 4px solid #fff; border-radius: 50%; object-fit: cover; object-position: center 28%; box-shadow: 0 1px 2px rgba(0,0,0,.05); transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; }
 .profile__heading:hover .profile__portrait { transform: rotate(-3deg) translateY(-2px); box-shadow: 0 10px 20px rgba(30,27,36,.1); }
