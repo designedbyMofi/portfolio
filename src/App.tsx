@@ -748,6 +748,14 @@ export default function App() {
   const [muted, setMuted] = useState(() => window.localStorage.getItem('portfolio-sounds-muted') === 'true');
 
   useEffect(() => {
+    const frame = window.requestAnimationFrame(() => document.documentElement.classList.add('app-ready'));
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.documentElement.classList.remove('app-ready');
+    };
+  }, []);
+
+  useEffect(() => {
     setUiSoundMuted(muted);
     document.documentElement.classList.toggle('is-muted', muted);
     window.localStorage.setItem('portfolio-sounds-muted', String(muted));

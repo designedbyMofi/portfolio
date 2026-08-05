@@ -30,17 +30,16 @@ main > .content-shell,
 main > .resume-shell,
 main > .projects-landing,
 main > .case-study {
-  animation: screen-enter .9s cubic-bezier(.42,0,.58,1) both;
   will-change: transform, opacity, filter;
 }
+html:not(.app-ready) main > .content-shell,
+html:not(.app-ready) main > .resume-shell,
+html:not(.app-ready) main > .projects-landing,
+html:not(.app-ready) main > .case-study { animation: screen-enter .9s cubic-bezier(.42,0,.58,1) both; }
 .profile__heading,
-.profile__bio,
-.portfolio-bottom {
-  animation: screen-layer-enter .58s cubic-bezier(.42,0,.58,1) both;
-}
-.profile__heading { animation-delay: .06s; }
-.profile__bio { animation-delay: .16s; }
-.portfolio-bottom { animation-delay: .26s; }
+.profile__bio { animation: none; will-change: transform, opacity, filter; }
+html:not(.app-ready) .profile__heading { animation: screen-layer-enter .58s cubic-bezier(.42,0,.58,1) .06s both; }
+html:not(.app-ready) .profile__bio { animation: screen-layer-enter .58s cubic-bezier(.42,0,.58,1) .16s both; }
 @keyframes screen-enter {
   from { opacity: 0; filter: blur(14px); transform: translate3d(0, 14px, 0); }
   to { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); }
@@ -72,8 +71,7 @@ main > .case-study {
 }
 @media (prefers-reduced-motion: reduce) {
   main > .content-shell, main > .resume-shell, main > .projects-landing, main > .case-study,
-  .profile__heading, .profile__bio, .portfolio-bottom, .case-study--forward, .case-study--backward,
-  .floating-nav__capsule { animation: none; }
+  .portfolio-bottom, .case-study--forward, .case-study--backward { animation: none; }
 }
 .content-shell { padding: 80px 80px 180px; }
 
@@ -217,11 +215,7 @@ main > .case-study {
 
 .floating-nav { --main-edge-offset: 0px; position: fixed; z-index: 20; left: 0; right: 0; bottom: 0; width: 100%; height: 96px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; padding: 24px 10px; overflow: visible; isolation: isolate; background: linear-gradient(180deg, rgba(250,248,246,0) 26.56%, rgba(250,248,246,.192) 100%); pointer-events: none; transform: translateY(var(--main-edge-offset)); will-change: transform; }
 .floating-nav::before { content: ''; position: absolute; z-index: 0; inset: 0; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); -webkit-mask-image: linear-gradient(180deg, transparent 0%, transparent 26.56%, #000 100%); mask-image: linear-gradient(180deg, transparent 0%, transparent 26.56%, #000 100%); pointer-events: none; }
-.floating-nav__capsule { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; pointer-events: auto; animation: nav-enter .72s cubic-bezier(.42,0,.58,1) .34s both; will-change: transform, opacity, filter; }
-@keyframes nav-enter {
-  from { opacity: 0; filter: blur(10px); transform: translate3d(0, 48px, 0); }
-  to { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); }
-}
+.floating-nav__capsule { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; pointer-events: auto; }
 .floating-nav__toast { position: absolute; z-index: 5; bottom: 86px; left: 50%; transform: translateX(-50%); padding: 7px 12px; border: .5px solid rgba(255,255,255,.78); border-radius: 999px; background: rgba(255,255,255,.76); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: 0 12px 18px rgba(30,27,36,.1), inset 0 1px 0 rgba(255,255,255,.9); color: var(--shade-600); font-size: 12px; line-height: 20px; font-weight: 500; white-space: nowrap; pointer-events: none; animation: toast-enter .28s cubic-bezier(.16,1,.3,1) both; }
 @keyframes toast-enter { from { opacity: 0; transform: translateX(-50%) translateY(8px) scale(.96); } }
 .floating-nav__avatar { width: 48px; height: 48px; margin-right: 4px; object-fit: cover; border-radius: 50%; border: 3px solid white; box-shadow: 0 12px 12px -2.5px rgba(0,0,0,.06); }
