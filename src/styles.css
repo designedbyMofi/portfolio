@@ -858,7 +858,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study__content .case-study__meta-grid { display: none; }
 .case-study__content .case-study__intro-copy, .case-study__content .case-study__simple-section > div { width: 100%; max-width: none; }
 .case-study__content .case-study__simple-section > div:first-child { display: grid; gap: 4px; }
-.case-study__content .case-study__section-number { margin: 0; color: var(--shade-400); font-family: Geist, Inter, sans-serif; font-size: 12px; line-height: 20px; }
+.case-study__content .case-study__section-number { margin: 0; color: var(--shade-400); font-family: Geist, Inter, sans-serif; font-size: 12px; line-height: 20px; font-weight: 500; }
 .case-study__content .case-study__intro-copy h2, .case-study__content .case-study__simple-section h2 { max-width: none; margin: 0; color: var(--shade-600); font-family: Inter, sans-serif; font-size: 14px; line-height: 24px; font-weight: 600; letter-spacing: 0; }
 .case-study__content .case-study__intro-copy p, .case-study__content .case-study__simple-section > div:last-child p { color: var(--shade-600); font-size: 14px; line-height: 24px; }
 .case-study__content .case-study__full-image { width: 100%; height: 320px; margin: 0; border: .5px solid var(--shade-200); border-radius: 12px; background: var(--shade-100); object-fit: cover; opacity: 0; }
