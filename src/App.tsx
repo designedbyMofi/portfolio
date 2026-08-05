@@ -565,6 +565,27 @@ function VurtCaseStudy() {
     return () => observer.disconnect();
   }, []);
   const navSections = vurtSections.filter((section, index) => section.number !== '08.2' && section.number !== '08.3' && section.number !== '08.4' && section.number !== '08.5' && index < 16);
+  useEffect(() => {
+    let frame = 0;
+    const updateActiveSection = () => {
+      frame = 0;
+      let nextIndex = 0;
+      navSections.forEach((section, index) => {
+        const element = document.getElementById(section.id);
+        if (element && element.getBoundingClientRect().top <= 180) nextIndex = index;
+      });
+      setTocActiveIndex(nextIndex);
+    };
+    const scheduleUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateActiveSection);
+    };
+    updateActiveSection();
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', scheduleUpdate);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [navSections.length]);
   const handleTocClick = (event: ReactMouseEvent<HTMLAnchorElement>, id: string, index: number) => {
     event.preventDefault();
     setTocActiveIndex(index);
