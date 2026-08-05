@@ -1321,6 +1321,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 }
 .scrolled-header__back,
 .scrolled-header__share {
+  position: relative;
   width: 32px;
   height: 32px;
   flex: 0 0 32px;
