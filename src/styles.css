@@ -32,6 +32,10 @@ main > .projects-landing,
 main > .case-study {
   will-change: transform, opacity, filter;
 }
+/* Keep the Vurt index chip viewport-fixed; its child layers carry the reveal
+   animation, so the article itself must not establish a fixed-positioning
+   containing block through will-change. */
+main > .case-study { will-change: auto; }
 html.initial-shots:not(.app-ready) main > .content-shell,
 html.initial-shots:not(.app-ready) main > .resume-shell,
 html.initial-shots:not(.app-ready) main > .projects-landing,
