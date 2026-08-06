@@ -830,7 +830,13 @@ export default function App() {
       if (cancelled) return;
       cal('ui', {
         theme: 'light',
-        cssVarsPerTheme: { light: { 'cal-brand': '#fafafa' }, dark: { 'cal-brand': '#fafafa' } },
+        cssVarsPerTheme: {
+          light: {
+            'cal-brand': '#fafafa',
+            'cal-border-emphasis': '#1e1b24',
+          },
+          dark: { 'cal-brand': '#fafafa' },
+        },
         hideEventTypeDetails: false,
         layout: 'month_view',
       });
