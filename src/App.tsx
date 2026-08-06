@@ -170,7 +170,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
 
   useLayoutEffect(() => {
     const image = previewImageRef.current;
-    if (!image || !origin) return;
+    if (!image || !origin || closing) return;
 
     let secondFrame = 0;
     let firstFrame = 0;
@@ -196,7 +196,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
       window.cancelAnimationFrame(firstFrame);
       if (secondFrame) window.cancelAnimationFrame(secondFrame);
     };
-  }, [origin]);
+  }, [origin, closing]);
 
   useEffect(() => {
     if (!closing || !previewImageRef.current || !origin) return;
