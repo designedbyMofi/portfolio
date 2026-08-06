@@ -760,8 +760,10 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 
   .shots-main .project-card__hint {
     bottom: min(18px, 1.04vw, 1.76dvh);
-    font-size: min(14px, .81vw, 1.37dvh);
-    line-height: min(24px, 1.39vw, 2.34dvh);
+    /* Keep the hint readable on short browser viewports while retaining the
+       same proportional scaling on larger canvases. */
+    font-size: clamp(12.5px, min(.81vw, 1.37dvh), 14px);
+    line-height: clamp(20px, min(1.39vw, 2.34dvh), 24px);
   }
 }
 
