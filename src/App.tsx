@@ -523,9 +523,9 @@ function VurtMobileIndex() {
       frame = 0;
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
       const scrollRoot = document.scrollingElement || document.documentElement;
-      // Native scrollbar geometry follows the layout scrollport, rather than
-      // the visual viewport that changes as mobile browser chrome collapses.
-      const viewportHeight = scrollRoot.clientHeight || window.innerHeight;
+      // Keep the thumb math on one coordinate system: window scroll position
+      // and the layout viewport used by the browser's native scrollbar.
+      const viewportHeight = window.innerHeight;
       let next = 0;
       // Advance the chip as soon as a section occupies the readable portion
       // of the viewport, so Solution cannot visually carry into Impact.
@@ -533,9 +533,7 @@ function VurtMobileIndex() {
       setActive((previous) => previous === next ? previous : next);
       const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
       const maxScroll = Math.max(1, documentHeight - viewportHeight);
-      // Safari can briefly expose one source at 0 while the other is already
-      // moving; use the furthest live value to keep the chip on the thumb.
-      const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop, window.scrollY));
+      const scrollTop = Math.min(maxScroll, Math.max(0, window.scrollY));
       const intro = document.getElementById('vurt-intro');
       const caseStudyMain = document.querySelector<HTMLElement>('.case-study-main');
       const footerStarted = Boolean(caseStudyMain && caseStudyMain.getBoundingClientRect().bottom <= viewportHeight);
