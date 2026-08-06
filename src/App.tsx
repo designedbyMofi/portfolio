@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type FocusEvent as ReactFocusEvent } from 'react';
-import { flushSync } from 'react-dom';
 import { getCalApi } from '@calcom/embed-react';
 
 type ProjectKind = 'mobile' | 'web';
@@ -15,7 +14,6 @@ type Project = {
 };
 
 type PreviewOrigin = { left: number; top: number; width: number; height: number; radius: number };
-type ViewTransitionDocument = Document & { startViewTransition?: (update: () => void) => { finished: Promise<void> } };
 type UiSound = 'click' | 'navigation' | 'open' | 'close' | 'select' | 'confirm' | 'toggle';
 
 const viewFromPath = (): PortfolioView => {
@@ -966,48 +964,20 @@ export default function App() {
   });
 
   const openProject = (project: Project, origin: PreviewOrigin, sourceImage: HTMLImageElement) => {
-    const startViewTransition = (document as ViewTransitionDocument).startViewTransition;
-    if (!startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setPreviewOrigin(origin);
-      setNativePreviewTransition(false);
-      setSelectedProject(project);
-      return;
-    }
-
-    sourceImage.style.viewTransitionName = 'selected-shot';
-    const transition = startViewTransition.call(document, () => {
-      sourceImage.style.viewTransitionName = '';
-      flushSync(() => {
-        setPreviewOrigin(null);
-        setNativePreviewTransition(true);
-        setSelectedProject(project);
-      });
-    });
-    // Keep the shared-origin layout state while the preview is open. Clearing it
-    // here would re-enable the modal's normal entrance animation and cause a
-    // visible second "switch" immediately after the photo transition settles.
-    transition.finished.catch(() => undefined);
+    // Use the shared-origin CSS zoom so the backdrop mounts in the same frame
+    // as the preview. Native document view transitions briefly expose the old
+    // page snapshot underneath the overlay on mobile Safari.
+    void sourceImage;
+    setPreviewOrigin(origin);
+    setNativePreviewTransition(false);
+    setSelectedProject(project);
   };
 
   const closeProject = () => {
     if (!selectedProject) return;
-    const sourceImage = Array.from(document.querySelectorAll<HTMLImageElement>('.project-card__image')).find((image) => image.getAttribute('src') === selectedProject.image);
-    const startViewTransition = (document as ViewTransitionDocument).startViewTransition;
-    if (!sourceImage || !startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setSelectedProject(null);
-      setPreviewOrigin(null);
-      return;
-    }
-
-    const transition = startViewTransition.call(document, () => {
-      sourceImage.style.viewTransitionName = 'selected-shot';
-      flushSync(() => {
-        setSelectedProject(null);
-        setPreviewOrigin(null);
-        setNativePreviewTransition(false);
-      });
-    });
-    transition.finished.catch(() => undefined).finally(() => { sourceImage.style.viewTransitionName = ''; });
+    setSelectedProject(null);
+    setPreviewOrigin(null);
+    setNativePreviewTransition(false);
   };
 
   return (
