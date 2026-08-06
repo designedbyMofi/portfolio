@@ -1189,6 +1189,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   .case-study-main .case-study__entry h2,
   .case-study-main .case-study__entry p,
   .case-study-main .case-study__entry li { font-size: 14px; line-height: 24px; }
+  .case-study-main .case-study__entry h2 { font-size: 15px; }
   .vurt-mobile-index { position: fixed; z-index: 24; top: 50%; right: 16px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; pointer-events: none; opacity: 0; transform: translateY(-50%); transition: opacity .18s ease; }
   .scrolled-header.is-visible ~ main .vurt-mobile-index,
   body:has(.scrolled-header.is-visible) .vurt-mobile-index { opacity: 1; }
