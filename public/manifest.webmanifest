@@ -1,0 +1,16 @@
+{
+  "name": "Mofifoluwa — Product designer",
+  "short_name": "Mofifoluwa",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f6",
+  "theme_color": "#faf8f6",
+  "icons": [
+    {
+      "src": "/assets/portrait-flip.png",
+      "sizes": "800x800",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
