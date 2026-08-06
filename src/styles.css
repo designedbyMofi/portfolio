@@ -514,7 +514,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .preview__details hr { height: 1px; margin: 20px 0; border: 0; background: var(--shade-200); }
 .preview__actions, .preview__carousel-controls, .preview__video-controls { display: flex; align-items: center; }
 .preview__actions { gap: 8px; }
-.preview__actions button, .preview__carousel-controls button, .preview__video-controls button { width: 48px; height: 48px; border: .5px solid var(--shade-200); border-radius: 50%; background: white; box-shadow: 0 12px 6px rgba(0,0,0,.06); color: var(--shade-500); font-size: 20px; cursor: pointer; }
+.preview__actions button, .preview__carousel-controls button, .preview__video-controls button { width: 40px; height: 40px; border: .5px solid var(--shade-200); border-radius: 50%; background: white; box-shadow: 0 10px 6px rgba(0,0,0,.06); color: var(--shade-500); font-size: 18px; cursor: pointer; }
 .preview button { outline: 0; }
 .preview button:focus-visible { box-shadow: 0 0 0 2px rgba(124,109,103,.22), 0 12px 6px rgba(0,0,0,.06); }
 .preview__actions button:hover, .preview__carousel-controls button:hover, .preview__video-controls button:hover { background: var(--shade-100); }
@@ -525,15 +525,15 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .preview__actions button.is-saved img { transform: scale(1.12); }
 .preview__feedback { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px); padding: 2px 6px; border-radius: 999px; background: #1d1816; color: white; font-size: 11px; line-height: 14px; opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
 .preview__actions button:hover .preview__feedback, .preview__actions button.is-shared .preview__feedback { opacity: 1; transform: translateX(-50%) translateY(0); }
-.preview__video-controls { gap: 24px; }
+.preview__video-controls { gap: 20px; }
 .preview__video-controls button { display: grid; place-items: center; }
 .pause-icon { width: 12px; height: 16px; border-left: 4px solid var(--shade-500); border-right: 4px solid var(--shade-500); }
 .play-icon { width: 0; height: 0; margin-left: 3px; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid var(--shade-500); }
-.preview__track { width: 266px; height: 12px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.72); box-shadow: inset 0 1px 1px rgba(124,109,103,.05); }
+.preview__track { width: 220px; height: 10px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.72); box-shadow: inset 0 1px 1px rgba(124,109,103,.05); }
 .preview__track span { display: block; width: 34%; height: 100%; border-radius: inherit; background: rgba(255,255,255,.96); animation: preview-progress 8s linear infinite; transform-origin: left; }
 .preview__track.is-paused span { animation-play-state: paused; }
-.preview__carousel-controls { gap: 12px; }
-.preview__carousel-controls .preview__carousel-button { appearance: none; width: 40px; height: 40px; padding: 0; display: grid; place-items: center; }
+.preview__carousel-controls { gap: 10px; }
+.preview__carousel-controls .preview__carousel-button { appearance: none; width: 36px; height: 36px; padding: 0; display: grid; place-items: center; }
 .preview__carousel-controls .preview__carousel-button:hover { background: var(--shade-100); }
 .preview__carousel-controls .preview__carousel-button:focus-visible { box-shadow: 0 0 0 2px rgba(124,109,103,.22), 0 12px 6px rgba(0,0,0,.06); }
 .preview__carousel-button img { width: 20px; height: 20px; display: block; }
@@ -790,7 +790,13 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .preview__media--web > img { width: min(100%, 320px); border-radius: 12px; }
   .preview__details { width: 100%; max-width: 345px; }
   .preview__details h2 { font-size: 32px; }
-  .preview__track { width: min(266px, calc(100vw - 120px)); }
+  .preview__track { width: min(220px, calc(100vw - 120px)); }
+  .preview__video-controls { gap: 16px; }
+  .preview__carousel-controls { gap: 8px; }
+  .preview__carousel-controls .preview__carousel-button { width: 32px; height: 32px; }
+  .preview__carousel-button img { width: 17px; height: 17px; }
+  .preview__dots { width: 88px; height: 22px; gap: 5px; }
+  .preview__dots .preview__carousel-dot { width: 7px; height: 7px; min-width: 7px; flex-basis: 7px; }
   .resume-layout { width: 100%; margin-top: 31px; display: flex; flex-direction: column; gap: 64px; }
   .resume-experience { order: 1; width: calc(100% + 24px); margin-left: -12px; }
   .experience-card { width: 100%; padding: 8px 12px; border-radius: 12px; }

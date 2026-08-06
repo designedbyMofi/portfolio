@@ -172,25 +172,32 @@ function ProjectPreview({ project, origin, nativeTransition, onClose }: { projec
     const image = previewImageRef.current;
     if (!image || !origin) return;
 
-    const target = image.getBoundingClientRect();
-    image.style.setProperty('--target-radius', getComputedStyle(image).borderRadius);
-    image.style.setProperty('--zoom-x', `${origin.left - target.left}px`);
-    image.style.setProperty('--zoom-y', `${origin.top - target.top}px`);
-    image.style.setProperty('--zoom-scale-x', String(origin.width / target.width));
-    image.style.setProperty('--zoom-scale-y', String(origin.height / target.height));
-    image.style.setProperty('--zoom-radius', `${origin.radius}px`);
-    image.classList.add('zoom-from-card');
-
     let secondFrame = 0;
-    const firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => image.classList.add('is-settled'));
-    });
-    const cleanupTimer = window.setTimeout(() => {
-      image.classList.remove('zoom-from-card', 'is-settled');
-      ['--zoom-x', '--zoom-y', '--zoom-scale-x', '--zoom-scale-y', '--zoom-radius', '--target-radius'].forEach((property) => image.style.removeProperty(property));
-    }, 650);
+    let firstFrame = 0;
+    let cleanupTimer = 0;
+    const animate = () => {
+      const target = image.getBoundingClientRect();
+      if (!target.width || !target.height) return;
+      image.style.setProperty('--target-radius', getComputedStyle(image).borderRadius);
+      image.style.setProperty('--zoom-x', `${origin.left - target.left}px`);
+      image.style.setProperty('--zoom-y', `${origin.top - target.top}px`);
+      image.style.setProperty('--zoom-scale-x', String(origin.width / target.width));
+      image.style.setProperty('--zoom-scale-y', String(origin.height / target.height));
+      image.style.setProperty('--zoom-radius', `${origin.radius}px`);
+      image.classList.add('zoom-from-card');
+      firstFrame = window.requestAnimationFrame(() => {
+        secondFrame = window.requestAnimationFrame(() => image.classList.add('is-settled'));
+      });
+      cleanupTimer = window.setTimeout(() => {
+        image.classList.remove('zoom-from-card', 'is-settled');
+        ['--zoom-x', '--zoom-y', '--zoom-scale-x', '--zoom-scale-y', '--zoom-radius', '--target-radius'].forEach((property) => image.style.removeProperty(property));
+      }, 650);
+    };
+    if (image.complete && image.naturalWidth) animate();
+    else image.addEventListener('load', animate, { once: true });
 
     return () => {
+      image.removeEventListener('load', animate);
       window.cancelAnimationFrame(firstFrame);
       if (secondFrame) window.cancelAnimationFrame(secondFrame);
       window.clearTimeout(cleanupTimer);
