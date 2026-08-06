@@ -1022,7 +1022,7 @@ export default function App() {
       setNativePreviewTransition(false);
       setPreviewClosing(false);
       previewCloseTimerRef.current = null;
-    }, 620);
+    }, 700);
   };
 
   return (

@@ -516,7 +516,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .scrolled-header a:active { transform: translateY(1px); }
 
 .preview { position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; overflow: auto; isolation: isolate; padding: 80px 40px; background: rgba(232,228,227,.8); -webkit-backdrop-filter: blur(40px); backdrop-filter: blur(40px); animation: fade-in .22s ease; }
-.preview.is-closing { animation: preview-exit .46s cubic-bezier(.4,0,.2,1) both; pointer-events: none; }
+.preview.is-closing { animation: none; pointer-events: none; }
 .preview.is-closing .preview__layout { animation: none; }
 .preview.is-closing .preview__media > :not(img) { opacity: 0; transition: opacity .22s ease; }
 .preview__close { position: fixed; z-index: 100; top: 20px; right: 20px; width: 40px; height: 40px; border: .5px solid var(--shade-200); border-radius: 50%; background: rgba(0,0,0,.32); display: grid; place-items: center; cursor: pointer; transition: background .15s ease; }
