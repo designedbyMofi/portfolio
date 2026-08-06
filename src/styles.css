@@ -13,8 +13,8 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: clip; }
-body { margin: 0; min-width: 320px; overflow-x: clip; background: var(--ink); }
+html { scroll-behavior: smooth; overflow-x: clip; background: var(--canvas); }
+body { margin: 0; min-width: 320px; overflow-x: clip; background: var(--canvas); }
 .images-loading img, .images-resolving img { transition: filter .65s cubic-bezier(.2,.8,.2,1), opacity .5s ease, transform .35s cubic-bezier(.2,.8,.2,1) !important; }
 .images-loading img { filter: blur(16px) !important; opacity: .52; }
 .images-resolving img { filter: blur(0) !important; opacity: 1; }
