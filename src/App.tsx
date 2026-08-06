@@ -537,8 +537,6 @@ const vurtSections = [
 function VurtMobileIndex() {
   const [active, setActive] = useState(1);
   const [mobileIndexTop, setMobileIndexTop] = useState(205);
-  const [scrollbarTop, setScrollbarTop] = useState(0);
-  const [scrollbarHeight, setScrollbarHeight] = useState(24);
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     let frame = 0;
@@ -565,10 +563,7 @@ function VurtMobileIndex() {
       }
       const scrollbarThumbHeight = Math.min(viewportHeight, Math.max(24, (viewportHeight * viewportHeight) / documentHeight));
       const scrollbarTrack = Math.max(0, viewportHeight - scrollbarThumbHeight);
-      const thumbTop = (scrollTop / maxScroll) * scrollbarTrack;
-      const nextTop = Math.max(8, Math.min(viewportHeight - 40, thumbTop + scrollbarThumbHeight / 2 - 16));
-      setScrollbarTop(thumbTop);
-      setScrollbarHeight(scrollbarThumbHeight);
+      const nextTop = Math.max(8, Math.min(viewportHeight - 40, scrollbarThumbHeight / 2 + (scrollTop / maxScroll) * scrollbarTrack - 16));
       setMobileIndexTop(nextTop);
     };
     const scheduleUpdate = () => { if (!frame) frame = window.requestAnimationFrame(update); };
@@ -582,10 +577,7 @@ function VurtMobileIndex() {
       window.clearTimeout(hideTimer);
     };
   }, []);
-  return <>
-    <span className="vurt-mobile-scrollbar" aria-hidden="true" style={{ opacity: isVisible ? 1 : 0 }}><span style={{ top: `${scrollbarTop}px`, height: `${scrollbarHeight}px` }} /></span>
-    <aside className="vurt-mobile-index" aria-hidden="true" style={{ top: `${mobileIndexTop}px`, opacity: isVisible ? 1 : 0 }}><span>{vurtSections[active]?.nav}</span></aside>
-  </>;
+  return <aside className="vurt-mobile-index" aria-hidden="true" style={{ top: `${mobileIndexTop}px`, opacity: isVisible ? 1 : 0 }}><span>{vurtSections[active]?.nav}</span></aside>;
 }
 
 function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
