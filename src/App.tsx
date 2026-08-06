@@ -533,7 +533,9 @@ function VurtMobileIndex() {
       setActive((previous) => previous === next ? previous : next);
       const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
       const maxScroll = Math.max(1, documentHeight - viewportHeight);
-      const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop || window.scrollY));
+      // Safari can briefly expose one source at 0 while the other is already
+      // moving; use the furthest live value to keep the chip on the thumb.
+      const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop, window.scrollY));
       const intro = document.getElementById('vurt-intro');
       const caseStudyMain = document.querySelector<HTMLElement>('.case-study-main');
       const footerStarted = Boolean(caseStudyMain && caseStudyMain.getBoundingClientRect().bottom <= viewportHeight);
