@@ -533,8 +533,10 @@ function VurtMobileIndex() {
       const maxScroll = Math.max(1, documentHeight - viewportHeight);
       const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop || window.scrollY));
       const intro = document.getElementById('vurt-intro');
+      const caseStudyMain = document.querySelector<HTMLElement>('.case-study-main');
+      const footerStarted = Boolean(caseStudyMain && caseStudyMain.getBoundingClientRect().bottom <= viewportHeight);
       const introStarted = Boolean(intro && scrollTop > 0 && intro.getBoundingClientRect().top <= viewportHeight * .78);
-      if (introStarted) {
+      if (introStarted && !footerStarted) {
         setIsVisible(true);
         window.clearTimeout(hideTimer);
         hideTimer = window.setTimeout(() => setIsVisible(false), 850);
