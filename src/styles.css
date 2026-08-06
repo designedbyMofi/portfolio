@@ -978,7 +978,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .scrolled-header__share img { width: 15px; height: 15px; opacity: .7; }
 
 @media (max-width: 700px) {
-  .scrolled-header { top: 16px; }
+  .scrolled-header { top: 0; }
   .projects-main { min-height: 1325px; }
   .projects-landing { padding: 40px 0 96px; }
   .projects-landing__profile, .projects-landing__rule { width: calc(100% - 48px); }
