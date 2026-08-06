@@ -1492,7 +1492,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 }
 
 @media (max-width: 700px) {
-  .scrolled-header__content.is-project { width: calc(100% - 24px); }
+  .scrolled-header__content.is-project { width: calc(100% - 48px); }
   .scrolled-header__identity { gap: 4px; font-size: 14px; line-height: 24px; }
   .scrolled-header__vurt-separator,
   .scrolled-header__current { display: none; }
