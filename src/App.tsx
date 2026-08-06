@@ -522,13 +522,15 @@ function VurtMobileIndex() {
     const update = () => {
       frame = 0;
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
-      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      const scrollRoot = document.scrollingElement || document.documentElement;
+      // Native scrollbar geometry follows the layout scrollport, rather than
+      // the visual viewport that changes as mobile browser chrome collapses.
+      const viewportHeight = scrollRoot.clientHeight || window.innerHeight;
       let next = 0;
       // Advance the chip as soon as a section occupies the readable portion
       // of the viewport, so Solution cannot visually carry into Impact.
       sections.forEach((section, index) => { if (section.getBoundingClientRect().top <= viewportHeight * .62) next = index; });
       setActive((previous) => previous === next ? previous : next);
-      const scrollRoot = document.scrollingElement || document.documentElement;
       const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
       const maxScroll = Math.max(1, documentHeight - viewportHeight);
       const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop || window.scrollY));
