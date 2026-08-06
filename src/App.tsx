@@ -204,8 +204,11 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
     // Defer the state swap by one frame so Chrome paints the settled preview
     // first, then interpolates back to the shared card origin.
     const frame = window.requestAnimationFrame(() => {
-      image.classList.remove('is-settled');
       image.classList.add('zoom-from-card', 'is-closing-origin');
+      // Chrome can batch class mutations in one style pass and skip the
+      // reverse transform. Commit the settled state before removing it.
+      void image.offsetWidth;
+      image.classList.remove('is-settled');
     });
     return () => window.cancelAnimationFrame(frame);
   }, [closing, origin]);
