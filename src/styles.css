@@ -1120,6 +1120,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .case-study-main .case-study__entry ul { margin: 0; padding-left: 21px; display: flex; flex-direction: column; gap: 0; }
 .case-study-main .case-study__entry--media .case-study__placeholder { margin-top: 0; }
 .vurt-mobile-index { display: none; }
+.vurt-mobile-scrollbar { display: none; }
 
 @media (max-width: 700px) {
   .projects-main { min-height: 1325px; }
@@ -1160,6 +1161,8 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   .scrolled-header.is-visible ~ main .vurt-mobile-index,
   body:has(.scrolled-header.is-visible) .vurt-mobile-index { opacity: 1; }
   .vurt-mobile-index > span { padding: 6px 12px; border: .5px solid var(--shade-200); border-radius: 999px; background: rgba(255,255,255,.78); color: var(--shade-600); font-size: 12px; line-height: 20px; font-weight: 500; box-shadow: 0 12px 12px rgba(0,0,0,.08); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .vurt-mobile-scrollbar { position: fixed; z-index: 23; top: 0; right: 8px; bottom: 0; width: 3px; display: block; pointer-events: none; opacity: 0; transition: opacity .2s ease; }
+  .vurt-mobile-scrollbar > span { position: absolute; left: 0; width: 3px; min-height: 24px; border-radius: 999px; background: var(--shade-400); opacity: .78; transition: top .12s linear, height .12s linear; }
 }
 
 /* Keep Projects in the same laptop-scale system used by Shots and Résumé. */
@@ -1383,6 +1386,8 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
+  .vurt-mobile-scrollbar { position: fixed; z-index: 23; top: 0; right: 8px; bottom: 0; width: 3px; display: block; pointer-events: none; opacity: 0; transition: opacity .2s ease; }
+  .vurt-mobile-scrollbar > span { position: absolute; left: 0; width: 3px; min-height: 24px; border-radius: 999px; background: var(--shade-400); opacity: .78; transition: top .12s linear, height .12s linear; }
 }
 
 /* Vurt scrolled/index state: the top controls occupy the same 648px frame as Figma. */
