@@ -504,7 +504,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .preview__media > img { display: block; object-fit: cover; box-shadow: 0 1px 2px rgba(0,0,0,.05); animation: media-swap .28s ease both; }
 .preview__media > img.zoom-from-card { position: relative; z-index: 2; animation: none; transform-origin: top left; transform: translate(var(--zoom-x), var(--zoom-y)) scale(var(--zoom-scale-x), var(--zoom-scale-y)); border-radius: var(--zoom-radius); transition: transform .6s cubic-bezier(.2,.82,.2,1), border-radius .6s cubic-bezier(.2,.82,.2,1), box-shadow .6s ease; box-shadow: 0 8px 28px rgba(30,27,36,.08); }
 .preview__media > img.zoom-from-card.is-settled { transform: translate(0, 0) scale(1, 1); border-radius: var(--target-radius); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
-.preview__media--mobile > img { width: 340px; height: 754px; border-radius: 32px; }
+.preview__media--mobile > img { width: clamp(240px, 19.68vw, 340px); height: auto; aspect-ratio: 340 / 754; border-radius: 32px; }
 .preview__media--web > img { width: min(1000px, 58vw); aspect-ratio: 20 / 13; border-radius: 20px; }
 .preview__details { width: 400px; flex: none; color: var(--ink); }
 .preview__details h2 { margin: 0 0 12px; font-family: Fraunces, Georgia, serif; font-size: 40px; font-weight: 600; line-height: 1.05; letter-spacing: -.4px; }
@@ -758,14 +758,14 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .resume-aside { grid-area: 1 / 1; width: auto; }
   .resume-experience { grid-area: 1 / 2; width: 100%; justify-self: stretch; }
   .preview__layout { gap: 48px; }
-  .preview__media--mobile > img { width: 270px; height: 599px; border-radius: 26px; }
+  .preview__media--mobile > img { width: clamp(220px, 26vw, 270px); height: auto; aspect-ratio: 340 / 754; border-radius: 26px; }
   .preview__media--web > img { width: min(43vw, 520px); }
   .preview__details { width: 320px; }
 }
 
 @media (max-height: 900px) and (min-width: 701px) {
   .preview { padding-block: 40px; }
-  .preview__media--mobile > img { width: 240px; height: 532px; border-radius: 24px; }
+  .preview__media--mobile > img { width: 240px; height: auto; aspect-ratio: 340 / 754; border-radius: 24px; }
 }
 
 @media (max-width: 1400px) and (min-width: 1101px) {
