@@ -365,6 +365,11 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
   .case-study__escrow-time { grid-column: 2; }
 }
 
+@media (max-width: 380px) {
+  .scrolled-header__identity > .scrolled-header__crumb:not(.scrolled-header__name),
+  .scrolled-header__identity > .scrolled-header__muted { display: none; }
+}
+
 /* Final scale adjustment */
 .case-study__hero, .case-study__section, .case-study__simple-section, .case-study__full-image, .case-study__before-after, .case-study__closing-line { width: min(560px, calc(100% - 64px)); }
 .case-study__hero { padding: 64px 0 48px; }
