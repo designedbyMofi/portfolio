@@ -786,7 +786,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .preview__close { top: 20px; right: 20px; width: 32px; height: 32px; }
   .preview__close img { width: 18px; height: 18px; }
   .preview__layout { width: 100%; min-height: calc(100dvh - 124px); margin-inline: auto; flex-direction: column; justify-content: center; gap: 40px; }
-  .preview__media--mobile > img { width: auto; height: min(532px, calc(100dvh - 170px)); max-width: calc(100vw - 64px); border-radius: 24px; }
+  .preview__media--mobile > img { width: min(240px, calc(100vw - 64px)); height: auto; max-height: none; border-radius: 24px; }
   .preview__media--web > img { width: min(100%, 320px); border-radius: 12px; }
   .preview__details { width: 100%; max-width: 345px; }
   .preview__details h2 { font-size: 32px; }
