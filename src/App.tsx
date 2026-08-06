@@ -523,9 +523,12 @@ function VurtMobileIndex() {
       frame = 0;
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
       const scrollRoot = document.scrollingElement || document.documentElement;
-      // Keep the thumb math on one coordinate system: window scroll position
-      // and the layout viewport used by the browser's native scrollbar.
-      const viewportHeight = window.innerHeight;
+      // iOS Safari exposes a separate visual viewport while the native
+      // scrollbar follows the document scroll root. Keep both coordinates in
+      // sync so the chip remains centred on the active thumb.
+      const visualViewport = window.visualViewport;
+      const viewportHeight = scrollRoot.clientHeight || visualViewport?.height || window.innerHeight;
+      const viewportTop = visualViewport?.offsetTop || 0;
       let next = 0;
       // Advance the chip as soon as a section occupies the readable portion
       // of the viewport, so Solution cannot visually carry into Impact.
@@ -533,7 +536,7 @@ function VurtMobileIndex() {
       setActive((previous) => previous === next ? previous : next);
       const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
       const maxScroll = Math.max(1, documentHeight - viewportHeight);
-      const scrollTop = Math.min(maxScroll, Math.max(0, window.scrollY));
+      const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop || window.scrollY));
       const intro = document.getElementById('vurt-intro');
       const caseStudyMain = document.querySelector<HTMLElement>('.case-study-main');
       const footerStarted = Boolean(caseStudyMain && caseStudyMain.getBoundingClientRect().bottom <= viewportHeight);
@@ -555,7 +558,7 @@ function VurtMobileIndex() {
         const thumbCenter = thumbTop + scrollbarThumbHeight / 2;
         const minCenter = chipHalfHeight + 8;
         const maxCenter = viewportHeight - chipHalfHeight - 8;
-        const nextTop = Math.max(minCenter, Math.min(maxCenter, thumbCenter));
+        const nextTop = viewportTop + Math.max(minCenter, Math.min(maxCenter, thumbCenter));
         indexRef.current.style.top = `${nextTop}px`;
       }
       if (scrollbarRef.current) {
@@ -567,9 +570,11 @@ function VurtMobileIndex() {
     update();
     window.addEventListener('scroll', scheduleUpdate, { passive: true });
     window.addEventListener('resize', scheduleUpdate);
+    visualViewport?.addEventListener('resize', scheduleUpdate);
     return () => {
       window.removeEventListener('scroll', scheduleUpdate);
       window.removeEventListener('resize', scheduleUpdate);
+      visualViewport?.removeEventListener('resize', scheduleUpdate);
       if (frame) window.cancelAnimationFrame(frame);
       window.clearTimeout(hideTimer);
     };
