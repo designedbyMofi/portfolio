@@ -277,7 +277,7 @@ function ResumeAside() {
   );
 }
 
-type NavigationDirection = 'forward' | 'backward';
+type NavigationDirection = 'forward' | 'backward' | 'down';
 
 function ResumePage({ direction }: { direction: NavigationDirection }) {
   return (
@@ -956,7 +956,9 @@ export default function App() {
   const closeVurtCaseStudy = () => {
     document.documentElement.classList.add('app-ready');
     document.documentElement.classList.remove('initial-shots');
-    setNavigationDirection('backward');
+    // Returning from the case study uses a vertical reveal instead of the
+    // horizontal page-to-page transition used by the primary nav.
+    setNavigationDirection('down');
     setProjectDetail(false);
     setView('projects');
     window.history.pushState({ view: 'projects' }, '', '/projects');
