@@ -264,6 +264,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .floating-nav__icon img { width: 24px; height: 24px; }
 .has-tooltip::after { content: attr(data-tooltip); position: absolute; left: 50%; bottom: calc(100% + 7px); transform: translateX(-50%) translateY(2px); padding: 2px 6px; border-radius: 999px; background: #1d1816; color: white; font-size: 11px; line-height: 14px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .12s ease, transform .12s ease; }
 .has-tooltip:hover::after, .has-tooltip:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+.floating-nav__icon[aria-expanded="true"]::after { opacity: 0; transform: translateX(-50%) translateY(2px); }
 .floating-nav__social-wrap { position: relative; }
 .floating-nav__socials { position: absolute; z-index: 3; right: 0; bottom: 58px; width: 160px; padding: 4px; display: flex; flex-direction: column; gap: 2px; border-radius: 16px; background: white; box-shadow: 0 12px 6px rgba(0,0,0,.06); transform-origin: bottom right; animation: menu-enter .34s cubic-bezier(.16,1,.3,1) both; will-change: transform, opacity, filter; }
 .popup-slider-menu { position: absolute; isolation: isolate; overflow: hidden; box-sizing: border-box; padding: 4px; gap: 2px; }
