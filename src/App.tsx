@@ -582,7 +582,7 @@ function VurtMobileIndex() {
 
 function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
   const [tocHoverIndex, setTocHoverIndex] = useState<number | null>(null);
-  const [tocActiveIndex, setTocActiveIndex] = useState(7);
+  const [tocActiveIndex, setTocActiveIndex] = useState(0);
   const tocRef = useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     const toc = tocRef.current;
