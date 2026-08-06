@@ -545,11 +545,13 @@ function VurtMobileIndex() {
     const update = () => {
       frame = 0;
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
+      const viewportHeight = window.innerHeight;
       let next = 0;
-      sections.forEach((section, index) => { if (section.getBoundingClientRect().top <= 230) next = index; });
+      // Advance the chip as soon as a section occupies the readable portion
+      // of the viewport, so Solution cannot visually carry into Impact.
+      sections.forEach((section, index) => { if (section.getBoundingClientRect().top <= viewportHeight * .62) next = index; });
       setActive((previous) => previous === next ? previous : next);
       const scrollRoot = document.scrollingElement || document.documentElement;
-      const viewportHeight = window.innerHeight;
       const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
       const maxScroll = Math.max(1, documentHeight - viewportHeight);
       const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop || window.scrollY));
