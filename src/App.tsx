@@ -536,9 +536,8 @@ const vurtSections = [
 
 function VurtMobileIndex() {
   const [active, setActive] = useState(1);
-  const [mobileIndexTop, setMobileIndexTop] = useState(205);
-  const [scrollbarTop, setScrollbarTop] = useState(0);
-  const [scrollbarHeight, setScrollbarHeight] = useState(24);
+  const indexRef = useRef<HTMLElement>(null);
+  const scrollbarRef = useRef<HTMLSpanElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     let frame = 0;
@@ -548,7 +547,7 @@ function VurtMobileIndex() {
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
       let next = 0;
       sections.forEach((section, index) => { if (section.getBoundingClientRect().top <= 230) next = index; });
-      setActive(next);
+      setActive((previous) => previous === next ? previous : next);
       const scrollRoot = document.scrollingElement || document.documentElement;
       const viewportHeight = window.innerHeight;
       const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
@@ -566,10 +565,12 @@ function VurtMobileIndex() {
       const scrollbarThumbHeight = Math.min(viewportHeight, Math.max(24, (viewportHeight * viewportHeight) / documentHeight));
       const scrollbarTrack = Math.max(0, viewportHeight - scrollbarThumbHeight);
       const thumbTop = (scrollTop / maxScroll) * scrollbarTrack;
-      const nextTop = Math.max(8, Math.min(viewportHeight - 40, thumbTop + scrollbarThumbHeight / 2 - 16));
-      setScrollbarTop(thumbTop);
-      setScrollbarHeight(scrollbarThumbHeight);
-      setMobileIndexTop(nextTop);
+      const nextTop = Math.max(24, Math.min(viewportHeight - 24, thumbTop + scrollbarThumbHeight / 2));
+      if (indexRef.current) indexRef.current.style.top = `${nextTop}px`;
+      if (scrollbarRef.current) {
+        scrollbarRef.current.style.top = `${thumbTop}px`;
+        scrollbarRef.current.style.height = `${scrollbarThumbHeight}px`;
+      }
     };
     const scheduleUpdate = () => { if (!frame) frame = window.requestAnimationFrame(update); };
     update();
@@ -583,8 +584,8 @@ function VurtMobileIndex() {
     };
   }, []);
   return <>
-    <span className="vurt-mobile-scrollbar" aria-hidden="true"><span style={{ top: `${scrollbarTop}px`, height: `${scrollbarHeight}px` }} /></span>
-    <aside className="vurt-mobile-index" aria-hidden="true" style={{ top: `${mobileIndexTop}px`, opacity: isVisible ? 1 : 0 }}><span>{vurtSections[active]?.nav}</span></aside>
+    <span className="vurt-mobile-scrollbar" aria-hidden="true"><span ref={scrollbarRef} /></span>
+    <aside ref={indexRef} className="vurt-mobile-index" aria-hidden="true" style={{ opacity: isVisible ? 1 : 0 }}><span>{vurtSections[active]?.nav}</span></aside>
   </>;
 }
 
