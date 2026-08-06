@@ -522,7 +522,7 @@ function VurtMobileIndex() {
     const update = () => {
       frame = 0;
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
-      const viewportHeight = window.innerHeight;
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
       let next = 0;
       // Advance the chip as soon as a section occupies the readable portion
       // of the viewport, so Solution cannot visually carry into Impact.
@@ -544,8 +544,16 @@ function VurtMobileIndex() {
       const scrollbarThumbHeight = Math.min(viewportHeight, Math.max(24, (viewportHeight * viewportHeight) / documentHeight));
       const scrollbarTrack = Math.max(0, viewportHeight - scrollbarThumbHeight);
       const thumbTop = (scrollTop / maxScroll) * scrollbarTrack;
-      const nextTop = Math.max(24, Math.min(viewportHeight - 24, thumbTop + scrollbarThumbHeight / 2));
-      if (indexRef.current) indexRef.current.style.top = `${nextTop}px`;
+      // Position the chip on the native thumb's centre, using the chip's
+      // actual height so it stays centred at the very top and bottom too.
+      if (indexRef.current) {
+        const chipHalfHeight = indexRef.current.offsetHeight / 2;
+        const thumbCenter = thumbTop + scrollbarThumbHeight / 2;
+        const minCenter = chipHalfHeight + 8;
+        const maxCenter = viewportHeight - chipHalfHeight - 8;
+        const nextTop = Math.max(minCenter, Math.min(maxCenter, thumbCenter));
+        indexRef.current.style.top = `${nextTop}px`;
+      }
       if (scrollbarRef.current) {
         scrollbarRef.current.style.top = `${thumbTop}px`;
         scrollbarRef.current.style.height = `${scrollbarThumbHeight}px`;
