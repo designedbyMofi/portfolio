@@ -537,8 +537,10 @@ const vurtSections = [
 function VurtMobileIndex() {
   const [active, setActive] = useState(1);
   const [mobileIndexTop, setMobileIndexTop] = useState(205);
+  const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     let frame = 0;
+    let hideTimer = 0;
     const update = () => {
       frame = 0;
       const sections = vurtSections.map((section) => document.getElementById(section.id)).filter(Boolean) as HTMLElement[];
@@ -550,6 +552,15 @@ function VurtMobileIndex() {
       const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
       const maxScroll = Math.max(1, documentHeight - viewportHeight);
       const scrollTop = Math.min(maxScroll, Math.max(0, scrollRoot.scrollTop || window.scrollY));
+      const intro = document.getElementById('vurt-intro');
+      const introStarted = Boolean(intro && scrollTop > 0 && intro.getBoundingClientRect().top <= viewportHeight * .78);
+      if (introStarted) {
+        setIsVisible(true);
+        window.clearTimeout(hideTimer);
+        hideTimer = window.setTimeout(() => setIsVisible(false), 850);
+      } else {
+        setIsVisible(false);
+      }
       const scrollbarThumbHeight = Math.min(viewportHeight, Math.max(24, (viewportHeight * viewportHeight) / documentHeight));
       const scrollbarTrack = Math.max(0, viewportHeight - scrollbarThumbHeight);
       const nextTop = Math.max(8, Math.min(viewportHeight - 40, scrollbarThumbHeight / 2 + (scrollTop / maxScroll) * scrollbarTrack - 16));
@@ -563,9 +574,10 @@ function VurtMobileIndex() {
       window.removeEventListener('scroll', scheduleUpdate);
       window.removeEventListener('resize', scheduleUpdate);
       if (frame) window.cancelAnimationFrame(frame);
+      window.clearTimeout(hideTimer);
     };
   }, []);
-  return <aside className="vurt-mobile-index" aria-hidden="true" style={{ top: `${mobileIndexTop}px` }}><span>{vurtSections[active]?.nav}</span></aside>;
+  return <aside className="vurt-mobile-index" aria-hidden="true" style={{ top: `${mobileIndexTop}px`, opacity: isVisible ? 1 : 0 }}><span>{vurtSections[active]?.nav}</span></aside>;
 }
 
 function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
