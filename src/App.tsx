@@ -157,7 +157,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
   );
 }
 
-function ProjectPreview({ project, origin, nativeTransition, onClose }: { project: Project; origin: PreviewOrigin | null; nativeTransition: boolean; onClose: () => void }) {
+function ProjectPreview({ project, origin, nativeTransition, closing, onClose }: { project: Project; origin: PreviewOrigin | null; nativeTransition: boolean; closing: boolean; onClose: () => void }) {
   const [paused, setPaused] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const previewImageRef = useRef<HTMLImageElement>(null);
@@ -209,7 +209,7 @@ function ProjectPreview({ project, origin, nativeTransition, onClose }: { projec
   const changeSlide = (direction: number) => setCarouselIndex((current) => (current + direction + carouselProjects.length) % carouselProjects.length);
 
   return (
-    <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
+    <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
         <div className={`preview__media preview__media--${project.kind}`}>
           <img ref={previewImageRef} className="is-in-view" key={displayedProject.image} src={displayedProject.image} alt={displayedProject.alt} data-reveal style={{ viewTransitionName: 'selected-shot' } as CSSProperties} />
@@ -792,6 +792,8 @@ function FloatingNavigation({ active, onNavigate, filter, onFilter, muted, onMut
 
 export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [previewClosing, setPreviewClosing] = useState(false);
+  const previewCloseTimerRef = useRef<number | null>(null);
   const [previewOrigin, setPreviewOrigin] = useState<PreviewOrigin | null>(null);
   const [nativePreviewTransition, setNativePreviewTransition] = useState(false);
   const [view, setView] = useState<PortfolioView>(() => viewFromPath());
@@ -1002,16 +1004,23 @@ export default function App() {
     // as the preview. Native document view transitions briefly expose the old
     // page snapshot underneath the overlay on mobile Safari.
     void sourceImage;
-    setPreviewOrigin(origin);
-    setNativePreviewTransition(false);
-    setSelectedProject(project);
+      setPreviewOrigin(origin);
+      setNativePreviewTransition(false);
+      setPreviewClosing(false);
+      if (previewCloseTimerRef.current) window.clearTimeout(previewCloseTimerRef.current);
+      setSelectedProject(project);
   };
 
   const closeProject = () => {
-    if (!selectedProject) return;
-    setSelectedProject(null);
-    setPreviewOrigin(null);
-    setNativePreviewTransition(false);
+    if (!selectedProject || previewClosing) return;
+    setPreviewClosing(true);
+    previewCloseTimerRef.current = window.setTimeout(() => {
+      setSelectedProject(null);
+      setPreviewOrigin(null);
+      setNativePreviewTransition(false);
+      setPreviewClosing(false);
+      previewCloseTimerRef.current = null;
+    }, 460);
   };
 
   return (
@@ -1031,7 +1040,7 @@ export default function App() {
         <FloatingNavigation active={view} onNavigate={navigate} filter={shotFilter} onFilter={setShotFilter} muted={muted} onMutedChange={setMuted} />
       </main>
       <Footer />
-      {selectedProject && <ProjectPreview project={selectedProject} origin={previewOrigin} nativeTransition={nativePreviewTransition} onClose={closeProject} />}
+      {selectedProject && <ProjectPreview project={selectedProject} origin={previewOrigin} nativeTransition={nativePreviewTransition} closing={previewClosing} onClose={closeProject} />}
     </>
   );
 }
