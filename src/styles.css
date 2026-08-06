@@ -782,11 +782,11 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .resume-shell .profile { width: 100%; padding: 0; }
   .resume-shell .profile__heading { margin-bottom: 32px; }
   .resume-rule { width: 100%; margin-top: 32px; }
-  .preview { display: block; padding: 84px 24px 48px; }
+  .preview { display: block; padding: 76px 24px 48px; }
   .preview__close { top: 20px; right: 20px; width: 32px; height: 32px; }
   .preview__close img { width: 18px; height: 18px; }
-  .preview__layout { width: 100%; flex-direction: column; gap: 40px; }
-  .preview__media--mobile > img { width: 200px; height: 444px; border-radius: 20px; }
+  .preview__layout { width: 100%; min-height: calc(100dvh - 124px); margin-inline: auto; flex-direction: column; justify-content: center; gap: 40px; }
+  .preview__media--mobile > img { width: min(240px, calc(100vw - 64px)); height: auto; aspect-ratio: 340 / 754; max-height: calc(100dvh - 170px); border-radius: 24px; }
   .preview__media--web > img { width: min(100%, 320px); border-radius: 12px; }
   .preview__details { width: 100%; max-width: 345px; }
   .preview__details h2 { font-size: 32px; }
