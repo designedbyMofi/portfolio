@@ -517,7 +517,8 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 
 .preview { position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; overflow: auto; isolation: isolate; padding: 80px 40px; background: rgba(232,228,227,.8); -webkit-backdrop-filter: blur(40px); backdrop-filter: blur(40px); animation: fade-in .22s ease; }
 .preview.is-closing { animation: preview-exit .46s cubic-bezier(.4,0,.2,1) both; pointer-events: none; }
-.preview.is-closing .preview__layout { animation: preview-layout-exit .46s cubic-bezier(.4,0,.2,1) both; }
+.preview.is-closing .preview__layout { animation: none; }
+.preview.is-closing .preview__media > :not(img) { opacity: 0; transition: opacity .22s ease; }
 .preview__close { position: fixed; z-index: 100; top: 20px; right: 20px; width: 40px; height: 40px; border: .5px solid var(--shade-200); border-radius: 50%; background: rgba(0,0,0,.32); display: grid; place-items: center; cursor: pointer; transition: background .15s ease; }
 .preview__close:hover { background: rgba(0,0,0,.48); }
 .preview__close img { width: 20px; height: 20px; }
@@ -570,7 +571,6 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes preview-arrive { from { opacity: 0; transform: translateY(12px) scale(.985); } }
 @keyframes preview-exit { to { opacity: 0; filter: blur(12px); } }
-@keyframes preview-layout-exit { to { opacity: 0; filter: blur(8px); transform: translateY(18px) scale(.97); } }
 @keyframes preview-details-enter { from { opacity: 0; transform: translateX(18px); } }
 @keyframes preview-controls-enter { from { opacity: 0; transform: translateY(8px); } }
 @keyframes media-swap { from { opacity: .35; transform: scale(.99); } }

@@ -174,7 +174,6 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
 
     let secondFrame = 0;
     let firstFrame = 0;
-    let cleanupTimer = 0;
     const animate = () => {
       const target = image.getBoundingClientRect();
       if (!target.width || !target.height) return;
@@ -188,10 +187,6 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
       firstFrame = window.requestAnimationFrame(() => {
         secondFrame = window.requestAnimationFrame(() => image.classList.add('is-settled'));
       });
-      cleanupTimer = window.setTimeout(() => {
-        image.classList.remove('zoom-from-card', 'is-settled');
-        ['--zoom-x', '--zoom-y', '--zoom-scale-x', '--zoom-scale-y', '--zoom-radius', '--target-radius'].forEach((property) => image.style.removeProperty(property));
-      }, 900);
     };
     if (image.complete && image.naturalWidth) animate();
     else image.addEventListener('load', animate, { once: true });
@@ -200,9 +195,16 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
       image.removeEventListener('load', animate);
       window.cancelAnimationFrame(firstFrame);
       if (secondFrame) window.cancelAnimationFrame(secondFrame);
-      window.clearTimeout(cleanupTimer);
     };
   }, [origin]);
+
+  useEffect(() => {
+    if (!closing || !previewImageRef.current || !origin) return;
+    // Removing the settled state replays the shared-origin transform in
+    // reverse, returning the preview to the exact card it came from.
+    previewImageRef.current.classList.remove('is-settled');
+    previewImageRef.current.classList.add('zoom-from-card');
+  }, [closing, origin]);
 
   const carouselProjects = [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
   const displayedProject = project.motion === 'carousel' ? carouselProjects[carouselIndex] : project;
@@ -1020,7 +1022,7 @@ export default function App() {
       setNativePreviewTransition(false);
       setPreviewClosing(false);
       previewCloseTimerRef.current = null;
-    }, 460);
+    }, 620);
   };
 
   return (
