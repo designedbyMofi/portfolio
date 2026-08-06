@@ -11,6 +11,7 @@
   --shade-400: #aba09c;
   --shade-500: #7c6d67;
   --shade-600: #5b4f4b;
+  --shade-700: #3f3633;
 }
 
 * { box-sizing: border-box; }

@@ -832,12 +832,12 @@ export default function App() {
         theme: 'light',
         cssVarsPerTheme: {
           light: {
-            'cal-brand': '#1e1b24',
-            'cal-brand-emphasis': '#3a3540',
+            'cal-brand': '#3f3633',
+            'cal-brand-emphasis': '#3f3633',
             'cal-brand-text': '#ffffff',
-            'cal-border-emphasis': '#1e1b24',
+            'cal-border-emphasis': '#3f3633',
           },
-          dark: { 'cal-brand': '#1e1b24' },
+          dark: { 'cal-brand': '#3f3633' },
         },
         hideEventTypeDetails: false,
         layout: 'month_view',
