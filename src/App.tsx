@@ -356,7 +356,7 @@ const socialLinks = [
   ['Instagram', 'https://www.instagram.com/mofifoluwaa/', '/assets/icon-instagram.svg'],
 ] as const;
 
-const bookingLink = 'https://cal.com/mofifoluwa-olawuyi-74cy24/30min';
+const bookingLink = 'https://cal.com/mofifoluwa/30min';
 
 function RecordPlayer() {
   return (
@@ -433,7 +433,7 @@ function Footer() {
                 '--confetti-scale': index % 5 === 0 ? '.78' : '1',
               } as CSSProperties} />)}</span>}
             </button>
-            <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'><span className="book-call-icon" aria-hidden="true" />BOOK A CALL</a>
+            <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'><span className="book-call-icon" aria-hidden="true" />BOOK A CALL</a>
           </div>
         </div>
         <div className="footer__legal"><span>© 2026, Mofifoluwa Olawuyi.</span><span>v1.0</span></div>
@@ -471,7 +471,7 @@ function ScrolledHeader({ active, projectDetail, previewOpen, onBack, onClosePre
           {projectDetail ? <a className="scrolled-header__crumb" href="/projects" onClick={(event) => { event.preventDefault(); onBack(); }}>Projects</a> : active === 'projects' ? <a className="scrolled-header__crumb scrolled-header__active" href="/projects" onClick={(event) => event.preventDefault()}>Projects</a> : active === 'resume' ? <a className="scrolled-header__crumb scrolled-header__active" href="/resume" onClick={(event) => event.preventDefault()}>Résumé</a> : <a className="scrolled-header__crumb scrolled-header__active" href="/" onClick={(event) => event.preventDefault()}>Shots</a>}
           {projectDetail && <><span className="scrolled-header__muted scrolled-header__vurt-separator">/</span><span className="scrolled-header__muted scrolled-header__current">Vurt</span></>}
           <span className="scrolled-header__muted">·</span>
-          <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
+          <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
         </div>
         {(projectDetail || previewOpen) && <button className="scrolled-header__share has-tooltip" data-tooltip="Share" onClick={shareProject} aria-label="Share project"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z" /></svg></button>}
       </div>
@@ -830,7 +830,7 @@ export default function App() {
       if (cancelled) return;
       cal('ui', {
         theme: 'light',
-        cssVarsPerTheme: { light: { 'cal-brand': '#FAF8F6' }, dark: { 'cal-brand': '#FAF8F6' } },
+        cssVarsPerTheme: { light: { 'cal-brand': '#fafafa' }, dark: { 'cal-brand': '#fafafa' } },
         hideEventTypeDetails: false,
         layout: 'month_view',
       });
