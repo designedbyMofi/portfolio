@@ -191,7 +191,7 @@ function ProjectPreview({ project, origin, nativeTransition, onClose }: { projec
       cleanupTimer = window.setTimeout(() => {
         image.classList.remove('zoom-from-card', 'is-settled');
         ['--zoom-x', '--zoom-y', '--zoom-scale-x', '--zoom-scale-y', '--zoom-radius', '--target-radius'].forEach((property) => image.style.removeProperty(property));
-      }, 650);
+      }, 900);
     };
     if (image.complete && image.naturalWidth) animate();
     else image.addEventListener('load', animate, { once: true });
