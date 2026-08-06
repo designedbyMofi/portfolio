@@ -759,6 +759,27 @@ export default function App() {
   const initialViewRef = useRef(view);
 
   useEffect(() => {
+    // Keep a hard reload at the user's current position. Route navigation
+    // still calls its explicit top reset below; this only handles reloads.
+    const pathKey = `portfolio-scroll:${window.location.pathname}`;
+    const previousRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
+    const savedScroll = Number(window.sessionStorage.getItem(pathKey));
+    if (Number.isFinite(savedScroll) && savedScroll > 0) {
+      window.requestAnimationFrame(() => window.scrollTo({ top: savedScroll, behavior: 'auto' }));
+    }
+    const saveScroll = () => window.sessionStorage.setItem(pathKey, String(window.scrollY));
+    window.addEventListener('scroll', saveScroll, { passive: true });
+    window.addEventListener('pagehide', saveScroll);
+    return () => {
+      saveScroll();
+      window.removeEventListener('scroll', saveScroll);
+      window.removeEventListener('pagehide', saveScroll);
+      window.history.scrollRestoration = previousRestoration;
+    };
+  }, []);
+
+  useEffect(() => {
     const initialShots = initialViewRef.current === 'shots';
     if (initialShots) document.documentElement.classList.add('initial-shots');
     const readyTimer = window.setTimeout(() => document.documentElement.classList.add('app-ready'), 1050);
