@@ -162,8 +162,6 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
 function ProjectPreview({ project, origin, nativeTransition, onClose }: { project: Project; origin: PreviewOrigin | null; nativeTransition: boolean; onClose: () => void }) {
   const [paused, setPaused] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [saved, setSaved] = useState(false);
-  const [shared, setShared] = useState(false);
   const previewImageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
@@ -204,25 +202,9 @@ function ProjectPreview({ project, origin, nativeTransition, onClose }: { projec
   const carouselProjects = [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
   const displayedProject = project.motion === 'carousel' ? carouselProjects[carouselIndex] : project;
   const changeSlide = (direction: number) => setCarouselIndex((current) => (current + direction + carouselProjects.length) % carouselProjects.length);
-  const shareProject = async () => {
-    const shareData = { title, text: project.alt, url: window.location.href };
-    if (navigator.share) await navigator.share(shareData).catch(() => undefined);
-    else await navigator.clipboard.writeText(window.location.href);
-    setShared(true);
-    window.setTimeout(() => setShared(false), 1400);
-  };
-
-  const title = project.motion === 'video'
-    ? 'Website mobile interaction'
-    : project.motion === 'carousel'
-      ? 'Thrift shopping mobile app'
-      : project.kind === 'web'
-        ? 'Anchor navigation for Privacy policy'
-        : project.alt;
 
   return (
     <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
-      <button className="preview__close" onClick={onClose} aria-label="Close preview"><img src="/assets/preview-close.svg" alt="" /></button>
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
         <div className={`preview__media preview__media--${project.kind}`}>
           <img ref={previewImageRef} className="is-in-view" key={displayedProject.image} src={displayedProject.image} alt={displayedProject.alt} data-reveal style={{ viewTransitionName: 'selected-shot' } as CSSProperties} />
@@ -240,16 +222,6 @@ function ProjectPreview({ project, origin, nativeTransition, onClose }: { projec
             </div>
           )}
         </div>
-        <article className="preview__details">
-          {project.motion !== 'static' && <p className="preview__tag"><img src={project.motion === 'carousel' ? '/assets/type-carousel.svg' : '/assets/type-video.svg'} alt="" />{project.motion}</p>}
-          <h2>{title}</h2>
-          <p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit. Aliquam viverra elementum purus viverra ultricies augue. Nunc tortor volutpat sapien donec.</p>
-          <hr />
-          <div className="preview__actions">
-            <button className={saved ? 'is-saved' : ''} onClick={() => setSaved(!saved)} aria-pressed={saved} aria-label={saved ? 'Remove saved project' : 'Save project'}><img src="/assets/preview-heart.svg" alt="" /></button>
-            <button className={shared ? 'is-shared' : ''} onClick={shareProject} aria-label="Share project"><img src="/assets/preview-share.svg" alt="" /><span className="preview__feedback">{shared ? 'Copied' : 'Share'}</span></button>
-          </div>
-        </article>
       </div>
     </div>
   );
@@ -465,8 +437,8 @@ function Footer() {
   );
 }
 
-function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active: PortfolioView; projectDetail: boolean; onBack: () => void; onNavigate: (view: PortfolioView) => void }) {
-  const [visible, setVisible] = useState(projectDetail);
+function ScrolledHeader({ active, projectDetail, previewOpen, onBack, onClosePreview, onNavigate }: { active: PortfolioView; projectDetail: boolean; previewOpen: boolean; onBack: () => void; onClosePreview: () => void; onNavigate: (view: PortfolioView) => void }) {
+  const [visible, setVisible] = useState(projectDetail || previewOpen);
 
   const shareProject = async () => {
     const url = window.location.href;
@@ -478,16 +450,16 @@ function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active:
   };
 
   useEffect(() => {
-    const update = () => setVisible(projectDetail || window.scrollY > 360);
+    const update = () => setVisible(projectDetail || previewOpen || window.scrollY > 360);
     update();
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);
-  }, [projectDetail]);
+  }, [projectDetail, previewOpen]);
 
   return (
       <div className={`scrolled-header${visible ? ' is-visible' : ''}`} aria-hidden={!visible}>
-      <div className={`scrolled-header__content${projectDetail ? ' is-project' : ''}`}>
-        {projectDetail && <button className="scrolled-header__back has-tooltip" data-tooltip="Back" onClick={onBack} aria-label="Back to projects"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z" /></svg></button>}
+      <div className={`scrolled-header__content${projectDetail || previewOpen ? ' is-project' : ''}`}>
+        {(projectDetail || previewOpen) && <button className="scrolled-header__back has-tooltip" data-tooltip="Back" onClick={previewOpen ? onClosePreview : onBack} aria-label={previewOpen ? 'Close preview' : 'Back to projects'}><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z" /></svg></button>}
         <div className="scrolled-header__identity">
           <img src="/assets/portrait.png" alt="" />
           <a className={`scrolled-header__crumb${active === 'shots' && !projectDetail ? ' scrolled-header__active' : ''}`} href="/" onClick={(event) => { event.preventDefault(); onNavigate('shots'); }}>Mofifoluwa</a><span className="scrolled-header__muted">/</span>
@@ -496,7 +468,7 @@ function ScrolledHeader({ active, projectDetail, onBack, onNavigate }: { active:
           <span className="scrolled-header__muted">·</span>
           <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
         </div>
-        {projectDetail && <button className="scrolled-header__share has-tooltip" data-tooltip="Share" onClick={shareProject} aria-label="Share project"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z" /></svg></button>}
+        {(projectDetail || previewOpen) && <button className="scrolled-header__share has-tooltip" data-tooltip="Share" onClick={shareProject} aria-label="Share project"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z" /></svg></button>}
       </div>
     </div>
   );
@@ -604,6 +576,32 @@ function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
     const observer = new ResizeObserver(updateRowHeight);
     observer.observe(row);
     return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    let frame = 0;
+    const updateTocBounds = () => {
+      frame = 0;
+      const toc = tocRef.current;
+      const main = toc?.closest('main');
+      if (!toc || !main) return;
+      const mainBottom = main.getBoundingClientRect().bottom;
+      const tocHeight = toc.getBoundingClientRect().height;
+      const minimumBottomGap = 24;
+      const availableTop = mainBottom - tocHeight - minimumBottomGap;
+      const top = Math.min(140, availableTop);
+      toc.style.top = `${Math.max(24, top)}px`;
+      toc.style.opacity = mainBottom > tocHeight + minimumBottomGap ? '1' : '0';
+      toc.style.pointerEvents = mainBottom > tocHeight + minimumBottomGap ? 'auto' : 'none';
+    };
+    const schedule = () => { if (!frame) frame = window.requestAnimationFrame(updateTocBounds); };
+    updateTocBounds();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
   const navSections = vurtSections.filter((section, index) => section.number !== '08.2' && section.number !== '08.3' && section.number !== '08.4' && section.number !== '08.5' && index < 16);
   useEffect(() => {
@@ -1014,7 +1012,7 @@ export default function App() {
 
   return (
     <>
-      <ScrolledHeader active={view} projectDetail={projectDetail} onBack={closeVurtCaseStudy} onNavigate={navigate} />
+      <ScrolledHeader active={view} projectDetail={projectDetail} previewOpen={Boolean(selectedProject)} onBack={closeVurtCaseStudy} onClosePreview={closeProject} onNavigate={navigate} />
       <main className={view === 'resume' ? 'resume-main' : view === 'projects' ? (projectDetail ? 'case-study-main' : 'projects-main') : 'shots-main'}>
         {view === 'resume' ? <ResumePage direction={navigationDirection} /> : view === 'projects' ? (projectDetail ? <VurtCaseStudy direction={navigationDirection} /> : <ProjectsLanding onOpenVurt={openVurtCaseStudy} direction={navigationDirection} />) : (
           <div className="content-shell">

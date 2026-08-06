@@ -92,7 +92,7 @@ html.initial-shots:not(.app-ready) .profile__bio { animation: screen-layer-enter
 .projects-coming-soon { width: min(648px, calc(100% - 48px)); min-height: 620px; margin: 0 auto; padding-top: 120px; }
 .projects-coming-soon h1 { margin: 0; color: var(--ink); font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: 1; font-weight: 600; letter-spacing: -.4px; }
 .projects-landing { width: min(1728px, 100%); margin: 0 auto; padding: 80px max(24px, calc((100% - 648px) / 2)) 120px; display: flex; flex-direction: column; gap: 40px; }
-.projects-landing__profile { display: flex; flex-direction: column; gap: 32px; view-transition-name: portfolio-profile; }
+.projects-landing__profile { display: flex; flex-direction: column; gap: 32px; }
 .projects-landing__heading { display: flex; align-items: center; gap: 24px; }
 .projects-landing__heading img { width: 80px; height: 80px; border: 4px solid #fff; border-radius: 50%; object-fit: cover; object-position: center 28%; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
 .projects-landing__heading h1 { margin: 0; color: var(--ink); font-family: Fraunces, Georgia, serif; font-size: 40px; line-height: 1; font-weight: 600; letter-spacing: -.4px; }
@@ -111,7 +111,7 @@ html.initial-shots:not(.app-ready) .profile__bio { animation: screen-layer-enter
 .projects-landing__placeholder { background: linear-gradient(135deg, #ede8e8 0%, #f5f2f1 45%, #e8e3e3 100%); }
 .projects-landing__card h2 { margin: 0; color: var(--ink); font-size: 16px; line-height: 28px; font-weight: 600; text-decoration: underline dotted var(--shade-400); text-underline-offset: 4px; }
 .projects-landing__card p { margin: 0; color: var(--shade-600); font-size: 14px; line-height: 24px; }
-.profile { width: min(648px, 100%); margin: 0 auto 60px; view-transition-name: portfolio-profile; }
+.profile { width: min(648px, 100%); margin: 0 auto 60px; }
 .profile__heading { display: flex; align-items: center; gap: 24px; margin-bottom: 32px; }
 .profile__portrait { width: 80px; height: 80px; border: 4px solid #fff; border-radius: 50%; object-fit: cover; object-position: center 28%; box-shadow: 0 1px 2px rgba(0,0,0,.05); transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; }
 html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !important; }
@@ -125,7 +125,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .profile__bio p { margin: 0; }
 .profile__bio p + p { margin-top: 16px; }
 
-.resume-shell { min-height: 2032px; padding: 80px 0 120px; }
+.resume-shell { min-height: 2032px; padding: 80px 0 180px; }
 .resume-shell .profile { margin-bottom: 0; }
 .resume-rule { width: min(648px, calc(100% - 48px)); height: 1px; margin: 40px auto 0; background: var(--shade-200); }
 .resume-layout { width: min(1448px, calc(100% - 48px)); margin: 39px auto 0; display: grid; align-items: start; }
@@ -482,7 +482,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
   .has-tooltip::after { bottom: calc(100% + 8.75px); padding: 2.5px 7.5px; font-size: 13.75px; line-height: 17.5px; }
 }
 
-.scrolled-header { position: fixed; z-index: 18; top: 0; left: 0; right: 0; height: 60px; display: grid; place-items: center; isolation: isolate; background: linear-gradient(180deg, rgba(250,248,246,.192) 0%, rgba(250,248,246,0) 73.44%); opacity: 0; transform: translateY(-100%); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+.scrolled-header { position: fixed; z-index: 60; top: 0; left: 0; right: 0; height: 60px; display: grid; place-items: center; isolation: isolate; background: linear-gradient(180deg, rgba(250,248,246,.192) 0%, rgba(250,248,246,0) 73.44%); opacity: 0; transform: translateY(-100%); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
 .scrolled-header::before { content: ''; position: absolute; z-index: 0; inset: 0; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 26.56%, transparent 100%); mask-image: linear-gradient(180deg, #000 0%, #000 26.56%, transparent 100%); pointer-events: none; }
 .scrolled-header.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .scrolled-header__content { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; font-size: 16px; line-height: 28px; font-weight: 500; }
@@ -635,7 +635,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 
   .resume-shell {
     min-height: min(2032px, 117.59vw, 198.44dvh);
-    padding: min(80px, 4.63vw, 7.81dvh) 0 min(120px, 6.94vw, 11.72dvh);
+    padding: min(80px, 4.63vw, 7.81dvh) 0 min(180px, 10.42vw, 17.58dvh);
   }
 
   .resume-rule {
@@ -778,7 +778,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   .profile__heading { gap: 20px; }
   .profile__portrait { width: 64px; height: 64px; }
   .profile h1 { font-size: 32px; }
-  .resume-shell { min-height: 3582px; padding: 32px 24px 100px; }
+  .resume-shell { min-height: 3582px; padding: 32px 24px 140px; }
   .resume-shell .profile { width: 100%; padding: 0; }
   .resume-shell .profile__heading { margin-bottom: 32px; }
   .resume-rule { width: 100%; margin-top: 32px; }
@@ -1069,7 +1069,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
   position: relative;
   width: 100%;
   min-height: 6574px;
-  padding: 120px 0;
+  padding: 120px 0 180px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1092,7 +1092,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .case-study-main .case-study__link-icon { display: none; }
 .case-study-main .case-study__hero-chips a::before { content: ''; width: 20px; height: 20px; flex: 0 0 20px; border-radius: 0; background: currentColor; -webkit-mask: url('/assets/icon-globe.svg') center / contain no-repeat; mask: url('/assets/icon-globe.svg') center / contain no-repeat; box-shadow: none; }
 .case-study-main .case-study__rule { width: 648px; height: 1px; flex: 0 0 1px; background: var(--shade-200); }
-.case-study-main .case-study__toc { position: fixed; z-index: 16; top: 140px; left: max(24px, calc(50% - 724px)); width: 240px; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; border: 0; }
+.case-study-main .case-study__toc { position: fixed; z-index: 16; top: 140px; left: max(24px, calc(50% - 724px)); width: 240px; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: stretch; gap: 0; border: 0; transition: opacity .24s ease, top .2s ease; }
 .case-study-main .case-study__toc a { width: 240px; min-height: 40px; padding: 8px 12px; display: flex; align-items: center; gap: 6px; border-radius: 12px; color: var(--shade-400); font-size: 14px; line-height: 24px; font-weight: 400; text-decoration: none; transition: background .28s ease, color .38s cubic-bezier(.22,1,.36,1); }
 .case-study-main .case-study__toc a b { width: 16px; color: var(--shade-300); font-family: Inter, sans-serif; font-size: 12px; line-height: normal; font-weight: 400; transition: color .38s cubic-bezier(.22,1,.36,1); }
 .case-study-main .case-study__toc a.is-active,
@@ -1141,7 +1141,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   .projects-main .projects-landing__card h2 { font-size: 16px; line-height: 28px; }
   .projects-main .projects-landing__card p { font-size: 14px; line-height: 24px; }
 
-  .case-study-main .case-study { min-height: 7496px; padding: 88px 0 120px; gap: 32px; align-items: center; }
+  .case-study-main .case-study { min-height: auto; padding: 88px 0 140px; gap: 32px; align-items: center; }
   .case-study-main .case-study__hero { width: calc(100% - 48px); gap: 32px; }
   .case-study-main .case-study__profile { width: 100%; gap: 12px; }
   .case-study-main .case-study__profile h1 { width: 100%; font-size: 28px; line-height: normal; letter-spacing: -.28px; }
@@ -1245,7 +1245,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 
   .case-study-main .case-study {
     min-height: min(6574px, 380.44vw, 641.99dvh);
-    padding: min(120px, 6.94vw, 11.72dvh) 0;
+    padding: min(120px, 6.94vw, 11.72dvh) 0 min(180px, 10.42vw, 17.58dvh);
     gap: min(40px, 2.31vw, 3.91dvh);
   }
 
