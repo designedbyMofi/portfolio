@@ -645,7 +645,7 @@ function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
       <div className="case-study__rule" />
       <nav ref={tocRef} className="case-study__toc case-study__toc--animated" aria-label="Case study sections" onPointerLeave={() => setTocHoverIndex(null)} style={{ '--popup-hover-index': String(tocHoverIndex ?? 0) } as CSSProperties}>
         <span className={`popup-hover-slider${tocHoverIndex === null ? '' : ' is-visible'}`} aria-hidden="true" />
-        {navSections.map((section, index) => <a key={section.id} href={`#${section.id}`} className={index === tocActiveIndex ? 'is-active' : ''} onClick={(event) => handleTocClick(event, section.id, index)} onPointerEnter={() => setTocHoverIndex(index)} onFocus={() => setTocHoverIndex(index)}><b>{section.number.split('.')[0]}</b><span>{section.nav}</span></a>)}
+        {navSections.map((section, index) => <a key={section.id} href={`#${section.id}`} className={index === tocActiveIndex ? 'is-active' : ''} onClick={(event) => handleTocClick(event, section.id, index)} onPointerEnter={(event) => { setTocHoverIndex(index); tocRef.current?.style.setProperty('--popup-hover-offset', `${event.currentTarget.offsetTop}px`); }} onFocus={(event) => { setTocHoverIndex(index); tocRef.current?.style.setProperty('--popup-hover-offset', `${event.currentTarget.offsetTop}px`); }}><b>{section.number.split('.')[0]}</b><span>{section.nav}</span></a>)}
       </nav>
       <div className="case-study__content">
         {vurtSections.map((section) => <section className={`case-study__entry${section.media ? ' case-study__entry--media' : ''}`} id={section.id} data-vurt-section key={section.id}>
