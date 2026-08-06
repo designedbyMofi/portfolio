@@ -529,6 +529,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .preview__media { display: flex; flex-direction: column; align-items: center; gap: 24px; flex: none; }
 .preview__media > img { display: block; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,.05); animation: media-swap .28s ease both; }
 .preview__media > img.zoom-from-card { position: relative; z-index: 2; animation: none; transform-origin: top left; transform: translate(var(--zoom-x), var(--zoom-y)) scale(var(--zoom-scale-x), var(--zoom-scale-y)); border-radius: var(--zoom-radius); transition: transform .6s cubic-bezier(.2,.82,.2,1), border-radius .6s cubic-bezier(.2,.82,.2,1), box-shadow .6s ease; box-shadow: 0 8px 28px rgba(30,27,36,.08); }
+.preview__media > img.zoom-from-card.is-closing-origin { transition-duration: .62s; }
 .preview__media > img.zoom-from-card.is-settled { transform: translate(0, 0) scale(1, 1); border-radius: var(--target-radius); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
 .preview__media--mobile > img { width: clamp(240px, 19.68vw, 340px); height: auto; border-radius: 32px; }
 .preview__media--web > img { width: min(1000px, 58vw); aspect-ratio: 20 / 13; border-radius: 20px; }

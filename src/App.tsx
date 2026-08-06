@@ -200,10 +200,14 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
 
   useEffect(() => {
     if (!closing || !previewImageRef.current || !origin) return;
-    // Removing the settled state replays the shared-origin transform in
-    // reverse, returning the preview to the exact card it came from.
-    previewImageRef.current.classList.remove('is-settled');
-    previewImageRef.current.classList.add('zoom-from-card');
+    const image = previewImageRef.current;
+    // Defer the state swap by one frame so Chrome paints the settled preview
+    // first, then interpolates back to the shared card origin.
+    const frame = window.requestAnimationFrame(() => {
+      image.classList.remove('is-settled');
+      image.classList.add('zoom-from-card', 'is-closing-origin');
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [closing, origin]);
 
   const carouselProjects = [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
