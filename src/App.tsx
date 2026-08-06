@@ -49,7 +49,7 @@ const playUiSound = async (sound: UiSound) => {
     oscillator.frequency.setValueAtTime(startFrequency, start);
     oscillator.frequency.exponentialRampToValueAtTime(Math.max(40, endFrequency), start + duration);
     gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(volume, start + 0.006);
+    gain.gain.exponentialRampToValueAtTime(Math.min(0.08, volume * 1.3), start + 0.006);
     gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
     oscillator.connect(gain);
     gain.connect(context.destination);
