@@ -695,7 +695,7 @@ function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
           <div className="case-study__entry-heading"><span>{section.number}: {section.label || section.nav}</span><h2>{section.title}</h2></div>
           {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           {section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
-          {section.media && <div className="case-study__placeholder" aria-hidden="true"><img src="/assets/vurt-hero.png" alt="" /></div>}
+          {section.media && <div className="case-study__placeholder" aria-hidden="true"><img src={`/assets/vurt-${section.number.replace(".", "-")}.png`} alt="" /></div>}
         </section>)}
       </div>
       <VurtMobileIndex />
