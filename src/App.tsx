@@ -180,7 +180,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     let thirdFrame = 0;
     let secondFrame = 0;
     let firstFrame = 0;
+    let measureFrame = 0;
+    let cancelled = false;
     const animate = () => {
+      if (cancelled) return;
       // Development Strict Mode runs layout effects twice. Reset the first
       // pass before measuring, otherwise the transformed preview is mistaken
       // for its own destination and the second pass overwrites the real card
@@ -211,11 +214,29 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         });
       });
     };
-    if (image.complete && image.naturalWidth) animate();
-    else image.addEventListener('load', animate, { once: true });
+    const scheduleAnimate = () => {
+      if (cancelled) return;
+      // Let image decode and layout settle before taking the destination
+      // measurement. This avoids Chrome occasionally measuring an intermediate
+      // width while the preview is mounting.
+      measureFrame = window.requestAnimationFrame(() => {
+        measureFrame = window.requestAnimationFrame(animate);
+      });
+    };
+    const onReady = () => {
+      if (typeof image.decode === 'function') {
+        void image.decode().catch(() => undefined).finally(scheduleAnimate);
+      } else {
+        scheduleAnimate();
+      }
+    };
+    if (image.complete && image.naturalWidth) onReady();
+    else image.addEventListener('load', onReady, { once: true });
 
     return () => {
-      image.removeEventListener('load', animate);
+      cancelled = true;
+      image.removeEventListener('load', onReady);
+      window.cancelAnimationFrame(measureFrame);
       window.cancelAnimationFrame(firstFrame);
       if (secondFrame) window.cancelAnimationFrame(secondFrame);
       if (thirdFrame) window.cancelAnimationFrame(thirdFrame);
