@@ -520,13 +520,53 @@ function ScrolledHeader({ active, projectDetail, previewOpen, onBack, onClosePre
 }
 
 function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; direction: NavigationDirection }) {
+  const [cordditHover, setCordditHover] = useState(false);
+  const [cordditShake, setCordditShake] = useState(false);
+  const [cordditPointer, setCordditPointer] = useState({ x: 0, y: 0 });
+  const cordditShakeTimer = useRef<number | null>(null);
+  const updateCordditPointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    setCordditPointer({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+  };
+  const showCordditChip = (event: ReactPointerEvent<HTMLDivElement>) => {
+    updateCordditPointer(event);
+    setCordditHover(true);
+  };
+  const shakeCorddit = () => {
+    setCordditShake(true);
+    if (cordditShakeTimer.current) window.clearTimeout(cordditShakeTimer.current);
+    cordditShakeTimer.current = window.setTimeout(() => {
+      setCordditShake(false);
+      cordditShakeTimer.current = null;
+    }, 460);
+  };
+  useEffect(() => () => {
+    if (cordditShakeTimer.current) window.clearTimeout(cordditShakeTimer.current);
+  }, []);
   return (
     <section className="projects-landing" aria-labelledby="projects-title">
       <div className="projects-landing__profile"><Profile id="projects-title" /></div>
       <div className={`portfolio-bottom portfolio-bottom--${direction}`}>
         <div className="projects-landing__work"><p className="projects-landing__eyebrow">My work</p>
           <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder"><img src="/assets/vurt-hero.png" alt="Vurt exchange marketplace preview" /></span><span><h2 className="projects-landing__link">Vurt: Designing trust into currency exchange</h2><p>A web-based marketplace that makes currency exchange easier to compare, trust, and complete with confidence.</p></span></button>
-          <div className="projects-landing__card"><span className="projects-landing__placeholder"><img src="/assets/corddit-hero.png" alt="Corddit social connection platform preview" /></span><span><h2 className="projects-landing__link">Corddit: Connecting people with similar interests</h2><p>A social platform that connects users with shared interests and offers spontaneous video chats similar to Omegle and Monkey.</p></span></div>
+          <div
+            className={`projects-landing__card${cordditShake ? ' is-shaking' : ''}`}
+            role="button"
+            tabIndex={0}
+            onPointerEnter={showCordditChip}
+            onPointerMove={updateCordditPointer}
+            onPointerLeave={() => setCordditHover(false)}
+            onFocus={() => setCordditHover(true)}
+            onBlur={() => setCordditHover(false)}
+            onClick={shakeCorddit}
+            onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); shakeCorddit(); } }}
+            style={{ '--company-hover-x': `${cordditPointer.x}px`, '--company-hover-y': `${cordditPointer.y}px` } as CSSProperties}
+            aria-label="Corddit project coming soon"
+          >
+            <span className="projects-landing__placeholder"><img src="/assets/corddit-hero.png" alt="Corddit social connection platform preview" /></span>
+            <span><h2 className="projects-landing__link">Corddit: Connecting people with similar interests</h2><p>A social platform that connects users with shared interests and offers spontaneous video chats similar to Omegle and Monkey.</p></span>
+            {cordditHover && <span className="experience-card__hover-chip projects-landing__hover-chip" aria-hidden="true">Coming soon</span>}
+          </div>
         </div>
       </div>
     </section>

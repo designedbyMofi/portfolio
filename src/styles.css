@@ -1632,6 +1632,22 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .projects-main .projects-landing__card {
   padding: 12px 8px 8px;
   border-radius: 20px;
+  position: relative;
+}
+.projects-main .projects-landing__hover-chip {
+  z-index: 5;
+  animation: projects-hover-chip-in .2s cubic-bezier(.16,1,.3,1) both;
+}
+.projects-main .projects-landing__card.is-shaking {
+  animation: projects-coming-soon-shake .46s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes projects-hover-chip-in { from { opacity: 0; transform: translateY(3px) scale(.94); } }
+@keyframes projects-coming-soon-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
 }
 .projects-main .projects-landing__placeholder {
   width: 100%;
