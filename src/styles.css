@@ -1613,6 +1613,10 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .projects-main .projects-landing__card:focus-visible .projects-landing__link {
   text-decoration-color: var(--ink);
 }
+.projects-main .projects-landing__link,
+.experience-card__company {
+  font-weight: 500;
+}
 .preview__media--vurt > img {
   width: min(1280px, 78vw);
   aspect-ratio: 648 / 365;
