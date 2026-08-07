@@ -1632,7 +1632,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   height: auto;
   flex-basis: auto;
   aspect-ratio: 648 / 365;
-  transition: transform .24s cubic-bezier(.22,1,.36,1), box-shadow .24s cubic-bezier(.22,1,.36,1), border-color .24s ease;
+  transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s cubic-bezier(.22,1,.36,1), border-color .4s ease;
 }
 .projects-main .projects-landing__card:hover .projects-landing__placeholder,
 .projects-main .projects-landing__card:focus-visible .projects-landing__placeholder {
