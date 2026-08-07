@@ -1594,14 +1594,14 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   border-color: #d8d2d0;
 }
 .preview__media--vurt > img {
-  width: min(1000px, 58vw);
+  width: min(1280px, 78vw);
   aspect-ratio: 648 / 365;
   border-radius: 12px;
   object-fit: contain;
 }
 @media (max-width: 700px) {
   .preview__media--vurt > img {
-    width: min(648px, calc(100vw - 48px));
+    width: min(648px, calc(100vw - 32px));
     border-radius: 12px;
   }
 }
