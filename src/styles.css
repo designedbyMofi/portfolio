@@ -1105,7 +1105,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .projects-main .projects-landing__bio p + p { margin-top: 16px; }
 .projects-main .projects-landing__rule { height: 1px; flex: 0 0 1px; background: var(--shade-200); }
 .projects-main .projects-landing__work { width: 688px; margin: 0; display: flex; flex-direction: column; gap: 20px; }
-.projects-main .projects-landing__card { width: 688px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; }
+.projects-main .projects-landing__card { width: 688px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; appearance: none; border: 0; align-items: flex-start; font: inherit; text-align: left; }
 .projects-main .projects-landing__card:hover,
 .projects-main .projects-landing__card:focus-visible { background: var(--shade-100); }
 .projects-main .projects-landing__card > span:last-child { display: flex; flex-direction: column; gap: 0; }
@@ -1624,6 +1624,13 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   height: auto;
   flex-basis: auto;
   aspect-ratio: 648 / 365;
+  transition: transform .24s cubic-bezier(.22,1,.36,1), box-shadow .24s cubic-bezier(.22,1,.36,1), border-color .24s ease;
+}
+.projects-main .projects-landing__card:hover .projects-landing__placeholder,
+.projects-main .projects-landing__card:focus-visible .projects-landing__placeholder {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(30,27,36,.12);
+  border-color: #d8d2d0;
 }
 .preview__media--vurt > img {
   width: min(1280px, 78vw);
