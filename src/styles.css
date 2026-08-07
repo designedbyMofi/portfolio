@@ -1111,7 +1111,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 .projects-main .projects-landing__card { width: 688px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; border-radius: 12px; appearance: none; border: 0; align-items: flex-start; font: inherit; text-align: left; }
 .projects-main .projects-landing__card:hover,
 .projects-main .projects-landing__card:focus-visible { background: var(--shade-100); }
-.projects-main .projects-landing__card > span:last-child { display: flex; flex-direction: column; gap: 0; }
+.projects-main .projects-landing__card > span:nth-child(2) { display: flex; flex-direction: column; gap: 0; }
 .projects-main .projects-landing__placeholder { width: 648px; height: 320px; flex: 0 0 320px; background: var(--shade-100); border: .5px solid var(--shade-200); border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
 .projects-main .projects-landing__card h2 { margin: 0; color: var(--ink); font-size: 16px; line-height: 28px; font-weight: 600; }
 .projects-main .projects-landing__card p { margin: 0; color: var(--shade-600); font-size: 14px; line-height: 24px; font-weight: 400; }
@@ -1623,7 +1623,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .projects-main .projects-landing__card h2.projects-landing__link {
   font-weight: 500;
 }
-.projects-main .projects-landing__card > span:last-child {
+.projects-main .projects-landing__card > span:nth-child(2) {
   gap: 8px;
 }
 .projects-main .projects-landing__card p {

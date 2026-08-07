@@ -565,7 +565,7 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
           >
             <span className="projects-landing__placeholder"><img src="/assets/corddit-hero.png" alt="Corddit social connection platform preview" /></span>
             <span><h2 className="projects-landing__link">Corddit: Connecting people with similar interests</h2><p>A social platform that connects users with shared interests and offers spontaneous video chats similar to Omegle and Monkey.</p></span>
-            {cordditHover && <span className="experience-card__hover-chip projects-landing__hover-chip" aria-hidden="true">Coming soon</span>}
+            {cordditHover && <span className="experience-card__hover-chip projects-landing__hover-chip" aria-hidden="true">Coming soon 🤏🏽</span>}
           </div>
         </div>
       </div>
