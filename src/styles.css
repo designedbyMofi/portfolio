@@ -1617,6 +1617,14 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .experience-card__company {
   font-weight: 500;
 }
+.projects-main .projects-landing__card h2.projects-landing__link {
+  font-weight: 500;
+}
+.projects-main .projects-landing__placeholder {
+  height: auto;
+  flex-basis: auto;
+  aspect-ratio: 648 / 365;
+}
 .preview__media--vurt > img {
   width: min(1280px, 78vw);
   aspect-ratio: 648 / 365;
