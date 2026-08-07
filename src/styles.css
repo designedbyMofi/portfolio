@@ -175,6 +175,8 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .project-card:active { transform: scale(.985); }
 .project-card__image { display: block; object-fit: cover; transition: transform .22s ease; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
 .project-card__image.is-preview-source { visibility: hidden; transform: none !important; transition: none !important; }
+.project-card--mobile .project-card__image.is-preview-returning { transform: translateY(-22px) !important; }
+.project-card--web .project-card__image.is-preview-returning { transform: translateY(-25px) !important; }
 .project-card--mobile .project-card__image { width: 210px; height: 466px; border-radius: 16px; }
 .project-card--web .project-card__image { width: min(440px, 88%); aspect-ratio: 440 / 286; border-radius: 8px; }
 .project-card.is-hovered { background: var(--shade-200); }

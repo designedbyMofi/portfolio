@@ -820,6 +820,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [previewClosing, setPreviewClosing] = useState(false);
   const previewCloseTimerRef = useRef<number | null>(null);
+  const previewReturnTimerRef = useRef<number | null>(null);
   const previewSourceImageRef = useRef<HTMLImageElement | null>(null);
   const [previewOrigin, setPreviewOrigin] = useState<PreviewOrigin | null>(null);
   const [nativePreviewTransition, setNativePreviewTransition] = useState(false);
@@ -830,7 +831,10 @@ export default function App() {
   const [muted, setMuted] = useState(() => window.localStorage.getItem('portfolio-sounds-muted') === 'true');
   const initialViewRef = useRef(view);
 
-  useEffect(() => () => previewSourceImageRef.current?.classList.remove('is-preview-source'), []);
+  useEffect(() => () => {
+    if (previewReturnTimerRef.current) window.clearTimeout(previewReturnTimerRef.current);
+    previewSourceImageRef.current?.classList.remove('is-preview-source', 'is-preview-returning');
+  }, []);
 
   useEffect(() => {
     // Keep a hard reload at the user's current position. Route navigation
@@ -1033,6 +1037,8 @@ export default function App() {
     // as the preview. Native document view transitions briefly expose the old
     // page snapshot underneath the overlay on mobile Safari.
       previewSourceImageRef.current?.classList.remove('is-preview-source');
+      previewSourceImageRef.current?.classList.remove('is-preview-returning');
+      if (previewReturnTimerRef.current) window.clearTimeout(previewReturnTimerRef.current);
       previewSourceImageRef.current = sourceImage;
       sourceImage.classList.add('is-preview-source');
       setPreviewOrigin(origin);
@@ -1044,19 +1050,38 @@ export default function App() {
 
   const finishProjectClose = () => {
     if (previewCloseTimerRef.current) window.clearTimeout(previewCloseTimerRef.current);
-    previewSourceImageRef.current?.classList.remove('is-preview-source');
-    previewSourceImageRef.current = null;
+    const sourceImage = previewSourceImageRef.current;
+    sourceImage?.classList.remove('is-preview-source');
     setSelectedProject(null);
     setPreviewOrigin(null);
     setNativePreviewTransition(false);
     setPreviewClosing(false);
     previewCloseTimerRef.current = null;
+
+    if (sourceImage) {
+      const sourceButton = sourceImage.closest('button');
+      const settleReturn = () => {
+        sourceImage.classList.remove('is-preview-returning');
+        sourceButton?.removeEventListener('pointerleave', settleReturn);
+        previewSourceImageRef.current = null;
+        previewReturnTimerRef.current = null;
+      };
+      if (sourceButton?.matches(':hover')) {
+        sourceButton.addEventListener('pointerleave', settleReturn, { once: true });
+      } else {
+        previewReturnTimerRef.current = window.setTimeout(settleReturn, 480);
+      }
+    } else {
+      previewSourceImageRef.current = null;
+    }
   };
 
   const closeProject = () => {
     if (!selectedProject || previewClosing) return;
     const sourceImage = previewSourceImageRef.current;
     if (sourceImage?.isConnected) {
+      sourceImage.classList.add('is-preview-returning');
+      void sourceImage.offsetWidth;
       const rect = sourceImage.getBoundingClientRect();
       setPreviewOrigin({
         left: rect.left,
