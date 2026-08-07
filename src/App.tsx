@@ -182,6 +182,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     let firstFrame = 0;
     let measureFrame = 0;
     let cancelled = false;
+    let measureAttempts = 0;
     const animate = () => {
       if (cancelled) return;
       // Development Strict Mode runs layout effects twice. Reset the first
@@ -191,7 +192,18 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       image.classList.remove('zoom-from-card', 'is-settled', 'is-closing-origin');
       void image.offsetWidth;
       const target = image.getBoundingClientRect();
-      if (!target.width || !target.height) return;
+      // Chrome can report a zero rect for a newly mounted, cached image for a
+      // few paints. Keep the source hidden, but retry the measurement instead
+      // of abandoning the opening transform altogether.
+      if (!target.width || !target.height) {
+        if (measureAttempts++ < 24) {
+          measureFrame = window.requestAnimationFrame(animate);
+        } else {
+          image.classList.remove('preview-image-pending');
+        }
+        return;
+      }
+      measureAttempts = 0;
       const targetRadius = parseFloat(getComputedStyle(image).borderTopLeftRadius) || 0;
       const scaleX = origin.width / target.width;
       const scaleY = origin.height / target.height;
@@ -216,26 +228,26 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     };
     const scheduleAnimate = () => {
       if (cancelled) return;
-      // Let image decode and layout settle before taking the destination
-      // measurement. This avoids Chrome occasionally measuring an intermediate
-      // width while the preview is mounting.
-      measureFrame = window.requestAnimationFrame(() => {
-        measureFrame = window.requestAnimationFrame(animate);
-      });
-    };
-    const onReady = () => {
+      // Decode first, then give the browser two layout paints. This keeps the
+      // destination rect stable across Chrome, Safari, and cached images.
       if (typeof image.decode === 'function') {
-        void image.decode().catch(() => undefined).finally(scheduleAnimate);
+        void image.decode().catch(() => undefined).finally(() => {
+          if (!cancelled) measureFrame = window.requestAnimationFrame(() => {
+            measureFrame = window.requestAnimationFrame(animate);
+          });
+        });
       } else {
-        scheduleAnimate();
+        measureFrame = window.requestAnimationFrame(() => {
+          measureFrame = window.requestAnimationFrame(animate);
+        });
       }
     };
-    if (image.complete && image.naturalWidth) onReady();
-    else image.addEventListener('load', onReady, { once: true });
+    if (image.complete && image.naturalWidth) scheduleAnimate();
+    else image.addEventListener('load', scheduleAnimate, { once: true });
 
     return () => {
       cancelled = true;
-      image.removeEventListener('load', onReady);
+      image.removeEventListener('load', scheduleAnimate);
       window.cancelAnimationFrame(measureFrame);
       window.cancelAnimationFrame(firstFrame);
       if (secondFrame) window.cancelAnimationFrame(secondFrame);
