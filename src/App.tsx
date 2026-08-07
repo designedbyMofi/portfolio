@@ -533,6 +533,7 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
     setCordditHover(true);
   };
   const shakeCorddit = () => {
+    void playUiSound('toggle');
     setCordditShake(true);
     if (cordditShakeTimer.current) window.clearTimeout(cordditShakeTimer.current);
     cordditShakeTimer.current = window.setTimeout(() => {
