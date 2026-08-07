@@ -859,7 +859,9 @@ export default function App() {
 
   useEffect(() => () => {
     if (previewReturnTimerRef.current) window.clearTimeout(previewReturnTimerRef.current);
-    previewSourceImageRef.current?.classList.remove('is-preview-source', 'is-preview-returning');
+    const sourceImage = previewSourceImageRef.current;
+    sourceImage?.classList.remove('is-preview-source', 'is-preview-returning');
+    sourceImage?.closest<HTMLElement>('.projects-landing__placeholder')?.classList.remove('is-preview-returning');
   }, []);
 
   useEffect(() => {
@@ -1064,6 +1066,7 @@ export default function App() {
     // page snapshot underneath the overlay on mobile Safari.
       previewSourceImageRef.current?.classList.remove('is-preview-source');
       previewSourceImageRef.current?.classList.remove('is-preview-returning');
+      previewSourceImageRef.current?.closest<HTMLElement>('.projects-landing__placeholder')?.classList.remove('is-preview-returning');
       if (previewReturnTimerRef.current) window.clearTimeout(previewReturnTimerRef.current);
       previewSourceImageRef.current = sourceImage;
       sourceImage.classList.add('is-preview-source');
@@ -1078,6 +1081,8 @@ export default function App() {
     if (previewCloseTimerRef.current) window.clearTimeout(previewCloseTimerRef.current);
     const sourceImage = previewSourceImageRef.current;
     sourceImage?.classList.remove('is-preview-source');
+    const sourceFrame = sourceImage?.closest<HTMLElement>('.projects-landing__placeholder');
+    sourceFrame?.classList.remove('is-preview-source');
     setSelectedProject(null);
     setPreviewOrigin(null);
     setNativePreviewTransition(false);
@@ -1088,6 +1093,7 @@ export default function App() {
       const sourceButton = sourceImage.closest('button');
       const settleReturn = () => {
         sourceImage.classList.remove('is-preview-returning');
+        sourceFrame?.classList.remove('is-preview-returning');
         sourceButton?.removeEventListener('pointerleave', settleReturn);
         previewSourceImageRef.current = null;
         previewReturnTimerRef.current = null;
@@ -1107,6 +1113,7 @@ export default function App() {
     const sourceImage = previewSourceImageRef.current;
     if (sourceImage?.isConnected) {
       sourceImage.classList.add('is-preview-returning');
+      sourceImage.closest<HTMLElement>('.projects-landing__placeholder')?.classList.add('is-preview-returning');
       void sourceImage.offsetWidth;
       const rect = sourceImage.getBoundingClientRect();
       setPreviewOrigin({
