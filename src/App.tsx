@@ -15,7 +15,7 @@ type Project = {
 };
 
 type PreviewOrigin = { left: number; top: number; width: number; height: number; radius: number };
-type UiSound = 'click' | 'navigation' | 'open' | 'close' | 'select' | 'confirm' | 'toggle';
+type UiSound = 'click' | 'navigation' | 'open' | 'close' | 'select' | 'confirm' | 'toggle' | 'haptic';
 
 const viewFromPath = (): PortfolioView => {
   if (window.location.pathname === '/resume') return 'resume';
@@ -68,6 +68,10 @@ const playUiSound = async (sound: UiSound) => {
       tone(670, 760, 0.075, 0.018, 0.045);
       break;
     case 'toggle': tone(330, 470, 0.08, 0.026); break;
+    case 'haptic':
+      tone(150, 95, 0.045, 0.03);
+      tone(125, 80, 0.04, 0.022, 0.055);
+      break;
     default: tone(760, 510, 0.038, 0.018);
   }
 };
@@ -533,7 +537,7 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
     setCordditHover(true);
   };
   const shakeCorddit = () => {
-    void playUiSound('toggle');
+    void playUiSound('haptic');
     setCordditShake(true);
     if (cordditShakeTimer.current) window.clearTimeout(cordditShakeTimer.current);
     cordditShakeTimer.current = window.setTimeout(() => {
