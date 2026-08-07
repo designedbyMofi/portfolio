@@ -1621,7 +1621,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   font-weight: 500;
 }
 .projects-main .projects-landing__card {
-  padding: 12px 8px 8px;
+  padding: 12px 8px 12px;
   border-radius: 20px;
 }
 .projects-main .projects-landing__placeholder {
