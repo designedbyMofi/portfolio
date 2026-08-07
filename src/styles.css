@@ -1593,6 +1593,16 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   box-shadow: 0 8px 20px rgba(30,27,36,.12);
   border-color: #d8d2d0;
 }
+.projects-main .projects-landing__placeholder {
+  overflow: hidden;
+}
+.projects-main .projects-landing__placeholder img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
 .preview__media--vurt > img {
   width: min(1280px, 78vw);
   aspect-ratio: 648 / 365;
