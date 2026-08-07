@@ -174,7 +174,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .project-card { appearance: none; border: 0; padding: 10px; height: 576px; background: var(--shade-100); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; transition: background .18s ease, transform .18s ease; animation: card-arrive .4s both; }
 .project-card:active { transform: scale(.985); }
 .project-card__image { display: block; object-fit: cover; transition: transform .22s ease; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
-.project-card__image.is-preview-source { visibility: hidden; }
+.project-card__image.is-preview-source { visibility: hidden; transform: none !important; transition: none !important; }
 .project-card--mobile .project-card__image { width: 210px; height: 466px; border-radius: 16px; }
 .project-card--web .project-card__image { width: min(440px, 88%); aspect-ratio: 440 / 286; border-radius: 8px; }
 .project-card.is-hovered { background: var(--shade-200); }
