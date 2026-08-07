@@ -11,6 +11,7 @@ type Project = {
   alt: string;
   kind: ProjectKind;
   motion: ProjectMotion;
+  previewKind?: 'vurt';
 };
 
 type PreviewOrigin = { left: number; top: number; width: number; height: number; radius: number };
@@ -226,7 +227,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   return (
     <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
-        <div className={`preview__media preview__media--${project.kind}`}>
+        <div className={`preview__media preview__media--${project.previewKind ?? project.kind}`}>
           <img
             ref={previewImageRef}
             className="is-in-view"
@@ -611,7 +612,7 @@ function VurtMobileIndex() {
   </>;
 }
 
-function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
+function VurtCaseStudy({ direction, onOpenImage }: { direction: NavigationDirection; onOpenImage: (project: Project, origin: PreviewOrigin, image: HTMLImageElement) => void }) {
   const [tocHoverIndex, setTocHoverIndex] = useState<number | null>(null);
   const [tocActiveIndex, setTocActiveIndex] = useState(0);
   const tocRef = useRef<HTMLElement>(null);
@@ -679,11 +680,23 @@ function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     window.history.replaceState(null, '', `#${id}`);
   };
+  const handleImageClick = (event: ReactMouseEvent<HTMLDivElement>, alt: string) => {
+    const image = event.currentTarget.querySelector<HTMLImageElement>('img');
+    if (!image) return;
+    const rect = image.getBoundingClientRect();
+    onOpenImage({ image: image.currentSrc || image.src, alt, kind: 'web', motion: 'static', previewKind: 'vurt' }, {
+      left: rect.left,
+      top: rect.top,
+      width: rect.width,
+      height: rect.height,
+      radius: parseFloat(getComputedStyle(image).borderRadius) || 0,
+    }, image);
+  };
   return (
     <article className={`case-study case-study--${direction}`} aria-labelledby="vurt-title">
       <header className="case-study__hero">
         <div className="case-study__profile"><h1 id="vurt-title">Vurt v3: Designing trust into currency exchange</h1><p className="case-study__lede">I led the redesign of Vurt from a rough mobile exchange app into a web-based responsive platform for customers and exchangers.</p></div>
-      <div className="case-study__hero-card"><div className="case-study__hero-placeholder" aria-label="Vurt exchange marketplace preview"><img src="/assets/vurt-hero.png" alt="Vurt exchange marketplace preview" /></div><div className="case-study__hero-chips"><a href="https://vurt.app/" target="_blank" rel="noreferrer"><svg className="case-study__link-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM9.71002 19.6674C8.74743 17.6259 8.15732 15.3742 8.02731 13H4.06189C4.458 16.1765 6.71639 18.7747 9.71002 19.6674ZM10.0307 13C10.1811 15.4388 10.8778 17.7297 13.9693 13H10.0307ZM19.9381 13H15.9727C15.8427 15.3742 15.2526 17.6259 14.29 19.6674C17.2836 18.7747 19.542 16.1765 19.9381 13ZM4.06189 11H8.02731C8.15732 8.62577 8.74743 6.37407 9.71002 4.33256C6.71639 5.22533 4.458 7.8235 4.06189 11ZM10.0307 11H13.9693C13.8189 8.56122 13.1222 6.27025 12 4.24799C10.8778 6.27025 10.1811 8.56122 10.0307 11ZM14.29 4.33256C15.2526 6.37407 15.8427 8.62577 15.9727 11H19.9381C19.542 7.8235 17.2836 5.22533 14.29 4.33256Z" /></svg><span>vurt.app</span></a><span>2025 - 2026</span></div></div>
+      <div className="case-study__hero-card"><div className="case-study__hero-placeholder" role="button" tabIndex={0} aria-label="Vurt exchange marketplace preview" onClick={(event) => handleImageClick(event, 'Vurt exchange marketplace preview')}><img src="/assets/vurt-hero.png" alt="Vurt exchange marketplace preview" /></div><div className="case-study__hero-chips"><a href="https://vurt.app/" target="_blank" rel="noreferrer"><svg className="case-study__link-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM9.71002 19.6674C8.74743 17.6259 8.15732 15.3742 8.02731 13H4.06189C4.458 16.1765 6.71639 18.7747 9.71002 19.6674ZM10.0307 13C10.1811 15.4388 10.8778 17.7297 13.9693 13H10.0307ZM19.9381 13H15.9727C15.8427 15.3742 15.2526 17.6259 14.29 19.6674C17.2836 18.7747 19.542 16.1765 19.9381 13ZM4.06189 11H8.02731C8.15732 8.62577 8.74743 6.37407 9.71002 4.33256C6.71639 5.22533 4.458 7.8235 4.06189 11ZM10.0307 11H13.9693C13.8189 8.56122 13.1222 6.27025 12 4.24799C10.8778 6.27025 10.1811 8.56122 10.0307 11ZM14.29 4.33256C15.2526 6.37407 15.8427 8.62577 15.9727 11H19.9381C19.542 7.8235 17.2836 5.22533 14.29 4.33256Z" /></svg><span>vurt.app</span></a><span>2025 - 2026</span></div></div>
       </header>
       <div className="case-study__rule" />
       <nav ref={tocRef} className="case-study__toc case-study__toc--animated" aria-label="Case study sections" onPointerLeave={() => setTocHoverIndex(null)} style={{ '--popup-hover-index': String(tocHoverIndex ?? 0) } as CSSProperties}>
@@ -695,7 +708,7 @@ function VurtCaseStudy({ direction }: { direction: NavigationDirection }) {
           <div className="case-study__entry-heading"><span>{section.number}: {section.label || section.nav}</span><h2>{section.title}</h2></div>
           {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           {section.bullets && <ul>{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
-          {section.media && <div className="case-study__placeholder" aria-hidden="true"><img src={`/assets/vurt-${section.number.replace(".", "-")}.png`} alt="" /></div>}
+          {section.media && <div className="case-study__placeholder" role="button" tabIndex={0} aria-label={`Open ${section.label || section.nav} image`} onClick={(event) => handleImageClick(event, section.label || section.nav)}><img src={`/assets/vurt-${section.number.replace(".", "-")}.png`} alt="" /></div>}
         </section>)}
       </div>
       <VurtMobileIndex />
@@ -1100,7 +1113,7 @@ export default function App() {
     <>
       <ScrolledHeader active={view} projectDetail={projectDetail} previewOpen={Boolean(selectedProject)} onBack={closeVurtCaseStudy} onClosePreview={closeProject} onNavigate={navigate} />
       <main className={view === 'resume' ? 'resume-main' : view === 'projects' ? (projectDetail ? 'case-study-main' : 'projects-main') : 'shots-main'}>
-        {view === 'resume' ? <ResumePage direction={navigationDirection} /> : view === 'projects' ? (projectDetail ? <VurtCaseStudy direction={navigationDirection} /> : <ProjectsLanding onOpenVurt={openVurtCaseStudy} direction={navigationDirection} />) : (
+        {view === 'resume' ? <ResumePage direction={navigationDirection} /> : view === 'projects' ? (projectDetail ? <VurtCaseStudy direction={navigationDirection} onOpenImage={openProject} /> : <ProjectsLanding onOpenVurt={openVurtCaseStudy} direction={navigationDirection} />) : (
           <div className="content-shell">
             <Profile />
             <section className={`portfolio-bottom portfolio-bottom--${navigationDirection}`}>

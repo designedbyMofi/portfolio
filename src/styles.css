@@ -1584,6 +1584,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 }
 .case-study-main .case-study__hero-placeholder,
 .case-study-main .case-study__entry--media .case-study__placeholder {
+  cursor: pointer;
   transition: transform .24s cubic-bezier(.22,1,.36,1), box-shadow .24s cubic-bezier(.22,1,.36,1), border-color .24s ease;
 }
 .case-study-main .case-study__hero-placeholder:hover,
@@ -1591,4 +1592,16 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(30,27,36,.12);
   border-color: #d8d2d0;
+}
+.preview__media--vurt > img {
+  width: min(1000px, 58vw);
+  aspect-ratio: 648 / 365;
+  border-radius: 12px;
+  object-fit: contain;
+}
+@media (max-width: 700px) {
+  .preview__media--vurt > img {
+    width: min(648px, calc(100vw - 48px));
+    border-radius: 12px;
+  }
 }
