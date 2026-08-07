@@ -215,9 +215,14 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     const image = previewImageRef.current;
     image.classList.add('zoom-from-card', 'is-closing-origin');
     // Commit the full-size state before switching back to the card origin.
-    // Doing this before paint keeps Chrome's image and backdrop in sync.
+    // Give Chrome/Safari a painted frame for the settled state first; without
+    // this, mobile browsers can collapse the return into a fade or skip the
+    // transform interpolation entirely.
     void image.offsetWidth;
-    image.classList.remove('is-settled');
+    const firstFrame = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => image.classList.remove('is-settled'));
+    });
+    return () => window.cancelAnimationFrame(firstFrame);
   }, [closing, origin]);
 
   const carouselProjects = [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
