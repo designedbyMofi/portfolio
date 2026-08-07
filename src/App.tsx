@@ -157,7 +157,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
   );
 }
 
-function ProjectPreview({ project, origin, nativeTransition, closing, onClose }: { project: Project; origin: PreviewOrigin | null; nativeTransition: boolean; closing: boolean; onClose: () => void }) {
+function ProjectPreview({ project, origin, nativeTransition, closing, onClose, onExitComplete }: { project: Project; origin: PreviewOrigin | null; nativeTransition: boolean; closing: boolean; onClose: () => void; onExitComplete: () => void }) {
   const [paused, setPaused] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const previewImageRef = useRef<HTMLImageElement>(null);
@@ -175,14 +175,25 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
     let secondFrame = 0;
     let firstFrame = 0;
     const animate = () => {
+      // Development Strict Mode runs layout effects twice. Reset the first
+      // pass before measuring, otherwise the transformed preview is mistaken
+      // for its own destination and the second pass overwrites the real card
+      // geometry with an almost-identity transform.
+      image.classList.remove('zoom-from-card', 'is-settled', 'is-closing-origin');
+      void image.offsetWidth;
       const target = image.getBoundingClientRect();
       if (!target.width || !target.height) return;
-      image.style.setProperty('--target-radius', getComputedStyle(image).borderRadius);
+      const targetRadius = parseFloat(getComputedStyle(image).borderTopLeftRadius) || 0;
+      const scaleX = origin.width / target.width;
+      const scaleY = origin.height / target.height;
+      image.style.setProperty('--target-radius', `${targetRadius}px / ${targetRadius}px`);
       image.style.setProperty('--zoom-x', `${origin.left - target.left}px`);
       image.style.setProperty('--zoom-y', `${origin.top - target.top}px`);
-      image.style.setProperty('--zoom-scale-x', String(origin.width / target.width));
-      image.style.setProperty('--zoom-scale-y', String(origin.height / target.height));
-      image.style.setProperty('--zoom-radius', `${origin.radius}px`);
+      image.style.setProperty('--zoom-scale-x', String(scaleX));
+      image.style.setProperty('--zoom-scale-y', String(scaleY));
+      // Border radii are affected by transforms. Compensating each axis keeps
+      // the visible corner radius identical to the card throughout the zoom.
+      image.style.setProperty('--zoom-radius', `${origin.radius / scaleX}px / ${origin.radius / scaleY}px`);
       image.classList.add('zoom-from-card');
       firstFrame = window.requestAnimationFrame(() => {
         secondFrame = window.requestAnimationFrame(() => image.classList.add('is-settled'));
@@ -198,19 +209,14 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
     };
   }, [origin, closing]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!closing || !previewImageRef.current || !origin) return;
     const image = previewImageRef.current;
-    // Defer the state swap by one frame so Chrome paints the settled preview
-    // first, then interpolates back to the shared card origin.
-    const frame = window.requestAnimationFrame(() => {
-      image.classList.add('zoom-from-card', 'is-closing-origin');
-      // Chrome can batch class mutations in one style pass and skip the
-      // reverse transform. Commit the settled state before removing it.
-      void image.offsetWidth;
-      image.classList.remove('is-settled');
-    });
-    return () => window.cancelAnimationFrame(frame);
+    image.classList.add('zoom-from-card', 'is-closing-origin');
+    // Commit the full-size state before switching back to the card origin.
+    // Doing this before paint keeps Chrome's image and backdrop in sync.
+    void image.offsetWidth;
+    image.classList.remove('is-settled');
   }, [closing, origin]);
 
   const carouselProjects = [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
@@ -221,7 +227,18 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose }:
     <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
         <div className={`preview__media preview__media--${project.kind}`}>
-          <img ref={previewImageRef} className="is-in-view" key={displayedProject.image} src={displayedProject.image} alt={displayedProject.alt} data-reveal style={{ viewTransitionName: 'selected-shot' } as CSSProperties} />
+          <img
+            ref={previewImageRef}
+            className="is-in-view"
+            key={displayedProject.image}
+            src={displayedProject.image}
+            alt={displayedProject.alt}
+            data-reveal
+            style={{ viewTransitionName: 'selected-shot' } as CSSProperties}
+            onTransitionEnd={(event) => {
+              if (closing && event.propertyName === 'transform') onExitComplete();
+            }}
+          />
           {project.motion === 'video' && (
             <div className="preview__video-controls" aria-label="Video controls">
               <button onClick={() => setPaused(!paused)} aria-label={paused ? 'Play preview' : 'Pause preview'}><span className={paused ? 'play-icon' : 'pause-icon'} /></button>
@@ -803,6 +820,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [previewClosing, setPreviewClosing] = useState(false);
   const previewCloseTimerRef = useRef<number | null>(null);
+  const previewSourceImageRef = useRef<HTMLImageElement | null>(null);
   const [previewOrigin, setPreviewOrigin] = useState<PreviewOrigin | null>(null);
   const [nativePreviewTransition, setNativePreviewTransition] = useState(false);
   const [view, setView] = useState<PortfolioView>(() => viewFromPath());
@@ -811,6 +829,8 @@ export default function App() {
   const [shotFilter, setShotFilter] = useState<ShotFilter>('all');
   const [muted, setMuted] = useState(() => window.localStorage.getItem('portfolio-sounds-muted') === 'true');
   const initialViewRef = useRef(view);
+
+  useEffect(() => () => previewSourceImageRef.current?.classList.remove('is-preview-source'), []);
 
   useEffect(() => {
     // Keep a hard reload at the user's current position. Route navigation
@@ -1012,7 +1032,9 @@ export default function App() {
     // Use the shared-origin CSS zoom so the backdrop mounts in the same frame
     // as the preview. Native document view transitions briefly expose the old
     // page snapshot underneath the overlay on mobile Safari.
-    void sourceImage;
+      previewSourceImageRef.current?.classList.remove('is-preview-source');
+      previewSourceImageRef.current = sourceImage;
+      sourceImage.classList.add('is-preview-source');
       setPreviewOrigin(origin);
       setNativePreviewTransition(false);
       setPreviewClosing(false);
@@ -1020,16 +1042,33 @@ export default function App() {
       setSelectedProject(project);
   };
 
+  const finishProjectClose = () => {
+    if (previewCloseTimerRef.current) window.clearTimeout(previewCloseTimerRef.current);
+    previewSourceImageRef.current?.classList.remove('is-preview-source');
+    previewSourceImageRef.current = null;
+    setSelectedProject(null);
+    setPreviewOrigin(null);
+    setNativePreviewTransition(false);
+    setPreviewClosing(false);
+    previewCloseTimerRef.current = null;
+  };
+
   const closeProject = () => {
     if (!selectedProject || previewClosing) return;
+    const sourceImage = previewSourceImageRef.current;
+    if (sourceImage?.isConnected) {
+      const rect = sourceImage.getBoundingClientRect();
+      setPreviewOrigin({
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+        radius: parseFloat(getComputedStyle(sourceImage).borderTopLeftRadius) || 0,
+      });
+    }
     setPreviewClosing(true);
-    previewCloseTimerRef.current = window.setTimeout(() => {
-      setSelectedProject(null);
-      setPreviewOrigin(null);
-      setNativePreviewTransition(false);
-      setPreviewClosing(false);
-      previewCloseTimerRef.current = null;
-    }, 700);
+    // Safety fallback only; the preview normally unmounts on transform end.
+    previewCloseTimerRef.current = window.setTimeout(finishProjectClose, 1200);
   };
 
   return (
@@ -1049,7 +1088,7 @@ export default function App() {
         <FloatingNavigation active={view} onNavigate={navigate} filter={shotFilter} onFilter={setShotFilter} muted={muted} onMutedChange={setMuted} />
       </main>
       <Footer />
-      {selectedProject && <ProjectPreview project={selectedProject} origin={previewOrigin} nativeTransition={nativePreviewTransition} closing={previewClosing} onClose={closeProject} />}
+      {selectedProject && <ProjectPreview project={selectedProject} origin={previewOrigin} nativeTransition={nativePreviewTransition} closing={previewClosing} onClose={closeProject} onExitComplete={finishProjectClose} />}
     </>
   );
 }
