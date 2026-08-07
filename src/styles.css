@@ -1623,6 +1623,12 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .projects-main .projects-landing__card h2.projects-landing__link {
   font-weight: 500;
 }
+.projects-main .projects-landing__card > span:last-child {
+  gap: 8px;
+}
+.projects-main .projects-landing__card p {
+  color: #aba09c;
+}
 .projects-main .projects-landing__card {
   padding: 12px 8px 8px;
   border-radius: 20px;

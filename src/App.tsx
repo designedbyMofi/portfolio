@@ -525,7 +525,7 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
       <div className="projects-landing__profile"><Profile id="projects-title" /></div>
       <div className={`portfolio-bottom portfolio-bottom--${direction}`}>
         <div className="projects-landing__work"><p className="projects-landing__eyebrow">My work</p>
-          <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder"><img src="/assets/vurt-hero.png" alt="Vurt exchange marketplace preview" /></span><span><h2 className="projects-landing__link">Vurt: Designing trust into currency exchange</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></button>
+          <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder"><img src="/assets/vurt-hero.png" alt="Vurt exchange marketplace preview" /></span><span><h2 className="projects-landing__link">Vurt: Designing trust into currency exchange</h2><p>A web-based marketplace that makes currency exchange easier to compare, trust, and complete.</p></span></button>
           <div className="projects-landing__card"><span className="projects-landing__placeholder" /><span><h2>Corddit: Connecting people with similar interests</h2><p>Lorem ipsum dolor sit amet consectetur. Purus integer est ipsum nec pellentesque pellentesque mollis fames ut. Dui feugiat amet risus in hendrerit.</p></span></div>
         </div>
       </div>
