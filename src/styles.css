@@ -1615,7 +1615,7 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 }
 .projects-main .projects-landing__link,
 .experience-card__company {
-  font-weight: 500;
+  font-weight: 400;
 }
 .preview__media--vurt > img {
   width: min(1280px, 78vw);
