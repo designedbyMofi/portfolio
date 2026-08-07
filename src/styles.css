@@ -1603,6 +1603,16 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   object-fit: cover;
   border-radius: inherit;
 }
+.projects-main .projects-landing__link {
+  text-decoration: underline dotted var(--shade-400);
+  text-underline-offset: 4px;
+  transition: text-decoration-color .18s ease;
+}
+.projects-main .projects-landing__link:hover,
+.projects-main .projects-landing__card:hover .projects-landing__link,
+.projects-main .projects-landing__card:focus-visible .projects-landing__link {
+  text-decoration-color: var(--ink);
+}
 .preview__media--vurt > img {
   width: min(1280px, 78vw);
   aspect-ratio: 648 / 365;
