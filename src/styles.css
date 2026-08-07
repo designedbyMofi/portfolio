@@ -1554,3 +1554,18 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
   .scrolled-header__back svg { width: 21px; height: 21px; }
   .scrolled-header__share svg { width: 18px; height: 18px; }
 }
+
+/* Vurt hero artwork uses the updated 648 × 365 frame while retaining the container treatment. */
+.case-study-main .case-study__hero-placeholder {
+  height: auto;
+  flex-basis: auto;
+  aspect-ratio: 648 / 365;
+  overflow: hidden;
+}
+.case-study-main .case-study__hero-placeholder img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
