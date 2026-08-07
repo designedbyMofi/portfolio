@@ -197,6 +197,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       // the visible corner radius identical to the card throughout the zoom.
       image.style.setProperty('--zoom-radius', `${origin.radius / scaleX}px / ${origin.radius / scaleY}px`);
       image.classList.add('zoom-from-card');
+      image.classList.remove('preview-image-pending');
       // Hold the measured origin for an additional paint. Safari otherwise
       // occasionally batches the initial transform and destination together,
       // making the scale-in appear to snap or finish too quickly.
@@ -242,7 +243,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         <div className={`preview__media preview__media--${project.previewKind ?? project.kind}`}>
           <img
             ref={previewImageRef}
-            className="is-in-view"
+            className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}`}
             key={displayedProject.image}
             src={displayedProject.image}
             alt={displayedProject.alt}
