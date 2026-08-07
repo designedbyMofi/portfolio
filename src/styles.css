@@ -518,7 +518,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .scrolled-header a:hover, .scrolled-header a:focus-visible { background: rgba(0,0,0,.6); color: white; outline: 0; }
 .scrolled-header a:active { transform: translateY(1px); }
 
-.preview { --preview-motion-duration: .72s; --preview-motion-easing: cubic-bezier(.4,0,.2,1); position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; overflow: auto; isolation: isolate; padding: 80px 40px; background: transparent; }
+.preview { --preview-motion-duration: .72s; --preview-open-duration: 1s; --preview-motion-easing: cubic-bezier(.4,0,.2,1); position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; overflow: auto; isolation: isolate; padding: 80px 40px; background: transparent; }
 .preview::before { content: ''; position: fixed; z-index: -1; inset: 0; background: rgba(232,228,227,.8); -webkit-backdrop-filter: blur(40px); backdrop-filter: blur(40px); animation: preview-backdrop-in var(--preview-motion-duration) var(--preview-motion-easing) both; will-change: background-color, backdrop-filter; }
 .preview.is-closing { pointer-events: none; }
 .preview.is-closing::before { animation: preview-backdrop-out var(--preview-motion-duration) var(--preview-motion-easing) both; }
@@ -534,6 +534,7 @@ html.app-ready .profile__portrait { filter: blur(0) !important; opacity: 1 !impo
 .preview__media { display: flex; flex-direction: column; align-items: center; gap: 24px; flex: none; }
 .preview__media > img { display: block; object-fit: contain; box-shadow: 0 1px 2px rgba(0,0,0,.05); animation: media-swap .28s ease both; }
 .preview__media > img.zoom-from-card { position: relative; z-index: 2; animation: none; transform-origin: top left; transform: translate(var(--zoom-x), var(--zoom-y)) scale(var(--zoom-scale-x), var(--zoom-scale-y)); border-radius: var(--zoom-radius); transition: transform var(--preview-motion-duration) cubic-bezier(.22,1,.36,1), border-radius var(--preview-motion-duration) cubic-bezier(.22,1,.36,1), box-shadow var(--preview-motion-duration) ease; box-shadow: 0 8px 28px rgba(30,27,36,.08); will-change: transform, border-radius; }
+.preview__media > img.zoom-from-card:not(.is-closing-origin) { transition-duration: var(--preview-open-duration); }
 .preview__media > img.zoom-from-card.is-settled { transform: translate(0, 0) scale(1, 1); border-radius: var(--target-radius); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
 .preview__media--mobile > img { width: clamp(240px, 19.68vw, 340px); height: auto; border-radius: 32px; }
 .preview__media--web > img { width: min(1000px, 58vw); aspect-ratio: 20 / 13; border-radius: 20px; }
@@ -815,7 +816,7 @@ html:has(.preview.is-photos-transition) main, html:has(.preview.is-photos-transi
 }
 
 @media (max-width: 700px) {
-  .preview { --preview-motion-duration: .82s; }
+  .preview { --preview-motion-duration: .82s; --preview-open-duration: 1.1s; }
   .content-shell { padding: 32px 24px 140px; }
   .profile { padding: 0; margin-bottom: 32px; }
   .profile__heading { gap: 20px; }

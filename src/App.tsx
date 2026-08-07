@@ -173,6 +173,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     const image = previewImageRef.current;
     if (!image || !origin || closing) return;
 
+    let thirdFrame = 0;
     let secondFrame = 0;
     let firstFrame = 0;
     const animate = () => {
@@ -196,8 +197,13 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       // the visible corner radius identical to the card throughout the zoom.
       image.style.setProperty('--zoom-radius', `${origin.radius / scaleX}px / ${origin.radius / scaleY}px`);
       image.classList.add('zoom-from-card');
+      // Hold the measured origin for an additional paint. Safari otherwise
+      // occasionally batches the initial transform and destination together,
+      // making the scale-in appear to snap or finish too quickly.
       firstFrame = window.requestAnimationFrame(() => {
-        secondFrame = window.requestAnimationFrame(() => image.classList.add('is-settled'));
+        secondFrame = window.requestAnimationFrame(() => {
+          thirdFrame = window.requestAnimationFrame(() => image.classList.add('is-settled'));
+        });
       });
     };
     if (image.complete && image.naturalWidth) animate();
@@ -207,6 +213,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       image.removeEventListener('load', animate);
       window.cancelAnimationFrame(firstFrame);
       if (secondFrame) window.cancelAnimationFrame(secondFrame);
+      if (thirdFrame) window.cancelAnimationFrame(thirdFrame);
     };
   }, [origin, closing]);
 
