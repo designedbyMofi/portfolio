@@ -1590,5 +1590,5 @@ body:has(.scrolled-header.is-visible) .case-study-main .case-study__toc {
 .case-study-main .case-study__entry--media .case-study__placeholder:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(30,27,36,.12);
-  border-color: var(--shade-300);
+  border-color: #d8d2d0;
 }
