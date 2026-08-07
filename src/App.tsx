@@ -586,7 +586,7 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
       <div className="projects-landing__profile"><Profile id="projects-title" /></div>
       <div className={`portfolio-bottom portfolio-bottom--${direction}`}>
         <div className="projects-landing__work"><p className="projects-landing__eyebrow">My work</p>
-          <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder"><img src="/assets/vurt-hero.png" alt="Vurt exchange marketplace preview" /></span><span><h2 className="projects-landing__link">Vurt: Designing trust into currency exchange</h2><p>A web-based marketplace that makes currency exchange easier to compare, trust, and complete with confidence.</p></span></button>
+          <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder"><img src="/assets/vurt-hero.png" alt="Vurt exchange marketplace preview" data-reveal /></span><span><h2 className="projects-landing__link">Vurt: Designing trust into currency exchange</h2><p>A web-based marketplace that makes currency exchange easier to compare, trust, and complete with confidence.</p></span></button>
           <div
             className={`projects-landing__card${cordditShake ? ' is-shaking' : ''}`}
             role="button"
@@ -601,7 +601,7 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
             style={{ '--company-hover-x': `${cordditPointer.x}px`, '--company-hover-y': `${cordditPointer.y}px` } as CSSProperties}
             aria-label="Corddit project coming soon"
           >
-            <span className="projects-landing__placeholder"><img src="/assets/corddit-hero.png" alt="Corddit social connection platform preview" /></span>
+            <span className="projects-landing__placeholder"><img src="/assets/corddit-hero.png" alt="Corddit social connection platform preview" data-reveal /></span>
             <span><h2 className="projects-landing__link">Corddit: Connecting people with similar interests</h2><p>A social platform that connects users with shared interests and offers spontaneous video chats similar to Omegle and Monkey.</p></span>
             {cordditHover && <span className="experience-card__hover-chip projects-landing__hover-chip" aria-hidden="true">Coming soon 🤏🏽</span>}
           </div>
@@ -1159,6 +1159,7 @@ export default function App() {
     if (previewCloseTimerRef.current) window.clearTimeout(previewCloseTimerRef.current);
     const sourceImage = previewSourceImageRef.current;
     sourceImage?.classList.remove('is-preview-source');
+    document.querySelectorAll('.is-preview-source').forEach((element) => element.classList.remove('is-preview-source'));
     const sourceFrame = sourceImage?.closest<HTMLElement>('.projects-landing__placeholder');
     sourceFrame?.classList.remove('is-preview-source');
     setSelectedProject(null);
