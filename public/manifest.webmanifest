@@ -7,8 +7,8 @@
   "theme_color": "#faf8f6",
   "icons": [
     {
-      "src": "/assets/portrait-flip.png",
-      "sizes": "800x800",
+      "src": "/apple-touch-icon.png",
+      "sizes": "400x400",
       "type": "image/png",
       "purpose": "any maskable"
     }
