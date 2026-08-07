@@ -69,8 +69,8 @@ const playUiSound = async (sound: UiSound) => {
       break;
     case 'toggle': tone(330, 470, 0.08, 0.026); break;
     case 'haptic':
-      tone(150, 95, 0.045, 0.03);
-      tone(125, 80, 0.04, 0.022, 0.055);
+      tone(150, 95, 0.045, 0.05);
+      tone(125, 80, 0.04, 0.038, 0.055);
       break;
     default: tone(760, 510, 0.038, 0.018);
   }
