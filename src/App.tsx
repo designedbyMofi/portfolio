@@ -630,7 +630,9 @@ const vurtSections = [
 ];
 
 function VurtMobileIndex() {
-  const [active, setActive] = useState(1);
+  // Intro is the first section in the document; start there before the first
+  // scroll frame is measured so the chip never appears one section ahead.
+  const [active, setActive] = useState(0);
   const indexRef = useRef<HTMLElement>(null);
   const scrollbarRef = useRef<HTMLSpanElement>(null);
   const [isVisible, setIsVisible] = useState(false);
