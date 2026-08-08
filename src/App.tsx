@@ -650,9 +650,9 @@ function VurtMobileIndex() {
       const viewportHeight = scrollRoot.clientHeight || visualViewport?.height || window.innerHeight;
       const viewportTop = visualViewport?.offsetTop || 0;
       let next = 0;
-      // Advance the chip as soon as a section occupies the readable portion
-      // of the viewport, so Solution cannot visually carry into Impact.
-      sections.forEach((section, index) => { if (section.getBoundingClientRect().top <= viewportHeight * .62) next = index; });
+      // Advance when the next section reaches the middle-ish reading line;
+      // using a lower line keeps the chip from getting one section ahead.
+      sections.forEach((section, index) => { if (section.getBoundingClientRect().top <= viewportHeight * .42) next = index; });
       setActive((previous) => previous === next ? previous : next);
       const documentHeight = Math.max(viewportHeight, scrollRoot.scrollHeight);
       const maxScroll = Math.max(1, documentHeight - viewportHeight);
