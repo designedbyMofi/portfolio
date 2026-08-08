@@ -748,11 +748,11 @@ function VurtCaseStudy({ direction, onOpenImage }: { direction: NavigationDirect
     let frame = 0;
     const updateActiveSection = () => {
       frame = 0;
-      // On desktop, activate a section as it reaches the visual center of the
+      // On desktop, activate a section as it reaches the upper-middle of the
       // reading column rather than waiting for it to touch the top edge. Keep
       // the existing mobile threshold because the mobile index uses its own
       // native-scroll positioning and chip behavior.
-      const activationLine = window.innerWidth > 700 ? window.innerHeight * 0.5 : 180;
+      const activationLine = window.innerWidth > 700 ? window.innerHeight * 0.36 : 180;
       let nextIndex = 0;
       navSections.forEach((section, index) => {
         const element = document.getElementById(section.id);
