@@ -2930,7 +2930,7 @@ html.app-ready .profile__portrait {
 
 .preview {
   --preview-motion-duration: .72s;
-  --preview-open-duration: 1s;
+  --preview-open-duration: 4s;
   --preview-motion-easing: cubic-bezier(.4, 0, .2, 1);
   position: fixed;
   z-index: 50;
