@@ -1186,7 +1186,10 @@ export default function App() {
         previewSourceImageRef.current = null;
         previewReturnTimerRef.current = null;
       };
-      if (sourceButton?.matches(':hover')) {
+      const preserveHoverReturn = window.matchMedia('(min-width: 701px)').matches;
+      if (!preserveHoverReturn) {
+        settleReturn();
+      } else if (sourceButton?.matches(':hover')) {
         sourceButton.addEventListener('pointerleave', settleReturn, { once: true });
       } else {
         previewReturnTimerRef.current = window.setTimeout(settleReturn, 480);
@@ -1200,8 +1203,11 @@ export default function App() {
     if (!selectedProject || previewClosing) return;
     const sourceImage = previewSourceImageRef.current;
     if (sourceImage?.isConnected) {
-      sourceImage.classList.add('is-preview-returning');
-      sourceImage.closest<HTMLElement>('.projects-landing__placeholder')?.classList.add('is-preview-returning');
+      const preserveHoverReturn = window.matchMedia('(min-width: 701px)').matches;
+      if (preserveHoverReturn) {
+        sourceImage.classList.add('is-preview-returning');
+        sourceImage.closest<HTMLElement>('.projects-landing__placeholder')?.classList.add('is-preview-returning');
+      }
       void sourceImage.offsetWidth;
       const rect = sourceImage.getBoundingClientRect();
       setPreviewOrigin({
