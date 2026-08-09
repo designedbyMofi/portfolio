@@ -1191,30 +1191,34 @@ export default function App() {
   const finishProjectClose = () => {
     if (previewCloseTimerRef.current) window.clearTimeout(previewCloseTimerRef.current);
     const sourceImage = previewSourceImageRef.current;
-    if (sourceImage) {
+    const sourceFrame = sourceImage?.closest<HTMLElement>('.projects-landing__placeholder');
+    const revealSource = () => {
+      if (!sourceImage) return;
       sourceImage.style.transition = 'none';
       sourceImage.style.setProperty('opacity', '1', 'important');
       sourceImage.style.setProperty('visibility', 'visible', 'important');
-    }
-    sourceImage?.classList.remove('is-preview-source');
-    document.querySelectorAll<HTMLElement>('.is-preview-source').forEach((element) => {
-      element.style.transition = 'none';
-      element.style.setProperty('opacity', '1', 'important');
-      element.style.setProperty('visibility', 'visible', 'important');
-      element.classList.remove('is-preview-source');
-      window.requestAnimationFrame(() => {
-        element.style.transition = '';
-        element.style.removeProperty('opacity');
-        element.style.removeProperty('visibility');
+      sourceImage.style.setProperty('filter', 'none', 'important');
+      sourceImage.classList.remove('is-preview-source');
+      sourceFrame?.classList.remove('is-preview-source');
+      document.querySelectorAll<HTMLElement>('.is-preview-source').forEach((element) => {
+        element.classList.remove('is-preview-source');
       });
-    });
-    const sourceFrame = sourceImage?.closest<HTMLElement>('.projects-landing__placeholder');
-    sourceFrame?.classList.remove('is-preview-source');
+      window.requestAnimationFrame(() => {
+        sourceImage.style.transition = '';
+        sourceImage.style.removeProperty('opacity');
+        sourceImage.style.removeProperty('visibility');
+        sourceImage.style.removeProperty('filter');
+      });
+    };
     setSelectedProject(null);
     setPreviewOrigin(null);
     setNativePreviewTransition(false);
     setPreviewClosing(false);
     previewCloseTimerRef.current = null;
+
+    // Let React commit the preview unmount before putting the source back in
+    // the compositor. Revealing it in this same task causes a one-frame wink.
+    window.requestAnimationFrame(revealSource);
 
     if (sourceImage) {
       const sourceButton = sourceImage.closest('button');
@@ -1223,10 +1227,6 @@ export default function App() {
         sourceImage.classList.remove('is-preview-returning');
         sourceFrame?.classList.remove('is-preview-returning');
         window.requestAnimationFrame(() => { sourceImage.style.transition = ''; });
-        window.requestAnimationFrame(() => {
-          sourceImage.style.removeProperty('opacity');
-          sourceImage.style.removeProperty('visibility');
-        });
         sourceButton?.removeEventListener('pointerleave', settleReturn);
         previewSourceImageRef.current = null;
         previewReturnTimerRef.current = null;
