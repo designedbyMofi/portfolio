@@ -177,12 +177,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     const image = previewImageRef.current;
     if (!image || !origin || closing) return;
 
-    let thirdFrame = 0;
-    let secondFrame = 0;
-    let firstFrame = 0;
     let measureFrame = 0;
     let cancelled = false;
     let measureAttempts = 0;
+    let entryAnimation: Animation | null = null;
     const animate = () => {
       if (cancelled) return;
       // Development Strict Mode runs layout effects twice. Reset the first
@@ -215,16 +213,41 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       // Border radii are affected by transforms. Compensating each axis keeps
       // the visible corner radius identical to the card throughout the zoom.
       image.style.setProperty('--zoom-radius', `${origin.radius / scaleX}px / ${origin.radius / scaleY}px`);
+
+      // Keep the entry on one animation timeline. The previous implementation
+      // relied on a CSS transition and a later settled class, which lets
+      // Chrome/Safari collapse the first frame when the image is decoded from
+      // cache. Inline transition:none guarantees that the measured card frame
+      // is the actual starting frame for the WAAPI interpolation below.
+      image.style.transition = 'none';
       image.classList.add('zoom-from-card');
       image.classList.remove('preview-image-pending');
-      // Hold the measured origin for an additional paint. Safari otherwise
-      // occasionally batches the initial transform and destination together,
-      // making the scale-in appear to snap or finish too quickly.
-      firstFrame = window.requestAnimationFrame(() => {
-        secondFrame = window.requestAnimationFrame(() => {
-          thirdFrame = window.requestAnimationFrame(() => image.classList.add('is-settled'));
-        });
+      void image.offsetWidth;
+      entryAnimation = image.animate([
+        {
+          transform: `translate(${origin.left - target.left}px, ${origin.top - target.top}px) scale(${scaleX}, ${scaleY})`,
+          borderRadius: `${origin.radius / scaleX}px / ${origin.radius / scaleY}px`,
+          boxShadow: '0 8px 28px rgba(30, 27, 36, .08)',
+        },
+        {
+          transform: 'translate(0, 0) scale(1, 1)',
+          borderRadius: `${targetRadius}px / ${targetRadius}px`,
+          boxShadow: '0 1px 2px rgba(0, 0, 0, .05)',
+        },
+      ], {
+        duration: 720,
+        easing: 'cubic-bezier(.22, 1, .36, 1)',
+        fill: 'both',
       });
+      void entryAnimation.finished.then(() => {
+        if (cancelled) return;
+        image.classList.add('is-settled');
+        // Hand control back to the class-based return transition once the
+        // entry has settled; leaving a fill:both animation attached would
+        // otherwise override the closing transform in Safari.
+        entryAnimation?.cancel();
+        image.style.transition = '';
+      }).catch(() => undefined);
     };
     const scheduleAnimate = () => {
       if (cancelled) return;
@@ -249,9 +272,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       cancelled = true;
       image.removeEventListener('load', scheduleAnimate);
       window.cancelAnimationFrame(measureFrame);
-      window.cancelAnimationFrame(firstFrame);
-      if (secondFrame) window.cancelAnimationFrame(secondFrame);
-      if (thirdFrame) window.cancelAnimationFrame(thirdFrame);
+      entryAnimation?.cancel();
     };
   }, [origin, closing]);
 
