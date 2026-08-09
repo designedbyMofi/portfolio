@@ -839,7 +839,12 @@ html.app-ready .profile__portrait {
 }
 
 .is-preview-source {
-  visibility: hidden;
+  /* Keep the source out of the mobile compositor while the preview image
+     animates from its measured card rect. Opacity is forced as well as
+     visibility because the global image-reveal rule otherwise leaves a
+     second, fading copy visible on mobile browsers. */
+  visibility: hidden !important;
+  opacity: 0 !important;
   transform: none !important;
   transition: none !important;
 }
