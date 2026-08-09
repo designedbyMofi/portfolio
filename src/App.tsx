@@ -166,6 +166,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const [paused, setPaused] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const previewImageRef = useRef<HTMLImageElement>(null);
+  const entryStartedRef = useRef(false);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => event.key === 'Escape' && onClose();
@@ -176,6 +177,11 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   useLayoutEffect(() => {
     const image = previewImageRef.current;
     if (!image || !origin || closing) return;
+    // A cached image can cause the decode/load path and a Strict Mode layout
+    // effect pass to overlap. The source frame must only seed one entry
+    // animation or the preview will resize a second time after settling.
+    if (entryStartedRef.current) return;
+    entryStartedRef.current = true;
 
     let measureFrame = 0;
     let cancelled = false;
