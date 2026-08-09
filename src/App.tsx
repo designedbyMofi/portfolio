@@ -1198,8 +1198,13 @@ export default function App() {
   const finishProjectClose = () => {
     if (previewCloseTimerRef.current) window.clearTimeout(previewCloseTimerRef.current);
     const sourceImage = previewSourceImageRef.current;
+    if (sourceImage) sourceImage.style.transition = 'none';
     sourceImage?.classList.remove('is-preview-source');
-    document.querySelectorAll('.is-preview-source').forEach((element) => element.classList.remove('is-preview-source'));
+    document.querySelectorAll<HTMLElement>('.is-preview-source').forEach((element) => {
+      element.style.transition = 'none';
+      element.classList.remove('is-preview-source');
+      window.requestAnimationFrame(() => { element.style.transition = ''; });
+    });
     const sourceFrame = sourceImage?.closest<HTMLElement>('.projects-landing__placeholder');
     sourceFrame?.classList.remove('is-preview-source');
     setSelectedProject(null);
@@ -1211,8 +1216,10 @@ export default function App() {
     if (sourceImage) {
       const sourceButton = sourceImage.closest('button');
       const settleReturn = () => {
+        sourceImage.style.transition = 'opacity 0s, filter .7s cubic-bezier(.2, .8, .2, 1), transform .22s ease';
         sourceImage.classList.remove('is-preview-returning');
         sourceFrame?.classList.remove('is-preview-returning');
+        window.requestAnimationFrame(() => { sourceImage.style.transition = ''; });
         sourceButton?.removeEventListener('pointerleave', settleReturn);
         previewSourceImageRef.current = null;
         previewReturnTimerRef.current = null;
