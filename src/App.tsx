@@ -1195,7 +1195,6 @@ export default function App() {
     const revealSource = () => {
       if (!sourceImage) return;
       sourceImage.style.transition = 'none';
-      sourceImage.style.setProperty('opacity', '1', 'important');
       sourceImage.style.setProperty('visibility', 'visible', 'important');
       sourceImage.style.setProperty('filter', 'none', 'important');
       sourceImage.classList.remove('is-preview-source');
@@ -1205,7 +1204,6 @@ export default function App() {
       });
       window.requestAnimationFrame(() => {
         sourceImage.style.transition = '';
-        sourceImage.style.removeProperty('opacity');
         sourceImage.style.removeProperty('visibility');
         sourceImage.style.removeProperty('filter');
       });
