@@ -256,7 +256,6 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         // entry has settled; leaving a fill:both animation attached would
         // otherwise override the closing transform in Safari.
         entryAnimation?.cancel();
-        image.style.transition = '';
       }).catch(() => undefined);
     };
     const scheduleAnimate = () => {
@@ -290,6 +289,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     if (!closing || !previewImageRef.current || !origin) return;
     const image = previewImageRef.current;
     image.classList.add('zoom-from-card', 'is-closing-origin');
+    // The entry animation keeps transitions disabled so mobile browsers do
+    // not replay a second zoom after WAAPI settles. Re-enable the transition
+    // only for the intentional return to the source card.
+    image.style.transition = 'transform .72s cubic-bezier(.22, 1, .36, 1), border-radius .72s cubic-bezier(.22, 1, .36, 1), box-shadow .72s ease';
     // Commit the full-size state before switching back to the card origin.
     // Give Chrome/Safari a painted frame for the settled state first; without
     // this, mobile browsers can collapse the return into a fade or skip the
