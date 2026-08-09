@@ -181,7 +181,6 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     // effect pass to overlap. The source frame must only seed one entry
     // animation or the preview will resize a second time after settling.
     if (entryStartedRef.current) return;
-    entryStartedRef.current = true;
 
     let measureFrame = 0;
     let cancelled = false;
@@ -189,6 +188,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     let entryAnimation: Animation | null = null;
     const animate = () => {
       if (cancelled) return;
+      if (entryStartedRef.current) return;
       // Development Strict Mode runs layout effects twice. Reset the first
       // pass before measuring, otherwise the transformed preview is mistaken
       // for its own destination and the second pass overwrites the real card
@@ -207,6 +207,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         }
         return;
       }
+      // Lock only after a valid destination rect exists. Locking when the
+      // effect is created can let Strict Mode's cancelled pass suppress the
+      // real entry animation entirely.
+      entryStartedRef.current = true;
       measureAttempts = 0;
       const targetRadius = parseFloat(getComputedStyle(image).borderTopLeftRadius) || 0;
       const scaleX = origin.width / target.width;
