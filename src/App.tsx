@@ -260,26 +260,16 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     };
     const scheduleAnimate = () => {
       if (cancelled) return;
-      // Decode first, then give the browser two layout paints. This keeps the
-      // destination rect stable across Chrome, Safari, and cached images.
-      if (typeof image.decode === 'function') {
-        void image.decode().catch(() => undefined).finally(() => {
-          if (!cancelled) measureFrame = window.requestAnimationFrame(() => {
-            measureFrame = window.requestAnimationFrame(animate);
-          });
-        });
-      } else {
-        measureFrame = window.requestAnimationFrame(() => {
-          measureFrame = window.requestAnimationFrame(animate);
-        });
-      }
+      // The preview dimensions come from CSS, so waiting for image.decode()
+      // only delays the scale while the backdrop is already animating. Start
+      // from the first measured paint and let the zero-rect retry handle any
+      // browser that has not laid out the image yet.
+      measureFrame = window.requestAnimationFrame(animate);
     };
-    if (image.complete && image.naturalWidth) scheduleAnimate();
-    else image.addEventListener('load', scheduleAnimate, { once: true });
+    scheduleAnimate();
 
     return () => {
       cancelled = true;
-      image.removeEventListener('load', scheduleAnimate);
       window.cancelAnimationFrame(measureFrame);
       entryAnimation?.cancel();
     };
@@ -1201,12 +1191,22 @@ export default function App() {
   const finishProjectClose = () => {
     if (previewCloseTimerRef.current) window.clearTimeout(previewCloseTimerRef.current);
     const sourceImage = previewSourceImageRef.current;
-    if (sourceImage) sourceImage.style.transition = 'none';
+    if (sourceImage) {
+      sourceImage.style.transition = 'none';
+      sourceImage.style.setProperty('opacity', '1', 'important');
+      sourceImage.style.setProperty('visibility', 'visible', 'important');
+    }
     sourceImage?.classList.remove('is-preview-source');
     document.querySelectorAll<HTMLElement>('.is-preview-source').forEach((element) => {
       element.style.transition = 'none';
+      element.style.setProperty('opacity', '1', 'important');
+      element.style.setProperty('visibility', 'visible', 'important');
       element.classList.remove('is-preview-source');
-      window.requestAnimationFrame(() => { element.style.transition = ''; });
+      window.requestAnimationFrame(() => {
+        element.style.transition = '';
+        element.style.removeProperty('opacity');
+        element.style.removeProperty('visibility');
+      });
     });
     const sourceFrame = sourceImage?.closest<HTMLElement>('.projects-landing__placeholder');
     sourceFrame?.classList.remove('is-preview-source');
@@ -1223,6 +1223,10 @@ export default function App() {
         sourceImage.classList.remove('is-preview-returning');
         sourceFrame?.classList.remove('is-preview-returning');
         window.requestAnimationFrame(() => { sourceImage.style.transition = ''; });
+        window.requestAnimationFrame(() => {
+          sourceImage.style.removeProperty('opacity');
+          sourceImage.style.removeProperty('visibility');
+        });
         sourceButton?.removeEventListener('pointerleave', settleReturn);
         previewSourceImageRef.current = null;
         previewReturnTimerRef.current = null;
