@@ -209,7 +209,6 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         if (measureAttempts++ < 24) {
           measureFrame = window.requestAnimationFrame(animate);
         } else {
-          entryStartedRef.current = true;
           image.classList.remove('preview-image-pending');
         }
         return;
@@ -320,7 +319,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         <div className={`preview__media preview__media--${project.previewKind ?? project.kind}`}>
           <img
             ref={previewImageRef}
-            className={`is-in-view${origin && !closing && !entryStartedRef.current ? ' preview-image-pending' : ''}${carouselSwap ? ' is-carousel-switching' : ''}`}
+            className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}${carouselSwap ? ' is-carousel-switching' : ''}`}
             src={displayedProject.image}
             alt={displayedProject.alt}
             data-reveal
