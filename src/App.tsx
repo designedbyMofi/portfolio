@@ -80,7 +80,7 @@ const projects: Project[] = [
   { image: '/assets/project-01.png', alt: 'MFB product promotion mobile screen', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-02.png', alt: 'Pay an influencer mobile flow', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', kind: 'mobile', motion: 'video' },
-  { image: '/assets/project-04.png', alt: 'Dark mobile dashboard', kind: 'mobile', motion: 'video' },
+  { image: '/assets/project-04.png', alt: 'Internal company communication platform', kind: 'mobile', motion: 'carousel' },
   { image: '/assets/project-05.png', alt: 'Explore business mobile flow', kind: 'mobile', motion: 'carousel' },
   { image: '/assets/project-06.png', alt: 'Email verified mobile screen', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-07.png', alt: 'Messaging mobile screen', kind: 'mobile', motion: 'video' },
