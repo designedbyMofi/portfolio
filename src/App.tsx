@@ -308,7 +308,6 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
           <img
             ref={previewImageRef}
             className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}`}
-            key={displayedProject.image}
             src={displayedProject.image}
             alt={displayedProject.alt}
             data-reveal
