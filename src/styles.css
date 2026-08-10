@@ -3415,15 +3415,11 @@ html.app-ready .profile__portrait {
 
 @keyframes carousel-image-switch {
   from {
-    opacity: .72;
     transform: scale(.985);
-    filter: blur(2px);
   }
 
   to {
-    opacity: 1;
     transform: scale(1);
-    filter: blur(0);
   }
 }
 
