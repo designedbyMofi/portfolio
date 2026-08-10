@@ -11,6 +11,7 @@ type Project = {
   alt: string;
   kind: ProjectKind;
   motion: ProjectMotion;
+  carouselImages?: string[];
   previewKind?: 'vurt';
 };
 
@@ -80,7 +81,7 @@ const projects: Project[] = [
   { image: '/assets/project-01.png', alt: 'MFB product promotion mobile screen', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-02.png', alt: 'Pay an influencer mobile flow', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', kind: 'mobile', motion: 'video' },
-  { image: '/assets/project-04.png', alt: 'Internal company communication platform', kind: 'mobile', motion: 'carousel' },
+  { image: '/assets/timeline-home.png', alt: 'Internal company communication platform', kind: 'mobile', motion: 'carousel', carouselImages: ['/assets/timeline-home.png', '/assets/timeline-options.png', '/assets/timeline-search.png', '/assets/timeline-reload.png'] },
   { image: '/assets/project-05.png', alt: 'Explore business mobile flow', kind: 'mobile', motion: 'carousel' },
   { image: '/assets/project-06.png', alt: 'Email verified mobile screen', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-07.png', alt: 'Messaging mobile screen', kind: 'mobile', motion: 'video' },
@@ -294,7 +295,9 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     return () => window.cancelAnimationFrame(firstFrame);
   }, [closing, origin]);
 
-  const carouselProjects = [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
+  const carouselProjects = project.carouselImages
+    ? project.carouselImages.map((image) => ({ ...project, image }))
+    : [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
   const displayedProject = project.motion === 'carousel' ? carouselProjects[carouselIndex] : project;
   const changeSlide = (direction: number) => setCarouselIndex((current) => (current + direction + carouselProjects.length) % carouselProjects.length);
 
