@@ -166,13 +166,18 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
 function ProjectPreview({ project, origin, nativeTransition, closing, onClose, onExitComplete }: { project: Project; origin: PreviewOrigin | null; nativeTransition: boolean; closing: boolean; onClose: () => void; onExitComplete: () => void }) {
   const [paused, setPaused] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [carouselSwap, setCarouselSwap] = useState(false);
+  const carouselSwapTimerRef = useRef<number | null>(null);
   const previewImageRef = useRef<HTMLImageElement>(null);
   const entryStartedRef = useRef(false);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => event.key === 'Escape' && onClose();
     window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
+    return () => {
+      window.removeEventListener('keydown', closeOnEscape);
+      if (carouselSwapTimerRef.current) window.clearTimeout(carouselSwapTimerRef.current);
+    };
   }, [onClose]);
 
   useLayoutEffect(() => {
@@ -299,7 +304,14 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     ? project.carouselImages.map((image) => ({ ...project, image }))
     : [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
   const displayedProject = project.motion === 'carousel' ? carouselProjects[carouselIndex] : project;
-  const changeSlide = (direction: number) => setCarouselIndex((current) => (current + direction + carouselProjects.length) % carouselProjects.length);
+  const selectSlide = (index: number) => {
+    setCarouselIndex(index);
+    setCarouselSwap(false);
+    window.requestAnimationFrame(() => setCarouselSwap(true));
+    if (carouselSwapTimerRef.current) window.clearTimeout(carouselSwapTimerRef.current);
+    carouselSwapTimerRef.current = window.setTimeout(() => setCarouselSwap(false), 340);
+  };
+  const changeSlide = (direction: number) => selectSlide((carouselIndex + direction + carouselProjects.length) % carouselProjects.length);
 
   return (
     <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
@@ -307,7 +319,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         <div className={`preview__media preview__media--${project.previewKind ?? project.kind}`}>
           <img
             ref={previewImageRef}
-            className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}`}
+            className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}${carouselSwap ? ' is-carousel-switching' : ''}`}
             src={displayedProject.image}
             alt={displayedProject.alt}
             data-reveal
@@ -325,7 +337,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
           {project.motion === 'carousel' && (
             <div className="preview__carousel-controls" aria-label="Carousel controls">
               <button className="preview__carousel-button" onClick={() => changeSlide(-1)} aria-label="Previous slide"><img src="/assets/carousel-caret-prev.svg" alt="" /></button>
-              <span className="preview__dots" aria-label="Carousel slides">{carouselProjects.map((item, dot) => <button className={`preview__carousel-dot${dot === carouselIndex ? ' is-active' : ''}`} onClick={() => setCarouselIndex(dot)} aria-label={`Go to slide ${dot + 1}`} key={`${item.image}-${dot}`} />)}</span>
+              <span className="preview__dots" aria-label="Carousel slides">{carouselProjects.map((item, dot) => <button className={`preview__carousel-dot${dot === carouselIndex ? ' is-active' : ''}`} onClick={() => selectSlide(dot)} aria-label={`Go to slide ${dot + 1}`} key={`${item.image}-${dot}`} />)}</span>
               <button className="preview__carousel-button" onClick={() => changeSlide(1)} aria-label="Next slide"><img src="/assets/carousel-caret-next.svg" alt="" /></button>
             </div>
           )}
