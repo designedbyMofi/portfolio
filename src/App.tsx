@@ -16,7 +16,7 @@ type Project = {
 };
 
 type PreviewOrigin = { left: number; top: number; width: number; height: number; radius: number };
-type UiSound = 'click' | 'navigation' | 'open' | 'close' | 'select' | 'confirm' | 'toggle' | 'haptic';
+type UiSound = 'click' | 'navigation' | 'open' | 'close' | 'select' | 'confirm' | 'toggle' | 'haptic' | 'unavailable';
 
 const viewFromPath = (): PortfolioView => {
   if (window.location.pathname === '/resume') return 'resume';
@@ -72,6 +72,10 @@ const playUiSound = async (sound: UiSound) => {
     case 'haptic':
       tone(150, 95, 0.045, 0.05);
       tone(125, 80, 0.04, 0.038, 0.055);
+      break;
+    case 'unavailable':
+      tone(230, 175, 0.09, 0.04);
+      tone(180, 130, 0.11, 0.032, 0.075);
       break;
     default: tone(760, 510, 0.038, 0.018);
   }
@@ -608,7 +612,7 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
     setCordditHover(true);
   };
   const shakeCorddit = () => {
-    void playUiSound('haptic');
+    void playUiSound('unavailable');
     setCordditShake(true);
     if (cordditShakeTimer.current) window.clearTimeout(cordditShakeTimer.current);
     cordditShakeTimer.current = window.setTimeout(() => {
@@ -627,6 +631,7 @@ function ProjectsLanding({ onOpenVurt, direction }: { onOpenVurt: () => void; di
           <button className="projects-landing__card" onClick={onOpenVurt}><span className="projects-landing__placeholder"><img src="/assets/vurt-hero.png" alt="Vurt exchange marketplace preview" data-reveal /></span><span><h2 className="projects-landing__link">Vurt: Designing trust into currency exchange</h2><p>A web-based marketplace that makes currency exchange easier to compare, trust, and complete with confidence.</p></span></button>
           <div
             className={`projects-landing__card${cordditShake ? ' is-shaking' : ''}`}
+            data-sound="silent"
             role="button"
             tabIndex={0}
             onPointerEnter={showCordditChip}
