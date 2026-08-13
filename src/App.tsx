@@ -386,7 +386,7 @@ function ResumeAside() {
       </section>
       <div className="resume-download">
         <a className="resume-download__linkedin" href="https://www.linkedin.com/in/mofifoluwa-olawuyi-04bb73214/" target="_blank" rel="noreferrer" aria-label="Open LinkedIn profile"><img src="/assets/icon-linkedin.svg" alt="" /></a>
-        <button onClick={() => window.print()}><img src="/assets/icon-download.svg" alt="" />DOWNLOAD</button>
+        <a href="/downloads/Mofifoluwa-CV-2026.pdf" download="Mofifoluwa-CV-2026.pdf"><img src="/assets/icon-download.svg" alt="" />DOWNLOAD</a>
       </div>
     </aside>
   );
