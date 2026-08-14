@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type FocusEvent as ReactFocusEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type KeyboardEvent as ReactKeyboardEvent, type FocusEvent as ReactFocusEvent } from 'react';
 import { getCalApi } from '@calcom/embed-react';
 
 type ProjectKind = 'mobile' | 'web';
@@ -170,6 +170,8 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
 
 function ProjectPreview({ project, origin, nativeTransition, closing, onClose, onExitComplete }: { project: Project; origin: PreviewOrigin | null; nativeTransition: boolean; closing: boolean; onClose: () => void; onExitComplete: () => void }) {
   const [paused, setPaused] = useState(false);
+  const [videoTime, setVideoTime] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(0);
   // Video previews intentionally begin as their source card image. This lets
   // the shared-origin zoom finish cleanly before the moving media is swapped
   // in, avoiding a media-type jump during the entry transition.
@@ -194,6 +196,8 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   useEffect(() => {
     setVideoReady(!project.video);
     setPaused(false);
+    setVideoTime(0);
+    setVideoDuration(0);
   }, [project.image, project.video]);
 
   useLayoutEffect(() => {
@@ -351,6 +355,24 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     }
     setPaused((current) => !current);
   };
+  const seekPreview = (position: number) => {
+    const media = previewImageRef.current;
+    if (!(media instanceof HTMLVideoElement) || !Number.isFinite(media.duration)) return;
+    const nextTime = Math.min(Math.max(position, 0), media.duration);
+    media.currentTime = nextTime;
+    setVideoTime(nextTime);
+  };
+  const seekFromPointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    seekPreview((event.clientX - bounds.left) / bounds.width * videoDuration);
+  };
+  const handleTrackKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (!videoDuration) return;
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      seekPreview(videoTime + (event.key === 'ArrowRight' ? 5 : -5));
+    }
+  };
 
   return (
     <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
@@ -367,6 +389,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               loop
               playsInline
               data-reveal
+              onLoadedMetadata={(event) => setVideoDuration(event.currentTarget.duration)}
+              onTimeUpdate={(event) => setVideoTime(event.currentTarget.currentTime)}
+              onPlay={() => setPaused(false)}
+              onPause={() => setPaused(true)}
               style={{ viewTransitionName: 'selected-shot' } as CSSProperties}
               onTransitionEnd={(event) => {
                 if (closing && event.propertyName === 'transform') onExitComplete();
@@ -388,7 +414,19 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
           {project.motion === 'video' && (
             <div className="preview__video-controls" aria-label="Video controls">
               <button onClick={togglePreviewPlayback} aria-label={paused ? 'Play preview' : 'Pause preview'}><span className={paused ? 'play-icon' : 'pause-icon'} /></button>
-              <span className={`preview__track${paused ? ' is-paused' : ''}`}><span /></span>
+              <div
+                className="preview__track"
+                role="slider"
+                tabIndex={0}
+                aria-label="Video progress"
+                aria-valuemin={0}
+                aria-valuemax={videoDuration || 0}
+                aria-valuenow={videoTime}
+                onPointerDown={seekFromPointer}
+                onKeyDown={handleTrackKeyDown}
+              >
+                <span style={{ width: `${videoDuration ? (videoTime / videoDuration) * 100 : 0}%` }} />
+              </div>
             </div>
           )}
           {project.motion === 'carousel' && (
