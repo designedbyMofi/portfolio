@@ -170,9 +170,14 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
 
 function ProjectPreview({ project, origin, nativeTransition, closing, onClose, onExitComplete }: { project: Project; origin: PreviewOrigin | null; nativeTransition: boolean; closing: boolean; onClose: () => void; onExitComplete: () => void }) {
   const [paused, setPaused] = useState(false);
+  // Video previews intentionally begin as their source card image. This lets
+  // the shared-origin zoom finish cleanly before the moving media is swapped
+  // in, avoiding a media-type jump during the entry transition.
+  const [videoReady, setVideoReady] = useState(!project.video);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [carouselSwap, setCarouselSwap] = useState(false);
   const carouselSwapTimerRef = useRef<number | null>(null);
+  const videoSwapTimerRef = useRef<number | null>(null);
   const previewImageRef = useRef<HTMLElement | null>(null);
   const entryStartedRef = useRef(false);
 
@@ -182,8 +187,14 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     return () => {
       window.removeEventListener('keydown', closeOnEscape);
       if (carouselSwapTimerRef.current) window.clearTimeout(carouselSwapTimerRef.current);
+      if (videoSwapTimerRef.current) window.clearTimeout(videoSwapTimerRef.current);
     };
   }, [onClose]);
+
+  useEffect(() => {
+    setVideoReady(!project.video);
+    setPaused(false);
+  }, [project.image, project.video]);
 
   useLayoutEffect(() => {
     const image = previewImageRef.current;
@@ -267,6 +278,15 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         // entry has settled; leaving a fill:both animation attached would
         // otherwise override the closing transform in Safari.
         entryAnimation?.cancel();
+        if (project.video) {
+          // Keep the settled image on screen for one painted beat before
+          // replacing it with the video. The image remains the element that
+          // performed the origin animation, while the video takes over only
+          // after the geometry is stable.
+          videoSwapTimerRef.current = window.setTimeout(() => {
+            if (!cancelled && !closing) setVideoReady(true);
+          }, 120);
+        }
       }).catch(() => undefined);
     };
     const scheduleAnimate = () => {
@@ -336,10 +356,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
         <div className={`preview__media preview__media--${project.previewKind ?? project.kind}`}>
-          {project.video ? (
+          {project.video && videoReady ? (
             <video
               ref={(element) => { previewImageRef.current = element; }}
-              className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}`}
+              className="is-in-view"
               src={project.video}
               poster={displayedProject.image}
               autoPlay
