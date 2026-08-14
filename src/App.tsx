@@ -11,6 +11,7 @@ type Project = {
   alt: string;
   kind: ProjectKind;
   motion: ProjectMotion;
+  video?: string;
   carouselImages?: string[];
   previewKind?: 'vurt';
 };
@@ -85,7 +86,7 @@ const projects: Project[] = [
   { image: '/assets/project-01.png', alt: 'MFB product promotion mobile screen', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-02.png', alt: 'Pay an influencer mobile flow', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', kind: 'mobile', motion: 'video' },
-  { image: '/assets/project-04.png', alt: 'Internal company communication platform', kind: 'mobile', motion: 'video' },
+  { image: '/assets/project-04.png', alt: 'Internal company communication platform', kind: 'mobile', motion: 'video', video: '/assets/communication-preview.mov' },
   { image: '/assets/project-05.png', alt: 'Explore business mobile flow', kind: 'mobile', motion: 'carousel' },
   { image: '/assets/project-06.png', alt: 'Email verified mobile screen', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-07.png', alt: 'Messaging mobile screen', kind: 'mobile', motion: 'video' },
@@ -172,7 +173,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [carouselSwap, setCarouselSwap] = useState(false);
   const carouselSwapTimerRef = useRef<number | null>(null);
-  const previewImageRef = useRef<HTMLImageElement>(null);
+  const previewImageRef = useRef<HTMLElement | null>(null);
   const entryStartedRef = useRef(false);
 
   useEffect(() => {
@@ -316,25 +317,57 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     carouselSwapTimerRef.current = window.setTimeout(() => setCarouselSwap(false), 340);
   };
   const changeSlide = (direction: number) => selectSlide((carouselIndex + direction + carouselProjects.length) % carouselProjects.length);
+  const togglePreviewPlayback = () => {
+    const media = previewImageRef.current;
+    if (media instanceof HTMLVideoElement) {
+      if (media.paused) {
+        void media.play();
+        setPaused(false);
+      } else {
+        media.pause();
+        setPaused(true);
+      }
+      return;
+    }
+    setPaused((current) => !current);
+  };
 
   return (
     <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
         <div className={`preview__media preview__media--${project.previewKind ?? project.kind}`}>
-          <img
-            ref={previewImageRef}
-            className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}${carouselSwap ? ' is-carousel-switching' : ''}`}
-            src={displayedProject.image}
-            alt={displayedProject.alt}
-            data-reveal
-            style={{ viewTransitionName: 'selected-shot' } as CSSProperties}
-            onTransitionEnd={(event) => {
-              if (closing && event.propertyName === 'transform') onExitComplete();
-            }}
-          />
+          {project.video ? (
+            <video
+              ref={(element) => { previewImageRef.current = element; }}
+              className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}`}
+              src={project.video}
+              poster={displayedProject.image}
+              autoPlay
+              muted
+              loop
+              playsInline
+              data-reveal
+              style={{ viewTransitionName: 'selected-shot' } as CSSProperties}
+              onTransitionEnd={(event) => {
+                if (closing && event.propertyName === 'transform') onExitComplete();
+              }}
+            />
+          ) : (
+            <img
+              ref={(element) => { previewImageRef.current = element; }}
+              className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}${carouselSwap ? ' is-carousel-switching' : ''}`}
+              src={displayedProject.image}
+              alt={displayedProject.alt}
+              data-reveal
+              style={{ viewTransitionName: 'selected-shot' } as CSSProperties}
+              onTransitionEnd={(event) => {
+                if (closing && event.propertyName === 'transform') onExitComplete();
+              }}
+            />
+          )}
           {project.motion === 'video' && (
             <div className="preview__video-controls" aria-label="Video controls">
-              <button onClick={() => setPaused(!paused)} aria-label={paused ? 'Play preview' : 'Pause preview'}><span className={paused ? 'play-icon' : 'pause-icon'} /></button>
+              <button onClick={togglePreviewPlayback} aria-label={paused ? 'Play preview' : 'Pause preview'}><span className={paused ? 'play-icon' : 'pause-icon'} /></button>
               <span className={`preview__track${paused ? ' is-paused' : ''}`}><span /></span>
             </div>
           )}
