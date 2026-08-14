@@ -172,6 +172,8 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const [paused, setPaused] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
+  const [scrubTime, setScrubTime] = useState<number | null>(null);
+  const [isScrubbing, setIsScrubbing] = useState(false);
   // Video previews intentionally begin as their source card image. This lets
   // the shared-origin zoom finish cleanly before the moving media is swapped
   // in, avoiding a media-type jump during the entry transition.
@@ -198,6 +200,8 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     setPaused(false);
     setVideoTime(0);
     setVideoDuration(0);
+    setScrubTime(null);
+    setIsScrubbing(false);
   }, [project.image, project.video]);
 
   useLayoutEffect(() => {
@@ -362,9 +366,26 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     media.currentTime = nextTime;
     setVideoTime(nextTime);
   };
-  const seekFromPointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+  const getTrackTime = (event: ReactPointerEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
-    seekPreview((event.clientX - bounds.left) / bounds.width * videoDuration);
+    return Math.min(Math.max((event.clientX - bounds.left) / bounds.width * videoDuration, 0), videoDuration);
+  };
+  const updateScrubPreview = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const nextTime = getTrackTime(event);
+    setScrubTime(nextTime);
+    if (isScrubbing) seekPreview(nextTime);
+  };
+  const beginScrub = (event: ReactPointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setIsScrubbing(true);
+    const nextTime = getTrackTime(event);
+    setScrubTime(nextTime);
+    seekPreview(nextTime);
+  };
+  const endScrub = (event: ReactPointerEvent<HTMLDivElement>) => {
+    setIsScrubbing(false);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   };
   const handleTrackKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     if (!videoDuration) return;
@@ -372,6 +393,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       event.preventDefault();
       seekPreview(videoTime + (event.key === 'ArrowRight' ? 5 : -5));
     }
+  };
+  const formatVideoTime = (seconds: number) => {
+    const safeSeconds = Math.max(0, Math.floor(seconds));
+    return `${Math.floor(safeSeconds / 60)}:${String(safeSeconds % 60).padStart(2, '0')}`;
   };
 
   return (
@@ -388,6 +413,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               muted
               loop
               playsInline
+              preload="auto"
               data-reveal
               onLoadedMetadata={(event) => setVideoDuration(event.currentTarget.duration)}
               onTimeUpdate={(event) => setVideoTime(event.currentTarget.currentTime)}
@@ -422,10 +448,15 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                 aria-valuemin={0}
                 aria-valuemax={videoDuration || 0}
                 aria-valuenow={videoTime}
-                onPointerDown={seekFromPointer}
+                onPointerDown={beginScrub}
+                onPointerMove={updateScrubPreview}
+                onPointerUp={endScrub}
+                onPointerCancel={endScrub}
+                onPointerLeave={() => { if (!isScrubbing) setScrubTime(null); }}
                 onKeyDown={handleTrackKeyDown}
               >
                 <span style={{ width: `${videoDuration ? (videoTime / videoDuration) * 100 : 0}%` }} />
+                {scrubTime !== null && <output className="preview__timestamp" style={{ left: `${videoDuration ? (scrubTime / videoDuration) * 100 : 0}%` }}>{formatVideoTime(scrubTime)}</output>}
               </div>
             </div>
           )}

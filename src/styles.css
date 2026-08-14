@@ -3253,6 +3253,7 @@ html.app-ready .profile__portrait {
 }
 
 .preview__track {
+  position: relative;
   width: 220px;
   height: 10px;
   padding: 0;
@@ -3263,6 +3264,7 @@ html.app-ready .profile__portrait {
   box-shadow: inset 0 1px 1px rgba(124, 109, 103, .05);
   cursor: pointer;
   outline: 0;
+  touch-action: none;
 }
 
 .preview__track span {
@@ -3271,7 +3273,23 @@ html.app-ready .profile__portrait {
   height: 100%;
   border-radius: inherit;
   background: rgba(255, 255, 255, .96);
-  transition: width .08s linear;
+  transition: none;
+}
+
+.preview__timestamp {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: rgba(30, 27, 36, .86);
+  color: white;
+  font-size: 11px;
+  line-height: 14px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .preview__track:focus-visible {
