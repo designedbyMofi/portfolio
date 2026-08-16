@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mofi.design/sitemap.xml

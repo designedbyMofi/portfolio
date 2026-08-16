@@ -1109,6 +1109,45 @@ export default function App() {
   const [muted, setMuted] = useState(() => window.localStorage.getItem('portfolio-sounds-muted') === 'true');
   const initialViewRef = useRef(view);
 
+  useEffect(() => {
+    const page = projectDetail
+      ? {
+          title: 'Vurt v3: Designing trust into currency exchange — Mofifoluwa',
+          description: 'A product design case study on redesigning Vurt into a responsive currency exchange platform built for trust and clarity.',
+          path: '/projects/vurt',
+        }
+      : view === 'projects'
+        ? {
+            title: 'Projects — Mofifoluwa, Product designer',
+            description: 'Selected product design case studies across fintech, AI, social products, and enterprise SaaS.',
+            path: '/projects',
+          }
+        : view === 'resume'
+          ? {
+              title: 'Resume — Mofifoluwa, Product designer',
+              description: 'The experience, skills, and product design work of Mofifoluwa Olawuyi.',
+              path: '/resume',
+            }
+          : {
+              title: 'Mofifoluwa — Product designer',
+              description: 'Mofifoluwa Olawuyi is a product designer helping teams turn complex fintech, AI, insurance, and SaaS problems into clear, usable products.',
+              path: '/',
+            };
+    document.title = page.title;
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (canonical) canonical.href = `https://mofi.design${page.path}`;
+    const setMeta = (selector: string, content: string) => {
+      const element = document.querySelector<HTMLMetaElement>(selector);
+      if (element) element.content = content;
+    };
+    setMeta('meta[name="description"]', page.description);
+    setMeta('meta[property="og:title"]', page.title);
+    setMeta('meta[property="og:description"]', page.description);
+    setMeta('meta[property="og:url"]', `https://mofi.design${page.path}`);
+    setMeta('meta[name="twitter:title"]', page.title);
+    setMeta('meta[name="twitter:description"]', page.description);
+  }, [projectDetail, view]);
+
   useEffect(() => () => {
     if (previewReturnTimerRef.current) window.clearTimeout(previewReturnTimerRef.current);
     const sourceImage = previewSourceImageRef.current;
