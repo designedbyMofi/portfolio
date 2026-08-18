@@ -179,9 +179,6 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   // in, avoiding a media-type jump during the entry transition.
   const [videoReady, setVideoReady] = useState(!project.video);
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [carouselDirection, setCarouselDirection] = useState(1);
-  const [carouselSwap, setCarouselSwap] = useState(false);
-  const carouselSwapTimerRef = useRef<number | null>(null);
   const videoSwapTimerRef = useRef<number | null>(null);
   const previewImageRef = useRef<HTMLElement | null>(null);
   const entryStartedRef = useRef(false);
@@ -191,7 +188,6 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     window.addEventListener('keydown', closeOnEscape);
     return () => {
       window.removeEventListener('keydown', closeOnEscape);
-      if (carouselSwapTimerRef.current) window.clearTimeout(carouselSwapTimerRef.current);
       if (videoSwapTimerRef.current) window.clearTimeout(videoSwapTimerRef.current);
     };
   }, [onClose]);
@@ -345,19 +341,13 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const displayedProject = project.motion === 'carousel' ? carouselProjects[carouselIndex] : project;
   const selectSlide = (index: number) => {
     if (index === carouselIndex) return;
-    const forwardDistance = (index - carouselIndex + carouselProjects.length) % carouselProjects.length;
-    const backwardDistance = (carouselIndex - index + carouselProjects.length) % carouselProjects.length;
-    setCarouselDirection(forwardDistance <= backwardDistance ? 1 : -1);
     setCarouselIndex(index);
-    setCarouselSwap(false);
-    window.requestAnimationFrame(() => setCarouselSwap(true));
-    if (carouselSwapTimerRef.current) window.clearTimeout(carouselSwapTimerRef.current);
-    carouselSwapTimerRef.current = window.setTimeout(() => setCarouselSwap(false), 340);
   };
   const changeSlide = (direction: number) => selectSlide((carouselIndex + direction + carouselProjects.length) % carouselProjects.length);
-  const carouselDeck = [-2, -1, 0, 1, 2].map((offset) => {
-    const index = (carouselIndex + offset + carouselProjects.length) % carouselProjects.length;
-    return { ...carouselProjects[index], index, offset };
+  const carouselDeck = carouselProjects.map((item, index) => {
+    let offset = (index - carouselIndex + carouselProjects.length) % carouselProjects.length;
+    if (offset > carouselProjects.length / 2) offset -= carouselProjects.length;
+    return { ...item, index, offset };
   });
   const togglePreviewPlayback = () => {
     const media = previewImageRef.current;
@@ -439,15 +429,14 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               }}
             />
           ) : project.motion === 'carousel' ? (
-            <div className={`preview__carousel-stage is-direction-${carouselDirection}`}>
+            <div className="preview__carousel-stage">
               {carouselDeck.map((item) => (
                 <img
-                  key={`${item.image}-${item.offset}`}
+                  key={`${item.image}-${item.index}`}
                   ref={(element) => { if (item.offset === 0) previewImageRef.current = element; }}
-                  className={`preview__carousel-slide is-offset-${item.offset}${item.offset === 0 ? ` is-in-view${origin && !closing ? ' preview-image-pending' : ''}${carouselSwap ? ' is-carousel-switching' : ''}` : ''}`}
+                  className={`preview__carousel-slide is-offset-${item.offset}${item.offset === 0 && origin && !closing && !entryStartedRef.current ? ' preview-image-pending' : ''}`}
                   src={item.image}
                   alt={item.alt}
-                  data-reveal
                   style={{ viewTransitionName: item.offset === 0 ? 'selected-shot' : undefined } as CSSProperties}
                   onTransitionEnd={(event) => {
                     if (item.offset === 0 && closing && event.propertyName === 'transform') onExitComplete();
@@ -458,7 +447,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
           ) : (
             <img
               ref={(element) => { previewImageRef.current = element; }}
-              className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}${carouselSwap ? ' is-carousel-switching' : ''}`}
+              className={`is-in-view${origin && !closing ? ' preview-image-pending' : ''}`}
               src={displayedProject.image}
               alt={displayedProject.alt}
               data-reveal
