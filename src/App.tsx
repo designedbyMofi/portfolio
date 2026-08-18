@@ -225,10 +225,14 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       const active = stage.querySelector<HTMLElement>('.preview__carousel-slide.is-offset-0');
       const side = stage.querySelector<HTMLElement>('.preview__carousel-slide:not(.is-offset-0)');
       if (!active || !side) return;
-      const activeWidth = active.getBoundingClientRect().width;
-      const sideWidth = side.getBoundingClientRect().width;
+      // Read layout widths rather than bounding boxes: the active frame may
+      // still be running its shared-origin zoom, and its transformed bounds
+      // are temporarily smaller than the actual carousel slot.
+      const activeWidth = parseFloat(getComputedStyle(active).width);
+      const sideWidth = parseFloat(getComputedStyle(side).width);
       if (!activeWidth || !sideWidth) return;
-      stage.style.setProperty('--carousel-step', `${(activeWidth + sideWidth) / 2 + 12}px`);
+      const gap = parseFloat(getComputedStyle(stage).getPropertyValue('--carousel-gap')) || 12;
+      stage.style.setProperty('--carousel-step', `${(activeWidth + sideWidth) / 2 + gap}px`);
     };
 
     updateCarouselStep();
