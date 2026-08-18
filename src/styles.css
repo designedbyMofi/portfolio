@@ -3177,7 +3177,8 @@ html.app-ready .profile__portrait {
   object-fit: contain;
   border-radius: 32px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
   opacity: .6;
   filter: saturate(.9);
   transform: translate(calc(-50% + (var(--carousel-step, 332px) * var(--carousel-offset, 0))), -50%);
@@ -3251,6 +3252,21 @@ html.app-ready .profile__portrait {
 .preview__media--web .preview__carousel-slide.is-offset--2,
 .preview__media--web .preview__carousel-slide.is-offset--3 {
   transform: translate(calc(-50% - min(1900px, 110vw)), -50%);
+}
+
+/* Keep the focused web frame visibly larger than its neighbours at desktop
+   sizes. This late rule also wins over compact-height overrides, preserving
+   the active/inactive distinction when the browser viewport is short. */
+@media (min-width: 701px) {
+  .preview__media--web .preview__carousel-slide {
+    width: min(920px, 53.5vw);
+    max-height: min(64vh, 600px);
+  }
+
+  .preview__media--web .preview__carousel-slide.is-offset-0 {
+    width: min(1000px, 58vw);
+    max-height: min(70vh, 650px);
+  }
 }
 
 .preview__details {

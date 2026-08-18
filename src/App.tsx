@@ -328,6 +328,12 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         // entry has settled; leaving a fill:both animation attached would
         // otherwise override the closing transform in Safari.
         entryAnimation?.cancel();
+        // The entry uses an inline transition override so the measured
+        // origin frame is not collapsed by cached-image layout. Remove that
+        // override once the shared-origin animation is complete so the first
+        // carousel slide participates in the same slide-to-slide CSS
+        // transition as every subsequent frame.
+        image.style.removeProperty('transition');
         if (project.video) {
           // Keep the settled image on screen for one painted beat before
           // replacing it with the video. The image remains the element that
@@ -497,6 +503,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                     viewTransitionName: item.offset === 0 ? 'selected-shot' : undefined,
                     '--carousel-offset': item.offset,
                   } as CSSProperties}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    selectSlide(item.index);
+                  }}
                   onTransitionEnd={(event) => {
                     if (item.offset === 0 && closing && event.propertyName === 'transform') onExitComplete();
                   }}
