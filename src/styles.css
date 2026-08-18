@@ -2954,7 +2954,7 @@ html.app-ready .profile__portrait {
   width: min(80vw, 640px);
   margin: 0;
   transform: translateX(-50%);
-  color: var(--shade-600);
+  color: var(--shade-500);
   font-size: 14px !important;
   line-height: 24px;
   text-align: center;
