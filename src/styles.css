@@ -3988,7 +3988,7 @@ html:has(.preview.is-photos-transition) .footer {
        tablet widths too; the old 26vw clamp dipped below the 226px minimum
        used by inactive slides around 700–900px. */
     width: clamp(240px, 20.5vw, 340px);
-    max-height: none;
+    max-height: calc(100% - 24px);
   }
 
   .preview__media--web>img,
@@ -4025,7 +4025,7 @@ html:has(.preview.is-photos-transition) .footer {
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
     width: 264px;
-    max-height: none;
+    max-height: calc(100% - 24px);
   }
 
 }
@@ -4137,7 +4137,7 @@ html:has(.preview.is-photos-transition) .footer {
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
     width: min(240px, calc(100vw - 64px));
-    max-height: none;
+    max-height: calc(100% - 24px);
   }
 
   .preview__media--web .preview__carousel-stage {
