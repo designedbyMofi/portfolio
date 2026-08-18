@@ -3979,8 +3979,15 @@ html:has(.preview.is-photos-transition) .footer {
     border-radius: 26px;
   }
 
+  .preview__media--mobile .preview__carousel-slide {
+    width: clamp(226px, 18.52vw, 320px);
+  }
+
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
-    width: clamp(220px, 26vw, 270px);
+    /* Keep the focused frame larger than the inactive filmstrip frames at
+       tablet widths too; the old 26vw clamp dipped below the 226px minimum
+       used by inactive slides around 700–900px. */
+    width: clamp(240px, 20.5vw, 340px);
     max-height: none;
   }
 
@@ -4016,8 +4023,8 @@ html:has(.preview.is-photos-transition) .footer {
     transform: translate(calc(-50% + (var(--carousel-step, 252px) * var(--carousel-offset, 0))), -50%);
   }
 
-  .preview__carousel-slide.is-offset-0 {
-    width: 240px;
+  .preview__media--mobile .preview__carousel-slide.is-offset-0 {
+    width: 264px;
     max-height: none;
   }
 
