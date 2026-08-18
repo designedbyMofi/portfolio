@@ -3459,11 +3459,15 @@ html.app-ready .profile__portrait {
 
 .preview__carousel-controls .preview__carousel-button {
   appearance: none;
-  width: 36px;
-  height: 36px;
+  position: relative;
+  width: 32px;
+  height: 32px;
   padding: 0;
   display: grid;
   place-items: center;
+  overflow: visible;
+  background: #fff;
+  box-shadow: 0 12px 6px rgba(0, 0, 0, .06);
 }
 
 .preview__carousel-controls .preview__carousel-button:hover {
@@ -3475,15 +3479,77 @@ html.app-ready .profile__portrait {
 }
 
 .preview__carousel-controls .preview__carousel-button:disabled {
-  opacity: .42;
+  background: var(--shade-100);
   cursor: default;
   transform: none;
 }
 
-.preview__carousel-button img {
+.preview__carousel-button .carousel-control-icon {
   width: 20px;
   height: 20px;
+  display: none;
+}
+
+.preview__carousel-button .carousel-control-icon--default {
   display: block;
+}
+
+.preview__carousel-button .carousel-control-icon--inactive,
+.preview__carousel-button .carousel-control-icon--hover,
+.preview__carousel-button .carousel-control-cursor {
+  display: none;
+}
+
+.preview__carousel-button:disabled .carousel-control-icon--default,
+.preview__carousel-button:disabled .carousel-control-icon--hover {
+  display: none;
+}
+
+.preview__carousel-button:disabled .carousel-control-icon--inactive {
+  display: block;
+}
+
+.preview__carousel-button:not(:disabled):hover .carousel-control-icon--default {
+  display: none;
+}
+
+.preview__carousel-button:not(:disabled):hover .carousel-control-icon--hover {
+  display: block;
+}
+
+.preview__carousel-button:not(:disabled):hover .carousel-control-cursor {
+  position: absolute;
+  left: 15.5px;
+  top: 20.5px;
+  z-index: 2;
+  display: block;
+  width: 21px;
+  height: 21px;
+  pointer-events: none;
+}
+
+.preview__carousel-button .carousel-control-cursor img {
+  position: absolute;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: none;
+}
+
+.preview__carousel-button .carousel-control-cursor img:first-child {
+  left: 0;
+  top: 0;
+  width: 14px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+}
+
+.preview__carousel-button .carousel-control-cursor img:last-child {
+  left: 50%;
+  top: calc(50% + 3.5px);
+  width: 5px;
+  height: 4px;
+  transform: translate(calc(-50% + 1px), -50%);
 }
 
 .preview__dots {
