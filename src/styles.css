@@ -3059,13 +3059,15 @@ html.app-ready .profile__portrait {
 }
 
 .preview__media>img.preview-image-pending,
-.preview__media>video.preview-image-pending {
+.preview__media>video.preview-image-pending,
+.preview__carousel-slide.preview-image-pending {
   opacity: 0;
   animation: none;
 }
 
 .preview__media>img.zoom-from-card,
-.preview__media>video.zoom-from-card {
+.preview__media>video.zoom-from-card,
+.preview__carousel-slide.zoom-from-card {
   position: relative;
   z-index: 2;
   animation: none;
@@ -3080,15 +3082,28 @@ html.app-ready .profile__portrait {
 }
 
 .preview__media>img.zoom-from-card:not(.is-closing-origin),
-.preview__media>video.zoom-from-card:not(.is-closing-origin) {
+.preview__media>video.zoom-from-card:not(.is-closing-origin),
+.preview__carousel-slide.zoom-from-card:not(.is-closing-origin) {
   transition-duration: var(--preview-open-duration);
 }
 
 .preview__media>img.zoom-from-card.is-settled,
-.preview__media>video.zoom-from-card.is-settled {
+.preview__media>video.zoom-from-card.is-settled,
+.preview__carousel-slide.zoom-from-card.is-settled {
   transform: translate(0, 0) scale(1, 1);
   border-radius: var(--target-radius);
   box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.preview__carousel-slide.zoom-from-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% + var(--zoom-x)), calc(-50% + var(--zoom-y))) scale(var(--zoom-scale-x), var(--zoom-scale-y));
+}
+
+.preview__carousel-slide.zoom-from-card.is-settled {
+  transform: translate(-50%, -50%) scale(1, 1);
 }
 
 .preview__media--mobile>img,
@@ -3102,6 +3117,84 @@ html.app-ready .profile__portrait {
 .preview__media--web>video {
   width: min(1000px, 58vw);
   aspect-ratio: 20 / 13;
+  border-radius: 20px;
+}
+
+/* Stacked carousel treatment: the selected frame stays centered while
+   neighboring frames peek through as a quiet, depth-building deck. */
+.preview__carousel-stage {
+  position: relative;
+  width: min(100vw, 760px);
+  height: min(74vh, 754px);
+  flex: none;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.preview__carousel-slide {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: clamp(240px, 19.68vw, 340px);
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 32px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+  pointer-events: none;
+  opacity: .34;
+  filter: blur(1.5px) saturate(.82);
+  transform: translate(-50%, -50%) scale(.88);
+  transition: transform .56s cubic-bezier(.22, 1, .36, 1), opacity .46s ease, filter .46s ease;
+  will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.preview__carousel-slide.is-offset-0 {
+  z-index: 4;
+  opacity: 1;
+  filter: none;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.preview__carousel-slide.is-offset-1 {
+  z-index: 3;
+  opacity: .58;
+  transform: translate(calc(-50% + 176px), -50%) scale(.94);
+}
+
+.preview__carousel-slide.is-offset--1 {
+  z-index: 3;
+  opacity: .58;
+  transform: translate(calc(-50% - 176px), -50%) scale(.94);
+}
+
+.preview__carousel-slide.is-offset-2 {
+  transform: translate(calc(-50% + 332px), -50%) scale(.86);
+}
+
+.preview__carousel-slide.is-offset--2 {
+  transform: translate(calc(-50% - 332px), -50%) scale(.86);
+}
+
+.preview__carousel-stage.is-direction-1 .preview__carousel-slide.is-carousel-switching {
+  animation: carousel-active-arrive-forward .52s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.preview__carousel-stage.is-direction--1 .preview__carousel-slide.is-carousel-switching {
+  animation: carousel-active-arrive-backward .52s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.preview__media--web .preview__carousel-stage {
+  width: min(100vw, 1200px);
+  height: min(70vh, 650px);
+}
+
+.preview__media--web .preview__carousel-slide {
+  width: min(1000px, 58vw);
   border-radius: 20px;
 }
 
@@ -3373,7 +3466,8 @@ html.app-ready .profile__portrait {
   transition: background .18s ease, transform .18s ease;
 }
 
-.preview__media>img.is-carousel-switching {
+.preview__media>img.is-carousel-switching,
+.preview__carousel-slide.is-carousel-switching {
   animation: carousel-image-switch .34s cubic-bezier(.22, 1, .36, 1) both;
 }
 
@@ -3496,6 +3590,34 @@ html.app-ready .profile__portrait {
 
   to {
     transform: scale(1);
+  }
+}
+
+@keyframes carousel-active-arrive-forward {
+  from {
+    opacity: .16;
+    filter: blur(10px) saturate(.7);
+    transform: translate(calc(-50% + 26px), -50%) scale(.94);
+  }
+
+  to {
+    opacity: 1;
+    filter: none;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes carousel-active-arrive-backward {
+  from {
+    opacity: .16;
+    filter: blur(10px) saturate(.7);
+    transform: translate(calc(-50% - 26px), -50%) scale(.94);
+  }
+
+  to {
+    opacity: 1;
+    filter: none;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
@@ -3813,6 +3935,15 @@ html:has(.preview.is-photos-transition) .footer {
     height: auto;
     border-radius: 24px;
   }
+
+  .preview__carousel-stage {
+    height: min(74vh, 560px);
+  }
+
+  .preview__carousel-slide {
+    width: 240px;
+    border-radius: 24px;
+  }
 }
 
 @media (max-width: 1400px) and (min-width: 1101px) {
@@ -3905,6 +4036,33 @@ html:has(.preview.is-photos-transition) .footer {
     height: auto;
     max-height: none;
     border-radius: 24px;
+  }
+
+  .preview__carousel-stage {
+    width: 100%;
+    height: min(68dvh, 560px);
+    min-height: 466px;
+  }
+
+  .preview__carousel-slide {
+    width: min(240px, calc(100vw - 64px));
+    border-radius: 24px;
+  }
+
+  .preview__carousel-slide.is-offset-1 {
+    transform: translate(calc(-50% + 132px), -50%) scale(.9);
+  }
+
+  .preview__carousel-slide.is-offset--1 {
+    transform: translate(calc(-50% - 132px), -50%) scale(.9);
+  }
+
+  .preview__carousel-slide.is-offset-2 {
+    transform: translate(calc(-50% + 246px), -50%) scale(.8);
+  }
+
+  .preview__carousel-slide.is-offset--2 {
+    transform: translate(calc(-50% - 246px), -50%) scale(.8);
   }
 
   .preview__media--web>img,

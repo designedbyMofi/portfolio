@@ -179,6 +179,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   // in, avoiding a media-type jump during the entry transition.
   const [videoReady, setVideoReady] = useState(!project.video);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [carouselDirection, setCarouselDirection] = useState(1);
   const [carouselSwap, setCarouselSwap] = useState(false);
   const carouselSwapTimerRef = useRef<number | null>(null);
   const videoSwapTimerRef = useRef<number | null>(null);
@@ -263,14 +264,19 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       image.classList.add('zoom-from-card');
       image.classList.remove('preview-image-pending');
       void image.offsetWidth;
+      const isCarouselSlide = image.classList.contains('preview__carousel-slide');
+      const originTransform = isCarouselSlide
+        ? `translate(calc(-50% + ${origin.left - target.left}px), calc(-50% + ${origin.top - target.top}px)) scale(${scaleX}, ${scaleY})`
+        : `translate(${origin.left - target.left}px, ${origin.top - target.top}px) scale(${scaleX}, ${scaleY})`;
+      const settledTransform = isCarouselSlide ? 'translate(-50%, -50%) scale(1, 1)' : 'translate(0, 0) scale(1, 1)';
       entryAnimation = image.animate([
         {
-          transform: `translate(${origin.left - target.left}px, ${origin.top - target.top}px) scale(${scaleX}, ${scaleY})`,
+          transform: originTransform,
           borderRadius: `${origin.radius / scaleX}px / ${origin.radius / scaleY}px`,
           boxShadow: '0 8px 28px rgba(30, 27, 36, .08)',
         },
         {
-          transform: 'translate(0, 0) scale(1, 1)',
+          transform: settledTransform,
           borderRadius: `${targetRadius}px / ${targetRadius}px`,
           boxShadow: '0 1px 2px rgba(0, 0, 0, .05)',
         },
@@ -338,6 +344,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     : [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
   const displayedProject = project.motion === 'carousel' ? carouselProjects[carouselIndex] : project;
   const selectSlide = (index: number) => {
+    if (index === carouselIndex) return;
+    const forwardDistance = (index - carouselIndex + carouselProjects.length) % carouselProjects.length;
+    const backwardDistance = (carouselIndex - index + carouselProjects.length) % carouselProjects.length;
+    setCarouselDirection(forwardDistance <= backwardDistance ? 1 : -1);
     setCarouselIndex(index);
     setCarouselSwap(false);
     window.requestAnimationFrame(() => setCarouselSwap(true));
@@ -345,6 +355,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     carouselSwapTimerRef.current = window.setTimeout(() => setCarouselSwap(false), 340);
   };
   const changeSlide = (direction: number) => selectSlide((carouselIndex + direction + carouselProjects.length) % carouselProjects.length);
+  const carouselDeck = [-2, -1, 0, 1, 2].map((offset) => {
+    const index = (carouselIndex + offset + carouselProjects.length) % carouselProjects.length;
+    return { ...carouselProjects[index], index, offset };
+  });
   const togglePreviewPlayback = () => {
     const media = previewImageRef.current;
     if (media instanceof HTMLVideoElement) {
@@ -424,6 +438,23 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                 if (closing && event.propertyName === 'transform') onExitComplete();
               }}
             />
+          ) : project.motion === 'carousel' ? (
+            <div className={`preview__carousel-stage is-direction-${carouselDirection}`}>
+              {carouselDeck.map((item) => (
+                <img
+                  key={`${item.image}-${item.offset}`}
+                  ref={(element) => { if (item.offset === 0) previewImageRef.current = element; }}
+                  className={`preview__carousel-slide is-offset-${item.offset}${item.offset === 0 ? ` is-in-view${origin && !closing ? ' preview-image-pending' : ''}${carouselSwap ? ' is-carousel-switching' : ''}` : ''}`}
+                  src={item.image}
+                  alt={item.alt}
+                  data-reveal
+                  style={{ viewTransitionName: item.offset === 0 ? 'selected-shot' : undefined } as CSSProperties}
+                  onTransitionEnd={(event) => {
+                    if (item.offset === 0 && closing && event.propertyName === 'transform') onExitComplete();
+                  }}
+                />
+              ))}
+            </div>
           ) : (
             <img
               ref={(element) => { previewImageRef.current = element; }}
