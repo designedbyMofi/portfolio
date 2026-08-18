@@ -3197,6 +3197,14 @@ html.app-ready .profile__portrait {
   max-width: none;
 }
 
+/* The stage intentionally bleeds beyond the preview's padded content box.
+   Re-center that full-viewport canvas so the active frame stays on the
+   viewport midpoint at every breakpoint. */
+.preview.is-carousel-preview .preview__carousel-stage {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .preview__carousel-slide.is-offset-0 {
   z-index: 4;
   width: clamp(240px, 19.68vw, 340px);
