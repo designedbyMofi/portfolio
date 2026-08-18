@@ -2959,6 +2959,11 @@ html.app-ready .profile__portrait {
   line-height: 24px;
   text-align: center;
   pointer-events: none;
+  animation: preview-description-in .46s .18s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.preview.is-closing .preview__description {
+  animation: preview-description-out .28s cubic-bezier(.4, 0, .2, 1) both;
 }
 
 .preview::before {
@@ -3446,6 +3451,34 @@ html.app-ready .profile__portrait {
   from {
     opacity: 0;
     transform: translateY(8px);
+  }
+}
+
+@keyframes preview-description-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+    filter: blur(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes preview-description-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    filter: blur(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+    filter: blur(3px);
   }
 }
 
