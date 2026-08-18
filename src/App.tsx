@@ -469,6 +469,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
           )}
         </div>
       </div>
+      <p className="preview__description">{displayedProject.alt}</p>
     </div>
   );
 }
