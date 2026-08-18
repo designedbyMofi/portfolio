@@ -545,14 +545,12 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                 <img className="carousel-control-icon carousel-control-icon--default" src="/assets/carousel-caret-prev.svg" alt="" />
                 <img className="carousel-control-icon carousel-control-icon--inactive" src="/assets/carousel-caret-prev-inactive.svg" alt="" />
                 <img className="carousel-control-icon carousel-control-icon--hover" src="/assets/carousel-caret-prev-hover.svg" alt="" />
-                <span className="carousel-control-cursor" aria-hidden="true"><img src="/assets/carousel-control-cursor.svg" alt="" /><img src="/assets/carousel-control-cursor-lines.svg" alt="" /></span>
               </button>
               <span className="preview__dots" aria-label="Carousel slides">{carouselProjects.map((item, dot) => <button className={`preview__carousel-dot${dot === carouselIndex ? ' is-active' : ''}`} onClick={() => selectSlide(dot)} aria-label={`Go to slide ${dot + 1}`} key={`${item.image}-${dot}`} />)}</span>
               <button className="preview__carousel-button" onClick={() => changeSlide(1)} aria-label="Next slide" disabled={carouselIndex === carouselProjects.length - 1}>
                 <img className="carousel-control-icon carousel-control-icon--default" src="/assets/carousel-caret-next.svg" alt="" />
                 <img className="carousel-control-icon carousel-control-icon--inactive" src="/assets/carousel-caret-next-inactive.svg" alt="" />
                 <img className="carousel-control-icon carousel-control-icon--hover" src="/assets/carousel-caret-next-hover.svg" alt="" />
-                <span className="carousel-control-cursor" aria-hidden="true"><img src="/assets/carousel-control-cursor.svg" alt="" /><img src="/assets/carousel-control-cursor-lines.svg" alt="" /></span>
               </button>
             </div>
           )}
