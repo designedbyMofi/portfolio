@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Carousel sizing comparison</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 24px; background: #1e1b24; color: #faf8f6; font: 14px/1.4 system-ui, sans-serif; }
+      main { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+      figure { margin: 0; }
+      figcaption { margin-bottom: 10px; }
+      img { display: block; width: 100%; height: auto; border-radius: 12px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <figure><figcaption>Source target — regular shot proportions</figcaption><img src="source-regular-shot-target.png" alt="Regular shot target" /></figure>
+      <figure><figcaption>Implementation — natural aspect ratio</figcaption><img src="implementation-carousel-after.png" alt="Corrected implementation" /></figure>
+    </main>
+  </body>
+</html>
