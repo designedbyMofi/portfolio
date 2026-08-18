@@ -335,9 +335,13 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     return () => window.cancelAnimationFrame(firstFrame);
   }, [closing, origin]);
 
-  const carouselProjects = project.carouselImages
-    ? project.carouselImages.map((image) => ({ ...project, image }))
-    : [project, ...projects.filter((item) => item !== project && item.kind === project.kind)].slice(0, 6);
+  // A carousel is an expanded set of screens from this specific shot. Never
+  // fill it with neighbouring portfolio cards: if no related screens have
+  // been assigned yet, keep the preview to the clicked image only.
+  const carouselImages = project.carouselImages?.length
+    ? [project.image, ...project.carouselImages.filter((image) => image !== project.image)]
+    : [project.image];
+  const carouselProjects = carouselImages.map((image) => ({ ...project, image }));
   const displayedProject = project.motion === 'carousel' ? carouselProjects[carouselIndex] : project;
   const selectSlide = (index: number) => {
     if (index === carouselIndex) return;
@@ -480,7 +484,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               </div>
             </div>
           )}
-          {project.motion === 'carousel' && (
+          {project.motion === 'carousel' && carouselProjects.length > 1 && (
             <div className="preview__carousel-controls" aria-label="Carousel controls">
               <button className="preview__carousel-button" onClick={() => changeSlide(-1)} aria-label="Previous slide"><img src="/assets/carousel-caret-prev.svg" alt="" /></button>
               <span className="preview__dots" aria-label="Carousel slides">{carouselProjects.map((item, dot) => <button className={`preview__carousel-dot${dot === carouselIndex ? ' is-active' : ''}`} onClick={() => selectSlide(dot)} aria-label={`Go to slide ${dot + 1}`} key={`${item.image}-${dot}`} />)}</span>

@@ -4066,7 +4066,7 @@ html:has(.preview.is-photos-transition) .footer {
   }
 
   .preview__carousel-stage {
-    width: 100%;
+    width: calc(100vw - 48px);
     height: min(68dvh, 560px);
     min-height: 466px;
   }
@@ -4107,7 +4107,7 @@ html:has(.preview.is-photos-transition) .footer {
   }
 
   .preview__media--web .preview__carousel-stage {
-    width: 100%;
+    width: calc(100vw - 48px);
     height: min(68dvh, 560px);
   }
 
