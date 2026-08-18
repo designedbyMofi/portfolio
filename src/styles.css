@@ -3147,10 +3147,23 @@ html.app-ready .profile__portrait {
   opacity: .6;
   filter: saturate(.9);
   transform: translate(calc(-50% + var(--carousel-x, 0px)), -50%);
-  transition: transform .74s cubic-bezier(.22, 1, .36, 1), width .74s cubic-bezier(.22, 1, .36, 1), max-height .74s cubic-bezier(.22, 1, .36, 1), opacity .44s ease, filter .44s ease, box-shadow .44s ease;
+  transition: transform .82s cubic-bezier(.16, 1, .3, 1), width .82s cubic-bezier(.16, 1, .3, 1), max-height .82s cubic-bezier(.16, 1, .3, 1), opacity .5s cubic-bezier(.22, 1, .36, 1), filter .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s cubic-bezier(.22, 1, .36, 1);
   will-change: transform, width, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+}
+
+/* The filmstrip is intentionally viewport-wide. Its frames can travel
+   beneath the rounded preview edges while the active frame stays centered. */
+.preview.is-carousel-preview {
+  padding-inline: 0;
+}
+
+.preview.is-carousel-preview .preview__layout,
+.preview.is-carousel-preview .preview__media,
+.preview.is-carousel-preview .preview__carousel-stage {
+  width: 100vw;
+  max-width: none;
 }
 
 .preview__carousel-slide.is-offset-0 {

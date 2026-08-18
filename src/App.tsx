@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type KeyboardEvent as ReactKeyboardEvent, type FocusEvent as ReactFocusEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type KeyboardEvent as ReactKeyboardEvent, type FocusEvent as ReactFocusEvent, type WheelEvent as ReactWheelEvent } from 'react';
 import { getCalApi } from '@calcom/embed-react';
 
 type ProjectKind = 'mobile' | 'web';
@@ -196,6 +196,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const videoSwapTimerRef = useRef<number | null>(null);
   const previewImageRef = useRef<HTMLElement | null>(null);
   const entryStartedRef = useRef(false);
+  const carouselWheelLockRef = useRef(false);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => event.key === 'Escape' && onClose();
@@ -363,6 +364,21 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     setCarouselIndex(index);
   };
   const changeSlide = (direction: number) => selectSlide(Math.min(Math.max(carouselIndex + direction, 0), carouselProjects.length - 1));
+  const handleCarouselWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
+    // Trackpads report horizontal intent as deltaX, while shift-wheel and
+    // some browsers expose it as deltaY. Treat one gesture as one slide so a
+    // high-resolution trackpad cannot skip the whole sequence.
+    const delta = Math.abs(event.deltaX) >= Math.abs(event.deltaY)
+      ? event.deltaX
+      : event.shiftKey
+        ? event.deltaY
+        : 0;
+    if (Math.abs(delta) < 10 || carouselWheelLockRef.current) return;
+    event.preventDefault();
+    carouselWheelLockRef.current = true;
+    changeSlide(delta > 0 ? 1 : -1);
+    window.setTimeout(() => { carouselWheelLockRef.current = false; }, 420);
+  };
   const carouselDeck = carouselProjects.map((item, index) => ({ ...item, index, offset: index - carouselIndex }));
   const togglePreviewPlayback = () => {
     const media = previewImageRef.current;
@@ -419,7 +435,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   };
 
   return (
-    <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
+    <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}${project.motion === 'carousel' ? ' is-carousel-preview' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
         <div className={`preview__media preview__media--${project.previewKind ?? project.kind}`}>
           {project.video && videoReady ? (
@@ -444,7 +460,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               }}
             />
           ) : project.motion === 'carousel' ? (
-            <div className="preview__carousel-stage">
+            <div className="preview__carousel-stage" onWheel={handleCarouselWheel}>
               {carouselDeck.map((item) => (
                 <img
                   key={`${item.image}-${item.index}`}
