@@ -3126,6 +3126,8 @@ html.app-ready .profile__portrait {
   position: relative;
   width: min(100vw, 1180px);
   height: min(74vh, 754px);
+  --carousel-gap: 12px;
+  --carousel-step: 332px;
   flex: none;
   overflow: hidden;
   isolation: isolate;
@@ -3146,7 +3148,7 @@ html.app-ready .profile__portrait {
   pointer-events: none;
   opacity: .6;
   filter: saturate(.9);
-  transform: translate(calc(-50% + var(--carousel-x, 0px)), -50%);
+  transform: translate(calc(-50% + (var(--carousel-step, 332px) * var(--carousel-offset, 0))), -50%);
   transition: transform .82s cubic-bezier(.16, 1, .3, 1), width .82s cubic-bezier(.16, 1, .3, 1), max-height .82s cubic-bezier(.16, 1, .3, 1), opacity .5s cubic-bezier(.22, 1, .36, 1), filter .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s cubic-bezier(.22, 1, .36, 1);
   will-change: transform, width, opacity;
   backface-visibility: hidden;
@@ -3919,7 +3921,7 @@ html:has(.preview.is-photos-transition) .footer {
   .preview__carousel-slide {
     width: 240px;
     border-radius: 24px;
-    transform: translate(calc(-50% + var(--carousel-x-compact, 0px)), -50%);
+    transform: translate(calc(-50% + (var(--carousel-step, 252px) * var(--carousel-offset, 0))), -50%);
   }
 
   .preview__carousel-slide.is-offset-0 {
@@ -4030,7 +4032,7 @@ html:has(.preview.is-photos-transition) .footer {
     width: min(224px, calc(100vw - 80px));
     max-height: min(64dvh, 442px);
     border-radius: 24px;
-    transform: translate(calc(-50% + var(--carousel-x-mobile, 0px)), -50%);
+    transform: translate(calc(-50% + (var(--carousel-step, 236px) * var(--carousel-offset, 0))), -50%);
   }
 
   .preview__carousel-slide.is-offset-0 {

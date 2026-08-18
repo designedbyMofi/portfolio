@@ -195,6 +195,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const [carouselIndex, setCarouselIndex] = useState(0);
   const videoSwapTimerRef = useRef<number | null>(null);
   const previewImageRef = useRef<HTMLElement | null>(null);
+  const carouselStageRef = useRef<HTMLDivElement | null>(null);
   const entryStartedRef = useRef(false);
   const carouselWheelLockRef = useRef(false);
 
@@ -215,6 +216,26 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     setScrubTime(null);
     setIsScrubbing(false);
   }, [project.image, project.video]);
+
+  useLayoutEffect(() => {
+    const stage = carouselStageRef.current;
+    if (!stage || project.motion !== 'carousel') return;
+
+    const updateCarouselStep = () => {
+      const active = stage.querySelector<HTMLElement>('.preview__carousel-slide.is-offset-0');
+      const side = stage.querySelector<HTMLElement>('.preview__carousel-slide:not(.is-offset-0)');
+      if (!active || !side) return;
+      const activeWidth = active.getBoundingClientRect().width;
+      const sideWidth = side.getBoundingClientRect().width;
+      if (!activeWidth || !sideWidth) return;
+      stage.style.setProperty('--carousel-step', `${(activeWidth + sideWidth) / 2 + 12}px`);
+    };
+
+    updateCarouselStep();
+    const resizeObserver = new ResizeObserver(updateCarouselStep);
+    resizeObserver.observe(stage);
+    return () => resizeObserver.disconnect();
+  }, [project.motion, project.carouselImages?.length]);
 
   useLayoutEffect(() => {
     const image = previewImageRef.current;
@@ -460,7 +481,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               }}
             />
           ) : project.motion === 'carousel' ? (
-            <div className="preview__carousel-stage" onWheel={handleCarouselWheel}>
+            <div ref={carouselStageRef} className="preview__carousel-stage" onWheel={handleCarouselWheel}>
               {carouselDeck.map((item) => (
                 <img
                   key={`${item.image}-${item.index}`}
@@ -470,9 +491,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                   alt={item.alt}
                   style={{
                     viewTransitionName: item.offset === 0 ? 'selected-shot' : undefined,
-                    '--carousel-x': `${item.offset * 332}px`,
-                    '--carousel-x-compact': `${item.offset * 252}px`,
-                    '--carousel-x-mobile': `${item.offset * 236}px`,
+                    '--carousel-offset': item.offset,
                   } as CSSProperties}
                   onTransitionEnd={(event) => {
                     if (item.offset === 0 && closing && event.propertyName === 'transform') onExitComplete();
