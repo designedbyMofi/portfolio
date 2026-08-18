@@ -4065,6 +4065,16 @@ html:has(.preview.is-photos-transition) .footer {
     transform: translate(calc(-50% - 246px), -50%) scale(.8);
   }
 
+  .preview__media--web .preview__carousel-stage {
+    width: 100%;
+    height: min(68dvh, 560px);
+  }
+
+  .preview__media--web .preview__carousel-slide {
+    width: min(320px, calc(100vw - 64px));
+    border-radius: 12px;
+  }
+
   .preview__media--web>img,
   .preview__media--web>video {
     width: min(100%, 320px);
