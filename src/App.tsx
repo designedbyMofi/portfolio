@@ -87,7 +87,21 @@ const projects: Project[] = [
   { image: '/assets/project-02.png', alt: 'Pay an influencer mobile flow', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', kind: 'mobile', motion: 'video' },
   { image: '/assets/project-04.png', alt: 'Internal company communication platform', kind: 'mobile', motion: 'video', video: '/assets/communication-preview.mov' },
-  { image: '/assets/project-05.png', alt: 'Explore business mobile flow', kind: 'mobile', motion: 'carousel' },
+  {
+    image: '/assets/thrift-flow-01.png',
+    alt: 'Thrift shopping mobile app',
+    kind: 'mobile',
+    motion: 'carousel',
+    carouselImages: [
+      '/assets/thrift-flow-01.png',
+      '/assets/thrift-flow-02.png',
+      '/assets/thrift-flow-03.png',
+      '/assets/thrift-flow-04.png',
+      '/assets/thrift-flow-05.png',
+      '/assets/thrift-flow-06.png',
+      '/assets/thrift-flow-07.png',
+    ],
+  },
   { image: '/assets/project-06.png', alt: 'Email verified mobile screen', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-07.png', alt: 'Messaging mobile screen', kind: 'mobile', motion: 'video' },
   { image: '/assets/project-08.png', alt: 'Transparent checkerboard study', kind: 'mobile', motion: 'carousel' },
@@ -339,20 +353,17 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   // fill it with neighbouring portfolio cards: if no related screens have
   // been assigned yet, keep the preview to the clicked image only.
   const carouselImages = project.carouselImages?.length
-    ? [project.image, ...project.carouselImages.filter((image) => image !== project.image)]
+    ? project.carouselImages
     : [project.image];
   const carouselProjects = carouselImages.map((image) => ({ ...project, image }));
   const displayedProject = project.motion === 'carousel' ? carouselProjects[carouselIndex] : project;
   const selectSlide = (index: number) => {
     if (index === carouselIndex) return;
+    playUiSound('select');
     setCarouselIndex(index);
   };
-  const changeSlide = (direction: number) => selectSlide((carouselIndex + direction + carouselProjects.length) % carouselProjects.length);
-  const carouselDeck = carouselProjects.map((item, index) => {
-    let offset = (index - carouselIndex + carouselProjects.length) % carouselProjects.length;
-    if (offset > carouselProjects.length / 2) offset -= carouselProjects.length;
-    return { ...item, index, offset };
-  });
+  const changeSlide = (direction: number) => selectSlide(Math.min(Math.max(carouselIndex + direction, 0), carouselProjects.length - 1));
+  const carouselDeck = carouselProjects.map((item, index) => ({ ...item, index, offset: index - carouselIndex }));
   const togglePreviewPlayback = () => {
     const media = previewImageRef.current;
     if (media instanceof HTMLVideoElement) {
@@ -441,7 +452,12 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                   className={`preview__carousel-slide is-offset-${item.offset}${item.offset === 0 && origin && !closing && !entryStartedRef.current ? ' preview-image-pending' : ''}`}
                   src={item.image}
                   alt={item.alt}
-                  style={{ viewTransitionName: item.offset === 0 ? 'selected-shot' : undefined } as CSSProperties}
+                  style={{
+                    viewTransitionName: item.offset === 0 ? 'selected-shot' : undefined,
+                    '--carousel-x': `${item.offset * 332}px`,
+                    '--carousel-x-compact': `${item.offset * 252}px`,
+                    '--carousel-x-mobile': `${item.offset * 236}px`,
+                  } as CSSProperties}
                   onTransitionEnd={(event) => {
                     if (item.offset === 0 && closing && event.propertyName === 'transform') onExitComplete();
                   }}
@@ -486,9 +502,9 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
           )}
           {project.motion === 'carousel' && carouselProjects.length > 1 && (
             <div className="preview__carousel-controls" aria-label="Carousel controls">
-              <button className="preview__carousel-button" onClick={() => changeSlide(-1)} aria-label="Previous slide"><img src="/assets/carousel-caret-prev.svg" alt="" /></button>
+              <button className="preview__carousel-button" onClick={() => changeSlide(-1)} aria-label="Previous slide" disabled={carouselIndex === 0}><img src="/assets/carousel-caret-prev.svg" alt="" /></button>
               <span className="preview__dots" aria-label="Carousel slides">{carouselProjects.map((item, dot) => <button className={`preview__carousel-dot${dot === carouselIndex ? ' is-active' : ''}`} onClick={() => selectSlide(dot)} aria-label={`Go to slide ${dot + 1}`} key={`${item.image}-${dot}`} />)}</span>
-              <button className="preview__carousel-button" onClick={() => changeSlide(1)} aria-label="Next slide"><img src="/assets/carousel-caret-next.svg" alt="" /></button>
+              <button className="preview__carousel-button" onClick={() => changeSlide(1)} aria-label="Next slide" disabled={carouselIndex === carouselProjects.length - 1}><img src="/assets/carousel-caret-next.svg" alt="" /></button>
             </div>
           )}
         </div>

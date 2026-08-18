@@ -3120,8 +3120,8 @@ html.app-ready .profile__portrait {
   border-radius: 20px;
 }
 
-/* Figma filmstrip carousel: the active frame owns the center while future
-   frames trail to the right. The same nodes slide and resize between roles. */
+/* Figma filmstrip carousel: one continuous set of screens translates through
+   the viewport while the active frame grows into focus. */
 .preview__carousel-stage {
   position: relative;
   width: min(100vw, 1180px);
@@ -3146,8 +3146,8 @@ html.app-ready .profile__portrait {
   pointer-events: none;
   opacity: .6;
   filter: saturate(.9);
-  transform: translate(-50%, -50%);
-  transition: transform .68s cubic-bezier(.22, 1, .36, 1), width .68s cubic-bezier(.22, 1, .36, 1), max-height .68s cubic-bezier(.22, 1, .36, 1), opacity .42s ease, filter .42s ease, box-shadow .42s ease;
+  transform: translate(calc(-50% + var(--carousel-x, 0px)), -50%);
+  transition: transform .74s cubic-bezier(.22, 1, .36, 1), width .74s cubic-bezier(.22, 1, .36, 1), max-height .74s cubic-bezier(.22, 1, .36, 1), opacity .44s ease, filter .44s ease, box-shadow .44s ease;
   will-change: transform, width, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -3161,49 +3161,6 @@ html.app-ready .profile__portrait {
   filter: none;
   transform: translate(-50%, -50%);
   box-shadow: 0 10px 30px rgba(30, 27, 36, .08), 0 1px 2px rgba(0, 0, 0, .05);
-}
-
-.preview__carousel-slide.is-offset-1 {
-  z-index: 3;
-  transform: translate(calc(-50% + 342px), -50%);
-}
-
-.preview__carousel-slide.is-offset--1 {
-  z-index: 2;
-  opacity: 0;
-  transform: translate(calc(-50% - 342px), -50%);
-}
-
-.preview__carousel-slide.is-offset-2 {
-  transform: translate(calc(-50% + 674px), -50%);
-}
-
-.preview__carousel-slide.is-offset--2 {
-  opacity: 0;
-  transform: translate(calc(-50% - 674px), -50%);
-}
-
-.preview__carousel-slide.is-offset-3 {
-  transform: translate(calc(-50% + 1006px), -50%);
-}
-
-.preview__carousel-slide.is-offset--3 {
-  opacity: 0;
-  transform: translate(calc(-50% - 1006px), -50%);
-}
-
-.preview__carousel-slide.is-offset-4,
-.preview__carousel-slide.is-offset-5,
-.preview__carousel-slide.is-offset-6 {
-  opacity: 0;
-  transform: translate(calc(-50% + 1338px), -50%);
-}
-
-.preview__carousel-slide.is-offset--4,
-.preview__carousel-slide.is-offset--5,
-.preview__carousel-slide.is-offset--6 {
-  opacity: 0;
-  transform: translate(calc(-50% - 1338px), -50%);
 }
 
 .preview__media--web .preview__carousel-stage {
@@ -3453,6 +3410,7 @@ html.app-ready .profile__portrait {
 
 .preview__carousel-controls {
   gap: 10px;
+  margin-top: 16px;
 }
 
 .preview__carousel-controls .preview__carousel-button {
@@ -3470,6 +3428,12 @@ html.app-ready .profile__portrait {
 
 .preview__carousel-controls .preview__carousel-button:focus-visible {
   box-shadow: 0 0 0 2px rgba(124, 109, 103, .22), 0 12px 6px rgba(0, 0, 0, .06);
+}
+
+.preview__carousel-controls .preview__carousel-button:disabled {
+  opacity: .42;
+  cursor: default;
+  transform: none;
 }
 
 .preview__carousel-button img {
@@ -3495,10 +3459,10 @@ html.app-ready .profile__portrait {
 
 .preview__dots .preview__carousel-dot {
   appearance: none;
-  width: 8px;
-  height: 8px;
-  min-width: 8px;
-  flex: 0 0 8px;
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  flex: 0 0 6px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -3942,35 +3906,13 @@ html:has(.preview.is-photos-transition) .footer {
   .preview__carousel-slide {
     width: 240px;
     border-radius: 24px;
+    transform: translate(calc(-50% + var(--carousel-x-compact, 0px)), -50%);
   }
 
   .preview__carousel-slide.is-offset-0 {
     width: 255px;
   }
 
-  .preview__carousel-slide.is-offset-1 {
-    transform: translate(calc(-50% + 257px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset--1 {
-    transform: translate(calc(-50% - 257px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset-2 {
-    transform: translate(calc(-50% + 507px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset--2 {
-    transform: translate(calc(-50% - 507px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset-3 {
-    transform: translate(calc(-50% + 757px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset--3 {
-    transform: translate(calc(-50% - 757px), -50%);
-  }
 }
 
 @media (max-width: 1400px) and (min-width: 1101px) {
@@ -4075,35 +4017,12 @@ html:has(.preview.is-photos-transition) .footer {
     width: min(224px, calc(100vw - 80px));
     max-height: min(64dvh, 442px);
     border-radius: 24px;
+    transform: translate(calc(-50% + var(--carousel-x-mobile, 0px)), -50%);
   }
 
   .preview__carousel-slide.is-offset-0 {
     width: min(240px, calc(100vw - 64px));
     max-height: min(68dvh, 466px);
-  }
-
-  .preview__carousel-slide.is-offset-1 {
-    transform: translate(calc(-50% + 246px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset--1 {
-    transform: translate(calc(-50% - 246px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset-2 {
-    transform: translate(calc(-50% + 482px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset--2 {
-    transform: translate(calc(-50% - 482px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset-3 {
-    transform: translate(calc(-50% + 718px), -50%);
-  }
-
-  .preview__carousel-slide.is-offset--3 {
-    transform: translate(calc(-50% - 718px), -50%);
   }
 
   .preview__media--web .preview__carousel-stage {
