@@ -222,30 +222,46 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     if (!stage || project.motion !== 'carousel') return;
 
     const updateCarouselStep = () => {
-      const active = stage.querySelector<HTMLElement>('.preview__carousel-slide.is-offset-0');
-      const side = stage.querySelector<HTMLElement>('.preview__carousel-slide:not(.is-offset-0)');
-      if (!active || !side) return;
-      // Use the used layout widths, rather than a CSS declaration or a
-      // transformed bounding box. This keeps the 12px edge gap exact when a
-      // screen reaches a max-height at a smaller viewport. The active
-      // screen's visual 5% increase is accounted for separately.
-      const activeWidth = active.offsetWidth;
-      const sideWidth = side.offsetWidth;
-      if (!activeWidth || !sideWidth) return;
+      const frames = Array.from(stage.querySelectorAll<HTMLElement>('.preview__carousel-slide'));
+      const active = frames.find((frame) => frame.classList.contains('is-offset-0'));
+      if (!active) return;
       const gap = parseFloat(getComputedStyle(stage).getPropertyValue('--carousel-gap')) || 12;
       const activeScale = parseFloat(getComputedStyle(active).scale) || 1.05;
-      const activeStep = (activeWidth * activeScale + sideWidth) / 2 + gap;
-      stage.style.setProperty('--carousel-active-step', `${activeStep}px`);
-      stage.style.setProperty('--carousel-step', `${sideWidth + gap}px`);
+      const activeWidth = active.offsetWidth * activeScale;
+      if (!activeWidth) return;
+
+      // Build each side of the rail from the real visual widths. This makes
+      // every neighbouring edge gap the same 12px, even while the selected
+      // screen is 5% larger or a responsive max-height changes a screen's
+      // used width.
+      let leftEdge = -activeWidth / 2;
+      let rightEdge = activeWidth / 2;
+      active.style.setProperty('--carousel-translate-x', '0px');
+
+      const positionSide = (direction: 1 | -1) => {
+        frames
+          .filter((frame) => Number(frame.style.getPropertyValue('--carousel-offset')) * direction > 0)
+          .sort((a, b) => Math.abs(Number(a.style.getPropertyValue('--carousel-offset'))) - Math.abs(Number(b.style.getPropertyValue('--carousel-offset'))))
+          .forEach((frame) => {
+            const width = frame.offsetWidth;
+            if (!width) return;
+            const center = direction === 1
+              ? rightEdge + gap + width / 2
+              : leftEdge - gap - width / 2;
+            frame.style.setProperty('--carousel-translate-x', `${center}px`);
+            if (direction === 1) rightEdge = center + width / 2;
+            else leftEdge = center - width / 2;
+          });
+      };
+
+      positionSide(-1);
+      positionSide(1);
     };
 
     updateCarouselStep();
     const resizeObserver = new ResizeObserver(updateCarouselStep);
     resizeObserver.observe(stage);
-    const activeFrame = stage.querySelector<HTMLElement>('.preview__carousel-slide.is-offset-0');
-    const adjacentFrame = stage.querySelector<HTMLElement>('.preview__carousel-slide:not(.is-offset-0)');
-    if (activeFrame) resizeObserver.observe(activeFrame);
-    if (adjacentFrame) resizeObserver.observe(adjacentFrame);
+    stage.querySelectorAll<HTMLElement>('.preview__carousel-slide').forEach((frame) => resizeObserver.observe(frame));
     return () => resizeObserver.disconnect();
   }, [project.motion, project.carouselImages?.length, carouselIndex]);
 

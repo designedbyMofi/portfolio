@@ -3278,6 +3278,13 @@ html.app-ready .profile__portrait {
   transform: translate(calc(-50% - var(--carousel-active-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step)), -50%);
 }
 
+/* Every slide receives its horizontal position from its used width at runtime.
+   The selector deliberately wins over the fallback offset classes above so
+   inactive↔inactive and inactive↔active edges always keep the same gap. */
+.preview__carousel-slide[class*="is-offset-"] {
+  transform: translate(calc(-50% + var(--carousel-translate-x, 0px)), -50%);
+}
+
 .preview__media--web .preview__carousel-stage {
   width: min(100vw, 1200px);
   height: min(70vh, 650px);
