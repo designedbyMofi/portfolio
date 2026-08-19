@@ -3128,6 +3128,7 @@ html.app-ready .profile__portrait {
   height: min(74vh, 754px);
   --carousel-gap: 12px;
   --carousel-step: 332px;
+  --carousel-active-step: 344px;
   flex: none;
   overflow: hidden;
   isolation: isolate;
@@ -3225,6 +3226,56 @@ html.app-ready .profile__portrait {
   box-shadow: 0 10px 30px rgba(30, 27, 36, .08), 0 1px 2px rgba(0, 0, 0, .05);
 }
 
+/* The first step includes half of the 5% active-frame increase. Every
+   following step is a regular frame width plus the same 12px gap. */
+.preview__carousel-slide.is-offset-1 {
+  transform: translate(calc(-50% + var(--carousel-active-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset--1 {
+  transform: translate(calc(-50% - var(--carousel-active-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset-2 {
+  transform: translate(calc(-50% + var(--carousel-active-step) + var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset--2 {
+  transform: translate(calc(-50% - var(--carousel-active-step) - var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset-3 {
+  transform: translate(calc(-50% + var(--carousel-active-step) + var(--carousel-step) + var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset--3 {
+  transform: translate(calc(-50% - var(--carousel-active-step) - var(--carousel-step) - var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset-4 {
+  transform: translate(calc(-50% + var(--carousel-active-step) + var(--carousel-step) + var(--carousel-step) + var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset--4 {
+  transform: translate(calc(-50% - var(--carousel-active-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset-5 {
+  transform: translate(calc(-50% + var(--carousel-active-step) + var(--carousel-step) + var(--carousel-step) + var(--carousel-step) + var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset--5 {
+  transform: translate(calc(-50% - var(--carousel-active-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset-6 {
+  transform: translate(calc(-50% + var(--carousel-active-step) + var(--carousel-step) + var(--carousel-step) + var(--carousel-step) + var(--carousel-step) + var(--carousel-step)), -50%);
+}
+
+.preview__carousel-slide.is-offset--6 {
+  transform: translate(calc(-50% - var(--carousel-active-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step) - var(--carousel-step)), -50%);
+}
+
 .preview__media--web .preview__carousel-stage {
   width: min(100vw, 1200px);
   height: min(70vh, 650px);
@@ -3239,24 +3290,6 @@ html.app-ready .profile__portrait {
 .preview__media--web .preview__carousel-slide.is-offset-0 {
   width: min(920px, 53.5vw);
   max-height: min(70vh, 650px);
-}
-
-.preview__media--web .preview__carousel-slide.is-offset-1 {
-  transform: translate(calc(-50% + min(970px, 56vw)), -50%);
-}
-
-.preview__media--web .preview__carousel-slide.is-offset--1 {
-  transform: translate(calc(-50% - min(970px, 56vw)), -50%);
-}
-
-.preview__media--web .preview__carousel-slide.is-offset-2,
-.preview__media--web .preview__carousel-slide.is-offset-3 {
-  transform: translate(calc(-50% + min(1900px, 110vw)), -50%);
-}
-
-.preview__media--web .preview__carousel-slide.is-offset--2,
-.preview__media--web .preview__carousel-slide.is-offset--3 {
-  transform: translate(calc(-50% - min(1900px, 110vw)), -50%);
 }
 
 /* Keep desktop dimensions matched; the shared 1.05 scale on the active frame
@@ -4172,24 +4205,6 @@ html:has(.preview.is-photos-transition) .footer {
   .preview__media--web .preview__carousel-slide.is-offset-0 {
     width: min(294px, calc(100vw - 72px));
     max-height: min(62dvh, 500px);
-  }
-
-  .preview__media--web .preview__carousel-slide.is-offset-1 {
-    transform: translate(calc(-50% + 314px), -50%);
-  }
-
-  .preview__media--web .preview__carousel-slide.is-offset--1 {
-    transform: translate(calc(-50% - 314px), -50%);
-  }
-
-  .preview__media--web .preview__carousel-slide.is-offset-2,
-  .preview__media--web .preview__carousel-slide.is-offset-3 {
-    transform: translate(calc(-50% + 618px), -50%);
-  }
-
-  .preview__media--web .preview__carousel-slide.is-offset--2,
-  .preview__media--web .preview__carousel-slide.is-offset--3 {
-    transform: translate(calc(-50% - 618px), -50%);
   }
 
   .preview__media--web>img,
