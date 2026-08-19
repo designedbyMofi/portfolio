@@ -225,12 +225,12 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       const active = stage.querySelector<HTMLElement>('.preview__carousel-slide.is-offset-0');
       const side = stage.querySelector<HTMLElement>('.preview__carousel-slide:not(.is-offset-0)');
       if (!active || !side) return;
-      // Read layout widths rather than bounding boxes: the active frame may
-      // still be running its shared-origin zoom. Its 5% visual scale is then
-      // added deliberately so both active↔inactive and inactive↔inactive
-      // edges hold the same 12px gap.
-      const activeWidth = parseFloat(getComputedStyle(active).width);
-      const sideWidth = parseFloat(getComputedStyle(side).width);
+      // Use the used layout widths, rather than a CSS declaration or a
+      // transformed bounding box. This keeps the 12px edge gap exact when a
+      // screen reaches a max-height at a smaller viewport. The active
+      // screen's visual 5% increase is accounted for separately.
+      const activeWidth = active.offsetWidth;
+      const sideWidth = side.offsetWidth;
       if (!activeWidth || !sideWidth) return;
       const gap = parseFloat(getComputedStyle(stage).getPropertyValue('--carousel-gap')) || 12;
       const activeScale = parseFloat(getComputedStyle(active).scale) || 1.05;
@@ -242,8 +242,12 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     updateCarouselStep();
     const resizeObserver = new ResizeObserver(updateCarouselStep);
     resizeObserver.observe(stage);
+    const activeFrame = stage.querySelector<HTMLElement>('.preview__carousel-slide.is-offset-0');
+    const adjacentFrame = stage.querySelector<HTMLElement>('.preview__carousel-slide:not(.is-offset-0)');
+    if (activeFrame) resizeObserver.observe(activeFrame);
+    if (adjacentFrame) resizeObserver.observe(adjacentFrame);
     return () => resizeObserver.disconnect();
-  }, [project.motion, project.carouselImages?.length]);
+  }, [project.motion, project.carouselImages?.length, carouselIndex]);
 
   useLayoutEffect(() => {
     const image = previewImageRef.current;
