@@ -226,7 +226,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       const active = frames.find((frame) => frame.classList.contains('is-offset-0'));
       if (!active) return;
       const gap = parseFloat(getComputedStyle(stage).getPropertyValue('--carousel-gap')) || 12;
-      const activeScale = parseFloat(getComputedStyle(active).scale) || 1.05;
+      const activeScale = parseFloat(getComputedStyle(active).getPropertyValue('--carousel-scale')) || 1.05;
       const activeWidth = active.offsetWidth * activeScale;
       if (!activeWidth) return;
 
@@ -256,6 +256,17 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
 
       positionSide(-1);
       positionSide(1);
+
+      // The rail is intentionally taller than most individual screens. Keep
+      // its controls attached to the visual bottom of the selected screen,
+      // rather than the bottom of that larger stage, so they never drift into
+      // the empty space between the image and its caption.
+      const controls = stage.parentElement?.querySelector<HTMLElement>('.preview__carousel-controls');
+      if (controls) {
+        const activeHeight = active.offsetHeight * activeScale;
+        const controlsTop = (stage.clientHeight - activeHeight) / 2 + activeHeight + 12;
+        controls.style.setProperty('--carousel-controls-top', `${Math.round(controlsTop)}px`);
+      }
     };
 
     updateCarouselStep();

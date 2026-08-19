@@ -3043,6 +3043,7 @@ html.app-ready .profile__portrait {
 }
 
 .preview__media {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3530,8 +3531,14 @@ html.app-ready .profile__portrait {
 }
 
 .preview__carousel-controls {
+  position: absolute;
+  z-index: 7;
+  top: var(--carousel-controls-top, calc(100% + 12px));
+  left: 50%;
+  transform: translateX(-50%);
   gap: 10px;
-  margin-top: 12px;
+  margin-top: 0;
+  transition: top .76s cubic-bezier(.22, .82, .2, 1);
 }
 
 .preview__carousel-controls .preview__carousel-button {
