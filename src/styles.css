@@ -3051,6 +3051,13 @@ html.app-ready .profile__portrait {
   flex: none;
 }
 
+/* Preserve the carousel's former in-flow footprint now its controls are
+   anchored over the stage. Without this reserve the centred stage shifts
+   down by the controls' height. */
+.preview__media--carousel {
+  padding-bottom: 68px;
+}
+
 .preview__media>img,
 .preview__media>video {
   display: block;

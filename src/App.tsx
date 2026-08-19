@@ -264,7 +264,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       const controls = stage.parentElement?.querySelector<HTMLElement>('.preview__carousel-controls');
       if (controls) {
         const activeHeight = active.offsetHeight * activeScale;
-        const controlsTop = (stage.clientHeight - activeHeight) / 2 + activeHeight + 12;
+        const controlsTop = (stage.clientHeight - activeHeight) / 2 + activeHeight + 20;
         controls.style.setProperty('--carousel-controls-top', `${Math.round(controlsTop)}px`);
       }
     };
@@ -503,7 +503,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   return (
     <div className={`preview${nativeTransition ? ' is-photos-transition' : ''}${closing ? ' is-closing' : ''}${project.motion === 'carousel' ? ' is-carousel-preview' : ''}`} role="dialog" aria-modal="true" aria-label={project.alt} onClick={onClose}>
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
-        <div className={`preview__media preview__media--${project.previewKind ?? project.kind}`}>
+        <div className={`preview__media preview__media--${project.previewKind ?? project.kind}${project.motion === 'carousel' ? ' preview__media--carousel' : ''}`}>
           {project.video && videoReady ? (
             <video
               ref={(element) => { previewImageRef.current = element; }}
