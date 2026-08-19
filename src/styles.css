@@ -3988,7 +3988,14 @@ html:has(.preview.is-photos-transition) .footer {
        tablet widths too; the old 26vw clamp dipped below the 226px minimum
        used by inactive slides around 700–900px. */
     width: clamp(240px, 20.5vw, 340px);
-    max-height: calc(100% - 24px);
+    max-height: none;
+  }
+
+  /* Let tall phone screens keep their intended scale. The preview itself can
+     scroll, so the filmstrip should grow rather than crop the active image. */
+  .preview__media--mobile .preview__carousel-stage {
+    height: 560px;
+    min-height: 560px;
   }
 
   .preview__media--web>img,
@@ -3998,6 +4005,15 @@ html:has(.preview.is-photos-transition) .footer {
 
   .preview__details {
     width: 320px;
+  }
+}
+
+@media (min-width: 1101px) {
+  .preview__media--mobile .preview__carousel-stage {
+    /* Match the stage height to a tall phone screen at the active frame's
+       responsive width, instead of turning it into a smaller contained image. */
+    height: clamp(600px, 44vw, 780px);
+    min-height: 600px;
   }
 }
 
@@ -4013,8 +4029,9 @@ html:has(.preview.is-photos-transition) .footer {
     border-radius: 24px;
   }
 
-  .preview__carousel-stage {
-    height: min(74vh, 560px);
+  .preview__media--mobile .preview__carousel-stage {
+    height: 600px;
+    min-height: 600px;
   }
 
   .preview__carousel-slide {
@@ -4025,7 +4042,7 @@ html:has(.preview.is-photos-transition) .footer {
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
     width: 264px;
-    max-height: calc(100% - 24px);
+    max-height: none;
   }
 
 }
@@ -4124,8 +4141,8 @@ html:has(.preview.is-photos-transition) .footer {
 
   .preview__carousel-stage {
     width: calc(100vw - 48px);
-    height: min(68dvh, 560px);
-    min-height: 466px;
+    height: max(544px, 68dvh);
+    min-height: 544px;
   }
 
   .preview__carousel-slide {
@@ -4137,7 +4154,7 @@ html:has(.preview.is-photos-transition) .footer {
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
     width: min(240px, calc(100vw - 64px));
-    max-height: calc(100% - 24px);
+    max-height: none;
   }
 
   .preview__media--web .preview__carousel-stage {
