@@ -3181,9 +3181,10 @@ html.app-ready .profile__portrait {
   cursor: pointer;
   opacity: .6;
   filter: saturate(.9);
+  scale: 1;
   transform: translate(calc(-50% + (var(--carousel-step, 332px) * var(--carousel-offset, 0))), -50%);
-  transition: transform .82s cubic-bezier(.16, 1, .3, 1), width .82s cubic-bezier(.16, 1, .3, 1), max-height .82s cubic-bezier(.16, 1, .3, 1), opacity .5s cubic-bezier(.22, 1, .36, 1), filter .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s cubic-bezier(.22, 1, .36, 1);
-  will-change: transform, width, opacity;
+  transition: transform .82s cubic-bezier(.16, 1, .3, 1), width .82s cubic-bezier(.16, 1, .3, 1), max-height .82s cubic-bezier(.16, 1, .3, 1), scale .82s cubic-bezier(.16, 1, .3, 1), opacity .5s cubic-bezier(.22, 1, .36, 1), filter .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform, width, scale, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -3212,8 +3213,12 @@ html.app-ready .profile__portrait {
 
 .preview__carousel-slide.is-offset-0 {
   z-index: 4;
-  width: clamp(240px, 19.68vw, 340px);
+  /* Keep the focused screen exactly 5% larger at every viewport size.
+     Width stays matched to its neighbours; the individual scale avoids
+     breakpoint-specific clamp maths drifting above or below that ratio. */
+  width: clamp(226px, 18.52vw, 320px);
   max-height: min(74vh, 754px);
+  scale: 1.05;
   opacity: 1;
   filter: none;
   transform: translate(-50%, -50%);
@@ -3232,7 +3237,7 @@ html.app-ready .profile__portrait {
 }
 
 .preview__media--web .preview__carousel-slide.is-offset-0 {
-  width: min(1000px, 58vw);
+  width: min(920px, 53.5vw);
   max-height: min(70vh, 650px);
 }
 
@@ -3254,9 +3259,8 @@ html.app-ready .profile__portrait {
   transform: translate(calc(-50% - min(1900px, 110vw)), -50%);
 }
 
-/* Keep the focused web frame visibly larger than its neighbours at desktop
-   sizes. This late rule also wins over compact-height overrides, preserving
-   the active/inactive distinction when the browser viewport is short. */
+/* Keep desktop dimensions matched; the shared 1.05 scale on the active frame
+   provides the consistent visual difference without clamp drift. */
 @media (min-width: 701px) {
   .preview__media--web .preview__carousel-slide {
     width: min(920px, 53.5vw);
@@ -3264,7 +3268,7 @@ html.app-ready .profile__portrait {
   }
 
   .preview__media--web .preview__carousel-slide.is-offset-0 {
-    width: min(1000px, 58vw);
+    width: min(920px, 53.5vw);
     max-height: min(70vh, 650px);
   }
 }
@@ -3984,10 +3988,7 @@ html:has(.preview.is-photos-transition) .footer {
   }
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
-    /* Keep the focused frame larger than the inactive filmstrip frames at
-       tablet widths too; the old 26vw clamp dipped below the 226px minimum
-       used by inactive slides around 700–900px. */
-    width: clamp(240px, 20.5vw, 340px);
+    width: clamp(226px, 18.52vw, 320px);
     max-height: none;
   }
 
@@ -4041,7 +4042,7 @@ html:has(.preview.is-photos-transition) .footer {
   }
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
-    width: 264px;
+    width: 240px;
     max-height: none;
   }
 
@@ -4153,7 +4154,7 @@ html:has(.preview.is-photos-transition) .footer {
   }
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
-    width: min(240px, calc(100vw - 64px));
+    width: min(224px, calc(100vw - 80px));
     max-height: none;
   }
 
@@ -4169,8 +4170,8 @@ html:has(.preview.is-photos-transition) .footer {
   }
 
   .preview__media--web .preview__carousel-slide.is-offset-0 {
-    width: min(320px, calc(100vw - 48px));
-    max-height: min(68dvh, 540px);
+    width: min(294px, calc(100vw - 72px));
+    max-height: min(62dvh, 500px);
   }
 
   .preview__media--web .preview__carousel-slide.is-offset-1 {
