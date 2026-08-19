@@ -3186,8 +3186,11 @@ html.app-ready .profile__portrait {
   --carousel-scale: 1;
   transform-origin: center center;
   transform: translate(calc(-50% + (var(--carousel-step, 332px) * var(--carousel-offset, 0))), -50%) scale(var(--carousel-scale));
-  transition: transform .82s cubic-bezier(.16, 1, .3, 1), width .82s cubic-bezier(.16, 1, .3, 1), max-height .82s cubic-bezier(.16, 1, .3, 1), opacity .5s cubic-bezier(.22, 1, .36, 1), filter .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s cubic-bezier(.22, 1, .36, 1);
+  /* One shared, GPU-friendly motion curve keeps the scale and horizontal
+     travel reading as a single movement at every viewport size. */
+  transition: transform .76s cubic-bezier(.22, .82, .2, 1), width .76s cubic-bezier(.22, .82, .2, 1), max-height .76s cubic-bezier(.22, .82, .2, 1), opacity .42s cubic-bezier(.22, 1, .36, 1), filter .48s cubic-bezier(.22, 1, .36, 1), box-shadow .52s cubic-bezier(.22, 1, .36, 1);
   will-change: transform, width, opacity;
+  translate: 0 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -3617,7 +3620,7 @@ html.app-ready .profile__portrait {
   background: #D8D2D0;
   box-shadow: none;
   cursor: pointer;
-  transition: background .18s ease, transform .18s ease;
+  transition: background .24s cubic-bezier(.22, 1, .36, 1), transform .36s cubic-bezier(.22, 1, .36, 1);
 }
 
 .preview__dots .preview__carousel-dot:hover {
@@ -3633,6 +3636,7 @@ html.app-ready .profile__portrait {
 
 .preview__dots .preview__carousel-dot.is-active {
   background: var(--shade-400);
+  transform: scale(1.16);
 }
 
 @keyframes fade-in {
