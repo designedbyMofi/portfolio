@@ -3183,11 +3183,11 @@ html.app-ready .profile__portrait {
   cursor: pointer;
   opacity: .6;
   filter: saturate(.9);
-  scale: 1;
+  --carousel-scale: 1;
   transform-origin: center center;
-  transform: translate(calc(-50% + (var(--carousel-step, 332px) * var(--carousel-offset, 0))), -50%);
-  transition: transform .82s cubic-bezier(.16, 1, .3, 1), width .82s cubic-bezier(.16, 1, .3, 1), max-height .82s cubic-bezier(.16, 1, .3, 1), scale .82s cubic-bezier(.16, 1, .3, 1), opacity .5s cubic-bezier(.22, 1, .36, 1), filter .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s cubic-bezier(.22, 1, .36, 1);
-  will-change: transform, width, scale, opacity;
+  transform: translate(calc(-50% + (var(--carousel-step, 332px) * var(--carousel-offset, 0))), -50%) scale(var(--carousel-scale));
+  transition: transform .82s cubic-bezier(.16, 1, .3, 1), width .82s cubic-bezier(.16, 1, .3, 1), max-height .82s cubic-bezier(.16, 1, .3, 1), opacity .5s cubic-bezier(.22, 1, .36, 1), filter .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform, width, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -3221,7 +3221,7 @@ html.app-ready .profile__portrait {
      breakpoint-specific clamp maths drifting above or below that ratio. */
   width: clamp(226px, 18.52vw, 320px);
   max-height: min(74vh, 754px);
-  scale: 1.05;
+  --carousel-scale: 1.05;
   opacity: 1;
   filter: none;
   transform: translate(-50%, -50%);
@@ -3282,7 +3282,7 @@ html.app-ready .profile__portrait {
    The selector deliberately wins over the fallback offset classes above so
    inactive↔inactive and inactive↔active edges always keep the same gap. */
 .preview__carousel-slide[class*="is-offset-"] {
-  transform: translate(calc(-50% + var(--carousel-translate-x, 0px)), -50%);
+  transform: translate(calc(-50% + var(--carousel-translate-x, 0px)), -50%) scale(var(--carousel-scale));
 }
 
 .preview__media--web .preview__carousel-stage {
