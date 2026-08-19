@@ -3528,7 +3528,7 @@ html.app-ready .profile__portrait {
 
 .preview__carousel-controls {
   gap: 10px;
-  margin-top: 16px;
+  margin-top: 12px;
 }
 
 .preview__carousel-controls .preview__carousel-button {
@@ -4244,32 +4244,7 @@ html:has(.preview.is-photos-transition) .footer {
   }
 
   .preview__carousel-controls {
-    gap: 8px;
-  }
-
-  .preview__carousel-controls .preview__carousel-button {
-    width: 32px;
-    height: 32px;
-  }
-
-  .preview__carousel-button img {
-    width: 17px;
-    height: 17px;
-  }
-
-  .preview__dots {
-    width: fit-content;
-    min-width: 0;
-    height: 22px;
-    padding-inline: 10px;
-    gap: 5px;
-  }
-
-  .preview__dots .preview__carousel-dot {
-    width: 7px;
-    height: 7px;
-    min-width: 7px;
-    flex-basis: 7px;
+    gap: 10px;
   }
 
   .resume-layout {
