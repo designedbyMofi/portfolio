@@ -538,6 +538,16 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                     viewTransitionName: item.offset === 0 ? 'selected-shot' : undefined,
                     '--carousel-offset': item.offset,
                   } as CSSProperties}
+                  onPointerUp={(event) => {
+                    // Mobile browsers can treat a tap on an off-center slide as
+                    // part of the filmstrip gesture and skip the synthetic click.
+                    // Activate touch pointers explicitly; the click handler
+                    // remains the desktop/fallback path.
+                    if (event.pointerType !== 'touch') return;
+                    event.preventDefault();
+                    event.stopPropagation();
+                    selectSlide(item.index);
+                  }}
                   onClick={(event) => {
                     event.stopPropagation();
                     selectSlide(item.index);
