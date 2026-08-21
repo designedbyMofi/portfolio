@@ -89,7 +89,7 @@ const projects: Project[] = [
   { image: '/assets/project-04.png', alt: 'Internal company communication platform', kind: 'mobile', motion: 'video', video: '/assets/communication-preview.mov' },
   {
     image: '/assets/thrift-flow-new-01.jpg',
-    alt: 'Thrift shopping mobile app',
+    alt: 'Thrift shopping app: Feed screens',
     kind: 'mobile',
     motion: 'carousel',
     carouselImages: [
