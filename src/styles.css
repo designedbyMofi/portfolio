@@ -4121,6 +4121,15 @@ html:has(.preview.is-photos-transition) .footer {
     --preview-open-duration: 1.1s;
   }
 
+  /* Mobile carousel frames already share a fixed responsive width. Keep the
+     slide gesture on the compositor instead of animating layout properties
+     (width/max-height), which can make Safari and Chrome reflow between
+     frames and produce a visible hitch. */
+  .preview__carousel-slide {
+    transition: transform .72s cubic-bezier(.16, 1, .3, 1), opacity .42s cubic-bezier(.22, 1, .36, 1), filter .42s cubic-bezier(.22, 1, .36, 1), box-shadow .42s cubic-bezier(.22, 1, .36, 1);
+    will-change: transform, opacity;
+  }
+
   .content-shell {
     padding: 32px 24px 140px;
   }
