@@ -3098,7 +3098,7 @@ html.app-ready .profile__portrait {
 .preview__media>img.zoom-from-card.is-settled,
 .preview__media>video.zoom-from-card.is-settled,
 .preview__carousel-slide.zoom-from-card.is-settled {
-  transform: translate(0, 0) scale(1, 1);
+  transform: var(--settled-transform, translate(0, 0) scale(1, 1));
   border-radius: var(--target-radius);
   box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 }
@@ -3111,7 +3111,7 @@ html.app-ready .profile__portrait {
 }
 
 .preview__carousel-slide.zoom-from-card.is-settled {
-  transform: translate(-50%, -50%) scale(1, 1);
+  transform: var(--settled-transform, translate(-50%, -50%) scale(1, 1));
 }
 
 .preview__media--mobile>img,

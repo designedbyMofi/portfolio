@@ -344,6 +344,12 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       entryStartedRef.current = true;
       measureAttempts = 0;
       const targetRadius = parseFloat(getComputedStyle(image).borderTopLeftRadius) || 0;
+      // Capture the slide's real destination transform before applying the
+      // shared-origin class. The carousel may have an active scale and an
+      // offset-specific translate; hard-coding `translate(-50%, -50%)
+      // scale(1)` here makes the entry finish at a different size than the
+      // slide's resting state, which reads as a jump (especially in Chrome).
+      const destinationTransform = getComputedStyle(image).transform;
       const scaleX = origin.width / target.width;
       const scaleY = origin.height / target.height;
       image.style.setProperty('--target-radius', `${targetRadius}px / ${targetRadius}px`);
@@ -368,7 +374,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       const originTransform = isCarouselSlide
         ? `translate(calc(-50% + ${origin.left - target.left}px), calc(-50% + ${origin.top - target.top}px)) scale(${scaleX}, ${scaleY})`
         : `translate(${origin.left - target.left}px, ${origin.top - target.top}px) scale(${scaleX}, ${scaleY})`;
-      const settledTransform = isCarouselSlide ? 'translate(-50%, -50%) scale(1, 1)' : 'translate(0, 0) scale(1, 1)';
+      const settledTransform = isCarouselSlide
+        ? (destinationTransform === 'none' ? 'translate(-50%, -50%)' : destinationTransform)
+        : 'translate(0, 0) scale(1, 1)';
+      image.style.setProperty('--settled-transform', settledTransform);
       entryAnimation = image.animate([
         {
           transform: originTransform,
@@ -391,7 +400,17 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
         // Hand control back to the class-based return transition once the
         // entry has settled; leaving a fill:both animation attached would
         // otherwise override the closing transform in Safari.
+        // Commit the interpolated frame before releasing the WAAPI animation.
+        // Cancelling first leaves a one-frame gap in Safari/Chrome where the
+        // CSS class has not painted yet, producing the familiar "wink".
+        try { entryAnimation?.commitStyles(); } catch { /* unsupported */ }
         entryAnimation?.cancel();
+        // commitStyles writes the finished transform inline. Clear those
+        // animation-owned properties immediately so the later close effect
+        // can hand control back to the class-based reverse transition.
+        image.style.removeProperty('transform');
+        image.style.removeProperty('border-radius');
+        image.style.removeProperty('box-shadow');
         // The entry uses an inline transition override so the measured
         // origin frame is not collapsed by cached-image layout. Remove that
         // override once the shared-origin animation is complete so the first
