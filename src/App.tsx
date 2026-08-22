@@ -210,7 +210,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const carouselStageRef = useRef<HTMLDivElement | null>(null);
   const entryStartedRef = useRef(false);
   const carouselWheelLockRef = useRef(false);
-  const carouselPointerRef = useRef<{ id: number; x: number; y: number } | null>(null);
+  const carouselPointerRef = useRef<{ id: number; x: number; y: number; moved: boolean } | null>(null);
   const carouselSuppressClickRef = useRef(false);
 
   useEffect(() => {
@@ -476,8 +476,24 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   };
   const handleCarouselPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.pointerType === 'mouse') return;
-    carouselPointerRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    carouselPointerRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
     event.currentTarget.setPointerCapture?.(event.pointerId);
+  };
+  const handleCarouselPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const start = carouselPointerRef.current;
+    if (!start || start.id !== event.pointerId) return;
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      start.moved = true;
+      carouselSuppressClickRef.current = true;
+    }
+  };
+  const handleCarouselPointerCancel = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (carouselPointerRef.current?.id === event.pointerId) carouselPointerRef.current = null;
+    if (carouselSuppressClickRef.current) {
+      window.setTimeout(() => { carouselSuppressClickRef.current = false; }, 250);
+    }
   };
   const handleCarouselPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
     const start = carouselPointerRef.current;
@@ -485,7 +501,10 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     if (!start || start.id !== event.pointerId) return;
     const deltaX = event.clientX - start.x;
     const deltaY = event.clientY - start.y;
-    if (Math.abs(deltaX) < 32 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+    if (Math.abs(deltaX) < 24 || Math.abs(deltaX) < Math.abs(deltaY)) {
+      if (!start.moved) carouselSuppressClickRef.current = false;
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
     carouselSuppressClickRef.current = true;
@@ -578,7 +597,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               }}
             />
           ) : project.motion === 'carousel' ? (
-            <div ref={carouselStageRef} className="preview__carousel-stage" onWheel={handleCarouselWheel} onPointerDown={handleCarouselPointerDown} onPointerUpCapture={handleCarouselPointerUp} onClick={handleCarouselClick}>
+            <div ref={carouselStageRef} className="preview__carousel-stage" onWheel={handleCarouselWheel} onPointerDown={handleCarouselPointerDown} onPointerMove={handleCarouselPointerMove} onPointerCancel={handleCarouselPointerCancel} onPointerUpCapture={handleCarouselPointerUp} onClick={handleCarouselClick}>
               {carouselDeck.map((item) => (
                 <img
                   key={`${item.image}-${item.index}`}
