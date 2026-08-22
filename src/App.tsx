@@ -95,7 +95,7 @@ const projects: Project[] = [
   },
   {
     image: '/assets/thrift-flow-new-01.jpg',
-    alt: 'Thrift shopping app: Feed screens',
+    alt: 'Thrift shopping app / Feed',
     kind: 'mobile',
     motion: 'carousel',
     carouselImages: [
