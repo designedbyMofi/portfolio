@@ -210,15 +210,32 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const carouselStageRef = useRef<HTMLDivElement | null>(null);
   const entryStartedRef = useRef(false);
   const carouselWheelLockRef = useRef(false);
+  const carouselPointerRef = useRef<{ id: number; x: number; y: number } | null>(null);
+  const carouselSuppressClickRef = useRef(false);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => event.key === 'Escape' && onClose();
+    const changeCarouselWithKeyboard = (event: KeyboardEvent) => {
+      if (project.motion !== 'carousel') return;
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('input, textarea, select, [contenteditable="true"]')) return;
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      const next = Math.min(Math.max(carouselIndex + direction, 0), (project.carouselImages?.length ?? 1) - 1);
+      if (next !== carouselIndex) {
+        playUiSound('select');
+        setCarouselIndex(next);
+      }
+    };
     window.addEventListener('keydown', closeOnEscape);
+    window.addEventListener('keydown', changeCarouselWithKeyboard);
     return () => {
       window.removeEventListener('keydown', closeOnEscape);
+      window.removeEventListener('keydown', changeCarouselWithKeyboard);
       if (videoSwapTimerRef.current) window.clearTimeout(videoSwapTimerRef.current);
     };
-  }, [onClose]);
+  }, [onClose, project.motion, project.carouselImages?.length, carouselIndex]);
 
   useEffect(() => {
     setVideoReady(!project.video);
@@ -457,6 +474,29 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     changeSlide(delta > 0 ? 1 : -1);
     window.setTimeout(() => { carouselWheelLockRef.current = false; }, 420);
   };
+  const handleCarouselPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === 'mouse') return;
+    carouselPointerRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+  };
+  const handleCarouselPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const start = carouselPointerRef.current;
+    carouselPointerRef.current = null;
+    if (!start || start.id !== event.pointerId) return;
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.abs(deltaX) < 32 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    carouselSuppressClickRef.current = true;
+    changeSlide(deltaX < 0 ? 1 : -1);
+    window.setTimeout(() => { carouselSuppressClickRef.current = false; }, 400);
+  };
+  const handleCarouselClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!carouselSuppressClickRef.current) return;
+    event.preventDefault();
+    event.stopPropagation();
+  };
   const carouselDeck = carouselProjects.map((item, index) => ({ ...item, index, offset: index - carouselIndex }));
   const togglePreviewPlayback = () => {
     const media = previewImageRef.current;
@@ -538,7 +578,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               }}
             />
           ) : project.motion === 'carousel' ? (
-            <div ref={carouselStageRef} className="preview__carousel-stage" onWheel={handleCarouselWheel}>
+            <div ref={carouselStageRef} className="preview__carousel-stage" onWheel={handleCarouselWheel} onPointerDown={handleCarouselPointerDown} onPointerUpCapture={handleCarouselPointerUp} onClick={handleCarouselClick}>
               {carouselDeck.map((item) => (
                 <img
                   key={`${item.image}-${item.index}`}
@@ -551,6 +591,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                     '--carousel-offset': item.offset,
                   } as CSSProperties}
                   onPointerUp={(event) => {
+                    if (carouselSuppressClickRef.current) return;
                     // Mobile browsers can treat a tap on an off-center slide as
                     // part of the filmstrip gesture and skip the synthetic click.
                     // Activate touch pointers explicitly; the click handler
@@ -561,6 +602,11 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                     selectSlide(item.index);
                   }}
                   onClick={(event) => {
+                    if (carouselSuppressClickRef.current) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      return;
+                    }
                     event.stopPropagation();
                     selectSlide(item.index);
                   }}
