@@ -3231,12 +3231,10 @@ html.app-ready .profile__portrait {
 
 .preview__carousel-slide.is-offset-0 {
   z-index: 4;
-  /* Keep the focused screen exactly 5% larger at every viewport size.
-     Width stays matched to its neighbours; the individual scale avoids
-     breakpoint-specific clamp maths drifting above or below that ratio. */
+  /* Keep every carousel screen at one consistent scale. */
   width: clamp(226px, 18.52vw, 320px);
   max-height: min(74vh, 754px);
-  --carousel-scale: 1.05;
+  --carousel-scale: 1;
   opacity: 1;
   filter: none;
   transform: translate(-50%, -50%);
