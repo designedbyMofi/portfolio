@@ -4223,6 +4223,12 @@ html:has(.preview.is-photos-transition) .footer {
     min-height: 544px;
   }
 
+  /* Reserve extra room below the filmstrip on compact mobile viewports so
+     browser chrome cannot crowd the controls into the description. */
+  .preview__media--carousel {
+    padding-bottom: 132px;
+  }
+
   .preview__carousel-slide {
     width: min(224px, calc(100vw - 80px));
     max-height: none;
