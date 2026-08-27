@@ -92,7 +92,6 @@ const projects: Project[] = [
     kind: 'mobile',
     motion: 'carousel',
     carouselImages: [
-      '/assets/thrift-onboarding.jpg',
       '/assets/thrift-onboarding-01.jpg',
       '/assets/thrift-onboarding-02.jpg',
       '/assets/thrift-onboarding-03.jpg',
