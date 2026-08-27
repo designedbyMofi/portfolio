@@ -319,7 +319,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       const controls = stage.parentElement?.querySelector<HTMLElement>('.preview__carousel-controls');
       if (controls) {
         const activeHeight = active.offsetHeight * activeScale;
-        const controlsTop = (stage.clientHeight - activeHeight) / 2 + activeHeight + 8;
+        const controlsTop = (stage.clientHeight - activeHeight) / 2 + activeHeight + 10;
         controls.style.setProperty('--carousel-controls-top', `${Math.round(controlsTop)}px`);
       }
     };
