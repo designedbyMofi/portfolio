@@ -3128,6 +3128,10 @@ html.app-ready .profile__portrait {
   border-radius: 20px;
 }
 
+.preview__media--web>video.preview__video--cover {
+  object-fit: cover;
+}
+
 /* Figma filmstrip carousel: one continuous set of screens translates through
    the viewport while the active frame grows into focus. */
 .preview__carousel-stage {
