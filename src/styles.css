@@ -4185,7 +4185,6 @@ html:has(.preview.is-photos-transition) .footer {
 
   .preview.is-carousel-preview {
     padding-top: clamp(28px, calc(100svh - 568px), 64px);
-    overflow: hidden;
   }
 
   .preview__description {
