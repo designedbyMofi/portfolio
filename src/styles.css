@@ -4183,6 +4183,11 @@ html:has(.preview.is-photos-transition) .footer {
     padding: 76px 24px 48px;
   }
 
+  .preview.is-carousel-preview {
+    padding-top: clamp(28px, calc(100svh - 568px), 64px);
+    overflow: hidden;
+  }
+
   .preview__description {
     bottom: 18px;
     width: calc(100vw - 48px);
@@ -4217,27 +4222,26 @@ html:has(.preview.is-photos-transition) .footer {
     border-radius: 24px;
   }
 
-  .preview__carousel-stage {
+  .preview__media--mobile .preview__carousel-stage {
     width: calc(100vw - 48px);
-    height: max(420px, 60svh);
-    min-height: 420px;
+    height: max(500px, 60svh);
+    min-height: 500px;
   }
 
   /* Reserve extra room below the filmstrip on compact mobile viewports so
      browser chrome cannot crowd the controls into the description. */
   .preview__media--carousel {
-    padding-bottom: clamp(80px, 15svh, 132px);
+    padding-bottom: 76px;
   }
 
-  .preview__carousel-slide {
-    width: min(clamp(170px, 26svh, 224px), calc(100vw - 80px));
+  .preview__media--mobile .preview__carousel-slide {
+    width: min(clamp(196px, 34svh, 224px), calc(100vw - 80px));
     max-height: none;
     border-radius: 24px;
-    transform: translate(calc(-50% + (var(--carousel-step, 236px) * var(--carousel-offset, 0))), -50%);
   }
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
-    width: min(clamp(170px, 26svh, 224px), calc(100vw - 80px));
+    width: min(clamp(196px, 34svh, 224px), calc(100vw - 80px));
     max-height: none;
   }
 

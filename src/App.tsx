@@ -319,7 +319,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       const controls = stage.parentElement?.querySelector<HTMLElement>('.preview__carousel-controls');
       if (controls) {
         const activeHeight = active.offsetHeight * activeScale;
-        const controlsTop = (stage.clientHeight - activeHeight) / 2 + activeHeight + 20;
+        const controlsTop = (stage.clientHeight - activeHeight) / 2 + activeHeight + 8;
         controls.style.setProperty('--carousel-controls-top', `${Math.round(controlsTop)}px`);
       }
     };
@@ -330,6 +330,14 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     stage.querySelectorAll<HTMLElement>('.preview__carousel-slide').forEach((frame) => resizeObserver.observe(frame));
     return () => resizeObserver.disconnect();
   }, [project.motion, project.carouselImages?.length, carouselIndex, carouselHasNavigated]);
+
+  useLayoutEffect(() => {
+    const preview = carouselStageRef.current?.closest<HTMLElement>('.preview');
+    if (!preview || project.motion !== 'carousel') return;
+    preview.scrollTop = 0;
+    const resetFrame = window.requestAnimationFrame(() => { preview.scrollTop = 0; });
+    return () => window.cancelAnimationFrame(resetFrame);
+  }, [project.motion, carouselIndex, carouselHasNavigated]);
 
   useLayoutEffect(() => {
     const image = previewImageRef.current;
@@ -719,13 +727,13 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
           )}
           {project.motion === 'carousel' && carouselProjects.length > 1 && (
             <div className="preview__carousel-controls" aria-label="Carousel controls">
-              <button className="preview__carousel-button" onClick={() => changeSlide(-1)} aria-label="Previous slide" disabled={carouselIndex === 0}>
+              <button className="preview__carousel-button" onPointerDown={(event) => event.preventDefault()} onClick={() => changeSlide(-1)} aria-label="Previous slide" disabled={carouselIndex === 0}>
                 <img className="carousel-control-icon carousel-control-icon--default" src="/assets/carousel-caret-prev.svg" alt="" />
                 <img className="carousel-control-icon carousel-control-icon--inactive" src="/assets/carousel-caret-prev-inactive.svg" alt="" />
                 <img className="carousel-control-icon carousel-control-icon--hover" src="/assets/carousel-caret-prev-hover.svg" alt="" />
               </button>
-              <span className="preview__dots" aria-label="Carousel slides">{carouselProjects.map((item, dot) => <button className={`preview__carousel-dot${dot === carouselIndex ? ' is-active' : ''}`} onClick={() => selectSlide(dot)} aria-label={`Go to slide ${dot + 1}`} key={`${item.image}-${dot}`} />)}</span>
-              <button className="preview__carousel-button" onClick={() => changeSlide(1)} aria-label="Next slide" disabled={carouselIndex === carouselProjects.length - 1}>
+              <span className="preview__dots" aria-label="Carousel slides">{carouselProjects.map((item, dot) => <button className={`preview__carousel-dot${dot === carouselIndex ? ' is-active' : ''}`} onPointerDown={(event) => event.preventDefault()} onClick={() => selectSlide(dot)} aria-label={`Go to slide ${dot + 1}`} key={`${item.image}-${dot}`} />)}</span>
+              <button className="preview__carousel-button" onPointerDown={(event) => event.preventDefault()} onClick={() => changeSlide(1)} aria-label="Next slide" disabled={carouselIndex === carouselProjects.length - 1}>
                 <img className="carousel-control-icon carousel-control-icon--default" src="/assets/carousel-caret-next.svg" alt="" />
                 <img className="carousel-control-icon carousel-control-icon--inactive" src="/assets/carousel-caret-next-inactive.svg" alt="" />
                 <img className="carousel-control-icon carousel-control-icon--hover" src="/assets/carousel-caret-next-hover.svg" alt="" />
