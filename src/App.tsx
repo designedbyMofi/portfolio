@@ -140,7 +140,7 @@ const projects: Project[] = [
   { image: '/assets/project-06.png', alt: 'Email verified mobile screen', kind: 'mobile', motion: 'static' },
   { image: '/assets/project-07.png', alt: 'Messaging mobile screen', kind: 'mobile', motion: 'video' },
   { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', kind: 'mobile', motion: 'video' },
-  { image: '/assets/project-13.png', alt: 'Engineering intelligent products for the real world', kind: 'web', motion: 'carousel' },
+  { image: '/assets/project-13.png', alt: 'B2B product engineering agency landing page.', kind: 'web', motion: 'video', video: '/assets/dysol.mov' },
   { image: '/assets/project-14.png', alt: 'Using the world one video call at a time', kind: 'web', motion: 'video' },
   { image: '/assets/project-12.png', alt: 'Elevate your social media presence', kind: 'web', motion: 'video' },
   { image: '/assets/project-09.png', alt: 'Insurance web app dashboard', kind: 'web', motion: 'video' },
