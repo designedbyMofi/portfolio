@@ -117,7 +117,6 @@ const projects: Project[] = [
     motion: 'carousel',
     carouselImages: [
       '/assets/thrift-inbox.jpg',
-      '/assets/thrift-inbox-01.jpg',
       '/assets/thrift-inbox-02.jpg',
       '/assets/thrift-inbox-03.jpg',
       '/assets/thrift-inbox-04.jpg',
