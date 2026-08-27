@@ -4219,25 +4219,25 @@ html:has(.preview.is-photos-transition) .footer {
 
   .preview__carousel-stage {
     width: calc(100vw - 48px);
-    height: max(544px, 68dvh);
-    min-height: 544px;
+    height: max(420px, 60svh);
+    min-height: 420px;
   }
 
   /* Reserve extra room below the filmstrip on compact mobile viewports so
      browser chrome cannot crowd the controls into the description. */
   .preview__media--carousel {
-    padding-bottom: 132px;
+    padding-bottom: clamp(80px, 15svh, 132px);
   }
 
   .preview__carousel-slide {
-    width: min(224px, calc(100vw - 80px));
+    width: min(clamp(170px, 26svh, 224px), calc(100vw - 80px));
     max-height: none;
     border-radius: 24px;
     transform: translate(calc(-50% + (var(--carousel-step, 236px) * var(--carousel-offset, 0))), -50%);
   }
 
   .preview__media--mobile .preview__carousel-slide.is-offset-0 {
-    width: min(224px, calc(100vw - 80px));
+    width: min(clamp(170px, 26svh, 224px), calc(100vw - 80px));
     max-height: none;
   }
 
