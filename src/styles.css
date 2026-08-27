@@ -3138,7 +3138,8 @@ html.app-ready .profile__portrait {
   --carousel-step: 332px;
   --carousel-active-step: 344px;
   flex: none;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   isolation: isolate;
   /* Keep vertical page scrolling native while reserving horizontal intent for
      the carousel's pointer gesture handler. */
