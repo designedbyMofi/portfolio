@@ -227,6 +227,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   // in, avoiding a media-type jump during the entry transition.
   const [videoReady, setVideoReady] = useState(!project.video);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [carouselHasNavigated, setCarouselHasNavigated] = useState(false);
   const videoSwapTimerRef = useRef<number | null>(null);
   const previewImageRef = useRef<HTMLElement | null>(null);
   const carouselStageRef = useRef<HTMLDivElement | null>(null);
@@ -247,6 +248,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       const next = Math.min(Math.max(carouselIndex + direction, 0), (project.carouselImages?.length ?? 1) - 1);
       if (next !== carouselIndex) {
         playUiSound('select');
+        setCarouselHasNavigated(true);
         setCarouselIndex(next);
       }
     };
@@ -261,6 +263,8 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
 
   useEffect(() => {
     setVideoReady(!project.video);
+    setCarouselIndex(0);
+    setCarouselHasNavigated(false);
     setPaused(false);
     setVideoTime(0);
     setVideoDuration(0);
@@ -325,7 +329,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     resizeObserver.observe(stage);
     stage.querySelectorAll<HTMLElement>('.preview__carousel-slide').forEach((frame) => resizeObserver.observe(frame));
     return () => resizeObserver.disconnect();
-  }, [project.motion, project.carouselImages?.length, carouselIndex]);
+  }, [project.motion, project.carouselImages?.length, carouselIndex, carouselHasNavigated]);
 
   useLayoutEffect(() => {
     const image = previewImageRef.current;
@@ -497,6 +501,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const selectSlide = (index: number) => {
     if (index === carouselIndex) return;
     playUiSound('select');
+    setCarouselHasNavigated(true);
     setCarouselIndex(index);
   };
   const changeSlide = (direction: number) => selectSlide(Math.min(Math.max(carouselIndex + direction, 0), carouselProjects.length - 1));
@@ -638,7 +643,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               }}
             />
           ) : project.motion === 'carousel' ? (
-            <div ref={carouselStageRef} className="preview__carousel-stage" onWheel={handleCarouselWheel} onPointerDown={handleCarouselPointerDown} onPointerMove={handleCarouselPointerMove} onPointerCancel={handleCarouselPointerCancel} onPointerUpCapture={handleCarouselPointerUp} onClick={handleCarouselClick}>
+            <div ref={carouselStageRef} className={`preview__carousel-stage${carouselHasNavigated ? ' is-interacted' : ''}`} onWheel={handleCarouselWheel} onPointerDown={handleCarouselPointerDown} onPointerMove={handleCarouselPointerMove} onPointerCancel={handleCarouselPointerCancel} onPointerUpCapture={handleCarouselPointerUp} onClick={handleCarouselClick}>
               {carouselDeck.map((item) => (
                 <img
                   key={`${item.image}-${item.index}`}
