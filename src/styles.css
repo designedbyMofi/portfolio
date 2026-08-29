@@ -3038,7 +3038,7 @@ html.app-ready .profile__portrait {
   animation: preview-details-enter .4s .34s cubic-bezier(.2, .8, .2, 1) both;
 }
 
-.preview__layout.has-shared-origin .preview__media> :not(img) {
+.preview__layout.has-shared-origin .preview__media> :not(img):not(video) {
   animation: preview-controls-enter .32s .46s ease both;
 }
 
