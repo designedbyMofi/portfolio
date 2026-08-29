@@ -3066,6 +3066,10 @@ html.app-ready .profile__portrait {
   animation: media-swap .28s ease both;
 }
 
+.preview__media>video.preview__video--reveal {
+  animation: media-swap .28s ease both, preview-video-reveal .72s cubic-bezier(.22, 1, .36, 1) both;
+}
+
 .preview__media>img.preview-image-pending,
 .preview__media>video.preview-image-pending,
 .preview__carousel-slide.preview-image-pending {
@@ -3789,6 +3793,22 @@ html.app-ready .profile__portrait {
   from {
     opacity: .35;
     transform: scale(.99);
+  }
+}
+
+@keyframes preview-video-reveal {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    filter: brightness(1.12) saturate(.86);
+  }
+
+  62% {
+    filter: brightness(1.04) saturate(.96);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0);
+    filter: brightness(1) saturate(1);
   }
 }
 

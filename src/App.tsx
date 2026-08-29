@@ -634,7 +634,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
           {project.video && videoReady ? (
             <video
               ref={(element) => { previewImageRef.current = element; }}
-              className={`is-in-view${project.video === '/assets/dysol.mov' ? ' preview__video--cover' : ''}`}
+              className={`is-in-view preview__video--reveal${project.video === '/assets/dysol.mov' ? ' preview__video--cover' : ''}`}
               src={project.video}
               poster={displayedProject.image}
               autoPlay
