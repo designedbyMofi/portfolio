@@ -632,30 +632,27 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
       <div className={`preview__layout preview__layout--${project.kind}${origin || nativeTransition ? ' has-shared-origin' : ''}`} onClick={(event) => event.stopPropagation()}>
         <div className={`preview__media preview__media--${project.previewKind ?? project.kind}${project.motion === 'carousel' ? ' preview__media--carousel' : ''}`}>
           {project.video && videoReady ? (
-            <>
-              <img className="preview__video-underlay" src={displayedProject.image} alt="" aria-hidden="true" />
-              <video
-                ref={(element) => { previewImageRef.current = element; }}
-                className={`is-in-view preview__video--reveal${project.video === '/assets/dysol.mov' ? ' preview__video--cover' : ''}`}
-                src={project.video}
-                poster={displayedProject.image}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                data-reveal
-                onLoadedData={() => setVideoLoaded(true)}
-                onLoadedMetadata={(event) => setVideoDuration(event.currentTarget.duration)}
-                onTimeUpdate={(event) => setVideoTime(event.currentTarget.currentTime)}
-                onPlay={() => setPaused(false)}
-                onPause={() => setPaused(true)}
-                style={{ viewTransitionName: 'selected-shot' } as CSSProperties}
-                onTransitionEnd={(event) => {
-                  if (closing && event.propertyName === 'transform') onExitComplete();
-                }}
-              />
-            </>
+            <video
+              ref={(element) => { previewImageRef.current = element; }}
+              className={`is-in-view${project.video === '/assets/dysol.mov' ? ' preview__video--cover' : ''}`}
+              src={project.video}
+              poster={displayedProject.image}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              data-reveal
+              onLoadedData={() => setVideoLoaded(true)}
+              onLoadedMetadata={(event) => setVideoDuration(event.currentTarget.duration)}
+              onTimeUpdate={(event) => setVideoTime(event.currentTarget.currentTime)}
+              onPlay={() => setPaused(false)}
+              onPause={() => setPaused(true)}
+              style={{ viewTransitionName: 'selected-shot' } as CSSProperties}
+              onTransitionEnd={(event) => {
+                if (closing && event.propertyName === 'transform') onExitComplete();
+              }}
+            />
           ) : project.motion === 'carousel' ? (
             <div ref={carouselStageRef} className={`preview__carousel-stage${carouselHasNavigated ? ' is-interacted' : ''}`} onWheel={handleCarouselWheel} onPointerDown={handleCarouselPointerDown} onPointerMove={handleCarouselPointerMove} onPointerCancel={handleCarouselPointerCancel} onPointerUpCapture={handleCarouselPointerUp} onClick={handleCarouselClick}>
               {carouselDeck.map((item) => (
