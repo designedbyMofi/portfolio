@@ -3070,6 +3070,21 @@ html.app-ready .profile__portrait {
   animation: media-swap .28s ease both, preview-video-reveal .72s cubic-bezier(.22, 1, .36, 1) both;
 }
 
+.preview__media>img.preview__video-underlay {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: none;
+  pointer-events: none;
+}
+
+.preview__media>video.preview__video--reveal {
+  position: relative;
+  z-index: 1;
+}
+
 .preview__media>img.preview-image-pending,
 .preview__media>video.preview-image-pending,
 .preview__carousel-slide.preview-image-pending {
