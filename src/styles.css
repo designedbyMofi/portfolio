@@ -3135,30 +3135,54 @@ html.app-ready .profile__portrait {
 .preview__video-loading {
   position: absolute;
   z-index: 3;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  width: 68px;
+  height: 68px;
   display: grid;
   place-items: center;
-  border-radius: 32px;
-  background: rgba(250, 248, 246, .2);
+  border: 1px solid rgba(255, 255, 255, .68);
+  border-radius: 50%;
+  background: rgba(250, 248, 246, .62);
+  box-shadow: 0 12px 30px rgba(30, 27, 36, .12), inset 0 1px 0 rgba(255, 255, 255, .72);
+  backdrop-filter: blur(14px) saturate(1.1);
+  transform: translate(-50%, -50%);
   pointer-events: none;
+  animation: preview-video-loader-breathe 2.2s ease-in-out infinite;
 }
 
 .preview__media--web .preview__video-loading {
-  border-radius: 20px;
+  border-radius: 50%;
 }
 
 .preview__video-loading::before {
   content: '';
-  width: 34px;
-  height: 34px;
-  border: 3px solid rgba(255, 255, 255, .58);
-  border-top-color: var(--shade-600);
+  width: 38px;
+  height: 38px;
+  border: 2px solid rgba(156, 78, 108, .18);
+  border-top-color: #9c4e6c;
+  border-right-color: rgba(156, 78, 108, .58);
   border-radius: 50%;
   animation: preview-video-spin .8s linear infinite;
 }
 
+.preview__video-loading::after {
+  content: 'M';
+  position: absolute;
+  color: var(--shade-600);
+  font-family: Fraunces, Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -.03em;
+}
+
 @keyframes preview-video-spin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes preview-video-loader-breathe {
+  0%, 100% { box-shadow: 0 12px 30px rgba(30, 27, 36, .12), inset 0 1px 0 rgba(255, 255, 255, .72); }
+  50% { box-shadow: 0 16px 34px rgba(30, 27, 36, .16), inset 0 1px 0 rgba(255, 255, 255, .82); }
 }
 
 /* Figma filmstrip carousel: one continuous set of screens translates through
