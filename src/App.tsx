@@ -226,6 +226,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   // the shared-origin zoom finish cleanly before the moving media is swapped
   // in, avoiding a media-type jump during the entry transition.
   const [videoReady, setVideoReady] = useState(!project.video);
+  const [videoLoaded, setVideoLoaded] = useState(!project.video);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [carouselHasNavigated, setCarouselHasNavigated] = useState(false);
   const videoSwapTimerRef = useRef<number | null>(null);
@@ -263,6 +264,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
 
   useEffect(() => {
     setVideoReady(!project.video);
+    setVideoLoaded(!project.video);
     setCarouselIndex(0);
     setCarouselHasNavigated(false);
     setPaused(false);
@@ -641,6 +643,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               playsInline
               preload="auto"
               data-reveal
+              onLoadedData={() => setVideoLoaded(true)}
               onLoadedMetadata={(event) => setVideoDuration(event.currentTarget.duration)}
               onTimeUpdate={(event) => setVideoTime(event.currentTarget.currentTime)}
               onPlay={() => setPaused(false)}
@@ -701,6 +704,9 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                 if (closing && event.propertyName === 'transform') onExitComplete();
               }}
             />
+          )}
+          {project.video && videoReady && !videoLoaded && (
+            <div className="preview__video-loading" role="status" aria-label="Loading video" />
           )}
           {project.motion === 'video' && (
             <div className="preview__video-controls" aria-label="Video controls">
