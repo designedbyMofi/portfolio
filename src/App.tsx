@@ -163,24 +163,24 @@ type Experience = {
 
 const experiences: Experience[] = [
   {
-    company: 'Cyvi', website: 'https://cyvi.io/', location: 'Sweden', period: 'Nov 2023 - Sep 2025', role: 'Product Designer',
+    company: 'Cyvi', website: 'https://cyvi.io/', location: 'Sweden', period: '2023 - 2025', role: 'Product Designer',
     description: 'At CYVI, I led the design of key platform experiences, including customer, insurer, broker, claims management, and internal administration platforms. Through user research, workflow optimization, and iterative testing, I redesigned the policy checkout journey, reducing completion time by 70% and increasing checkout conversions by 40%. My work helped streamline cyber insurance operations while making the product more accessible to non-technical users.',
   },
   {
-    company: 'Vurt', website: 'https://vurt.app/', location: 'Nigeria', period: 'Nov 2021 - Present', role: 'Head of Design',
+    company: 'Vurt', website: 'https://vurt.app/', location: 'Nigeria', period: '2021 - Present', role: 'Head of Design',
     description: 'As Head of Design, I directed the design vision, strategy, and execution across all core products, leading a team of designers and partnering closely with product managers, engineers, and business stakeholders. I established scalable design workflows, championed user-centered decision-making, and guided product initiatives from discovery through implementation. I led the complete redesign of the platform from the ground up to support a new exchanger and user ecosystem, enabling the transition from a mobile-first experience to a scalable web platform designed for growth, operational efficiency, and long-term scalability.',
   },
   {
-    company: 'PressOne Africa', website: 'https://pressone.africa/meet-juliet/', location: 'Nigeria', period: 'Jan 2026 - Mar 2026', role: 'UX Designer',
+    company: 'PressOne Africa', website: 'https://pressone.africa/meet-juliet/', location: 'Nigeria', period: '2026', role: 'UX Designer',
     description: 'Designed the website and dashboard experiences for Juliet, an AI-powered business assistant currently handling over 1,000 customer conversations daily. Led the end-to-end UX process, translating complex AI capabilities into intuitive workflows that improved onboarding, customer support efficiency, and user satisfaction.',
     results: ['84% increase in customer onboarding completion', '60% reduction in human-escalated tickets', 'Increase in Customer-satisfaction score from 66% to 92%'],
   },
   {
-    company: 'Dysol', website: 'https://www.dysol.ae/', location: 'Dubai', period: 'Jan 2025 - Apr 2026', role: 'Product Designer',
+    company: 'Dysol', website: 'https://www.dysol.ae/', location: 'Dubai', period: '2025 - 2026', role: 'Product Designer',
     description: "Worked across multiple client projects as a product design consultant, partnering with stakeholders to define requirements, design user experiences, and deliver high-fidelity solutions. Led the redesign of the company website and directed the visual experience in collaboration with a 3D designer, creating a distinctive digital presence that aligned with the brand's positioning.",
   },
-  { company: 'The-Owlet', location: 'Nigeria', period: 'Nov 2023 - Aug 2024', role: 'Product Designer' },
-  { company: 'Netact Services Inc.', website: 'https://netactsi.com/', location: 'Canada', period: 'July 2022 - Aug 2023', role: 'Creative Designer' },
+  { company: 'The-Owlet', location: 'Nigeria', period: '2023 - 2024', role: 'Product Designer' },
+  { company: 'Netact Services Inc.', website: 'https://netactsi.com/', location: 'Canada', period: '2022 - 2023', role: 'Creative Designer' },
 ];
 
 const competencies = ['Product Strategy', 'User Experience Design', 'Design Systems', 'Information Architecture', 'User Research', 'Interaction Design', 'Design Leadership', 'Cross-functional Collaboration', 'Workshop Facilitation', 'Prototyping'];
