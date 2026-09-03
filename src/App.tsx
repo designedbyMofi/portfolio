@@ -84,13 +84,13 @@ const playUiSound = async (sound: UiSound) => {
 };
 
 const projects: Project[] = [
-  { image: '/assets/project-01.png', alt: 'MFB product promotion mobile screen', hoverDescription: 'MFB onboarding and product promotion', kind: 'mobile', motion: 'static' },
-  { image: '/assets/project-02.png', alt: 'Pay an influencer mobile flow', hoverDescription: 'Paying an influencer', kind: 'mobile', motion: 'static' },
-  { image: '/assets/project-04.png', alt: 'Internal company communication platform', hoverDescription: 'Internal team communication', kind: 'mobile', motion: 'video', video: '/assets/communication-preview.mov' },
+  { image: '/assets/project-01.png', alt: 'MFB product promotion mobile screen', hoverDescription: 'Mobile product promotion screen', kind: 'mobile', motion: 'static' },
+  { image: '/assets/project-02.png', alt: 'Pay an influencer mobile flow', hoverDescription: 'Mobile influencer payment flow', kind: 'mobile', motion: 'static' },
+  { image: '/assets/project-04.png', alt: 'Internal company communication platform', hoverDescription: 'Mobile team communication app', kind: 'mobile', motion: 'video', video: '/assets/communication-preview.mov' },
   {
     image: '/assets/thrift-onboarding.jpg',
     alt: 'Thrift shopping app / Onboarding',
-    hoverDescription: 'Thrift marketplace onboarding',
+    hoverDescription: 'Mobile thrift marketplace onboarding',
     kind: 'mobile',
     motion: 'carousel',
     carouselImages: [
@@ -109,7 +109,7 @@ const projects: Project[] = [
   {
     image: '/assets/thrift-feed-01.jpg',
     alt: 'Thrift shopping app / Feed',
-    hoverDescription: 'Thrift marketplace feed',
+    hoverDescription: 'Mobile thrift marketplace feed',
     kind: 'mobile',
     motion: 'carousel',
     carouselImages: [
@@ -127,7 +127,7 @@ const projects: Project[] = [
   {
     image: '/assets/thrift-inbox.jpg',
     alt: 'Thrift shopping app / Inbox',
-    hoverDescription: 'Buyer–seller messaging',
+    hoverDescription: 'Mobile buyer–seller messaging',
     kind: 'mobile',
     motion: 'carousel',
     carouselImages: [
@@ -141,18 +141,18 @@ const projects: Project[] = [
       '/assets/thrift-inbox-08.jpg',
     ],
   },
-  { image: '/assets/project-06.png', alt: 'Email verified mobile screen', hoverDescription: 'Bank account setup after verification', kind: 'mobile', motion: 'static' },
-  { image: '/assets/project-07.png', alt: 'Messaging mobile screen', hoverDescription: 'Messaging experience', kind: 'mobile', motion: 'video' },
-  { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', hoverDescription: 'Website mobile menu dropdown', kind: 'mobile', motion: 'video' },
-  { image: '/assets/project-13.png', alt: 'B2B product engineering agency landing page.', hoverDescription: 'B2B product engineering agency', kind: 'web', motion: 'video', video: '/assets/dysol.mov' },
-  { image: '/assets/project-14.png', alt: 'Using the world one video call at a time', hoverDescription: 'Team video collaboration', kind: 'web', motion: 'video' },
-  { image: '/assets/project-12.png', alt: 'Elevate your social media presence', hoverDescription: 'Social media services landing page', kind: 'web', motion: 'video' },
-  { image: '/assets/project-09.png', alt: 'Insurance web app dashboard', hoverDescription: 'Insurance operations dashboard', kind: 'web', motion: 'video' },
-  { image: '/assets/project-10.png', alt: 'Form builder web app', hoverDescription: 'Form builder workflow', kind: 'web', motion: 'carousel' },
-  { image: '/assets/project-11.png', alt: 'AI video call experience', hoverDescription: 'AI video support workspace', kind: 'web', motion: 'static' },
-  { image: '/assets/project-15.png', alt: 'Exchange on your own terms', hoverDescription: 'P2P currency exchange', kind: 'web', motion: 'video' },
-  { image: '/assets/project-16.png', alt: 'Work faster with Taskify', hoverDescription: 'Task management platform', kind: 'web', motion: 'static' },
-  { image: '/assets/project-17.png', alt: 'Meet your new first AI employee', hoverDescription: 'AI employee landing page', kind: 'web', motion: 'static' },
+  { image: '/assets/project-06.png', alt: 'Email verified mobile screen', hoverDescription: 'Mobile bank account setup', kind: 'mobile', motion: 'static' },
+  { image: '/assets/project-07.png', alt: 'Messaging mobile screen', hoverDescription: 'Mobile messaging experience', kind: 'mobile', motion: 'video' },
+  { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', hoverDescription: 'Mobile website menu dropdown', kind: 'mobile', motion: 'video' },
+  { image: '/assets/project-13.png', alt: 'B2B product engineering agency landing page.', hoverDescription: 'B2B web agency landing page', kind: 'web', motion: 'video', video: '/assets/dysol.mov' },
+  { image: '/assets/project-14.png', alt: 'Using the world one video call at a time', hoverDescription: 'Web video collaboration app', kind: 'web', motion: 'video' },
+  { image: '/assets/project-12.png', alt: 'Elevate your social media presence', hoverDescription: 'Web social media landing page', kind: 'web', motion: 'video' },
+  { image: '/assets/project-09.png', alt: 'Insurance web app dashboard', hoverDescription: 'Web insurance operations dashboard', kind: 'web', motion: 'video' },
+  { image: '/assets/project-10.png', alt: 'Form builder web app', hoverDescription: 'Web form builder app', kind: 'web', motion: 'carousel' },
+  { image: '/assets/project-11.png', alt: 'AI video call experience', hoverDescription: 'Web AI video support workspace', kind: 'web', motion: 'static' },
+  { image: '/assets/project-15.png', alt: 'Exchange on your own terms', hoverDescription: 'Web P2P currency exchange app', kind: 'web', motion: 'video' },
+  { image: '/assets/project-16.png', alt: 'Work faster with Taskify', hoverDescription: 'Web task management platform', kind: 'web', motion: 'static' },
+  { image: '/assets/project-17.png', alt: 'Meet your new first AI employee', hoverDescription: 'Web AI employee landing page', kind: 'web', motion: 'static' },
 ];
 
 type Experience = {
