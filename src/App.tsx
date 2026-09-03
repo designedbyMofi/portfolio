@@ -142,7 +142,7 @@ const projects: Project[] = [
     ],
   },
   { image: '/assets/project-06.png', alt: 'Email verified mobile screen', hoverDescription: 'Bank account setup after verification', kind: 'mobile', motion: 'static' },
-  { image: '/assets/project-07.png', alt: 'Messaging mobile screen', hoverDescription: 'Normal messaging experience', kind: 'mobile', motion: 'video' },
+  { image: '/assets/project-07.png', alt: 'Messaging mobile screen', hoverDescription: 'Messaging experience', kind: 'mobile', motion: 'video' },
   { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', hoverDescription: 'Website mobile menu dropdown', kind: 'mobile', motion: 'video' },
   { image: '/assets/project-13.png', alt: 'B2B product engineering agency landing page.', hoverDescription: 'B2B product engineering agency', kind: 'web', motion: 'video', video: '/assets/dysol.mov' },
   { image: '/assets/project-14.png', alt: 'Using the world one video call at a time', hoverDescription: 'Team video collaboration', kind: 'web', motion: 'video' },
