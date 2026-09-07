@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type KeyboardEvent as ReactKeyboardEvent, type FocusEvent as ReactFocusEvent, type WheelEvent as ReactWheelEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type KeyboardEvent as ReactKeyboardEvent, type FocusEvent as ReactFocusEvent, type WheelEvent as ReactWheelEvent, type SyntheticEvent as ReactSyntheticEvent } from 'react';
 import { getCalApi } from '@calcom/embed-react';
 
 type ProjectKind = 'mobile' | 'web';
@@ -177,20 +177,21 @@ const experiences: Experience[] = [
     description: 'As Head of Design, I directed the design vision, strategy, and execution across all core products, leading a team of designers and partnering closely with product managers, engineers, and business stakeholders. I established scalable design workflows, championed user-centered decision-making, and guided product initiatives from discovery through implementation. I led the complete redesign of the platform from the ground up to support a new exchanger and user ecosystem, enabling the transition from a mobile-first experience to a scalable web platform designed for growth, operational efficiency, and long-term scalability.',
   },
   {
-    company: 'PressOne Africa', website: 'https://pressone.africa/meet-juliet/', location: 'Nigeria', period: '2026', role: 'UX Designer',
+    company: 'PressOne Africa', website: 'https://pressone.africa/meet-juliet/', location: 'Nigeria', period: '2026', role: 'UX Designer (Contract)',
     description: 'Designed the website and dashboard experiences for Juliet, an AI-powered business assistant currently handling over 1,000 customer conversations daily. Led the end-to-end UX process, translating complex AI capabilities into intuitive workflows that improved onboarding, customer support efficiency, and user satisfaction.',
     results: ['84% increase in customer onboarding completion', '60% reduction in human-escalated tickets', 'Increase in Customer-satisfaction score from 66% to 92%'],
   },
   {
-    company: 'Dysol', website: 'https://www.dysol.ae/', location: 'Dubai', period: '2025 - 2026', role: 'Product Designer',
+    company: 'Dysol', website: 'https://www.dysol.ae/', location: 'Dubai', period: '2025 - 2026', role: 'Product Designer (Contract)',
     description: "Worked across multiple client projects as a product design consultant, partnering with stakeholders to define requirements, design user experiences, and deliver high-fidelity solutions. Led the redesign of the company website and directed the visual experience in collaboration with a 3D designer, creating a distinctive digital presence that aligned with the brand's positioning.",
   },
-  { company: 'The-Owlet', location: 'Nigeria', period: '2023 - 2024', role: 'Product Designer' },
+  { company: 'Rockfall', location: 'Dubai', period: '2025 - 2026', role: 'Product Designer (Contract)' },
+  { company: 'The-Owlet', location: 'Nigeria', period: '2023 - 2024', role: 'Product Designer (Contract)' },
   { company: 'Netact Services Inc.', website: 'https://netactsi.com/', location: 'Canada', period: '2022 - 2023', role: 'Creative Designer' },
 ];
 
 const competencies = ['Product Strategy', 'User Experience Design', 'Design Systems', 'Information Architecture', 'User Research', 'Interaction Design', 'Design Leadership', 'Cross-functional Collaboration', 'Workshop Facilitation', 'Prototyping'];
-const toolsList = ['Figma, FigJam', 'Adobe Creative Suite', 'Claude Code', 'Google Analytics', 'Mixpanel', 'Hotjar', 'ChatGPT', 'Notion', 'Jira'];
+const toolsList = ['Figma, FigJam', 'Adobe Creative Suite', 'Claude Code', 'Codex', 'ChatGPT', 'Google Analytics', 'Mixpanel', 'Hotjar', 'Notion', 'Jira'];
 
 function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: PreviewOrigin, image: HTMLImageElement) => void }) {
   const [hovered, setHovered] = useState(false);
@@ -238,6 +239,9 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [carouselHasNavigated, setCarouselHasNavigated] = useState(false);
   const videoSwapTimerRef = useRef<number | null>(null);
+  const videoTimeRef = useRef(0);
+  const lastVideoStateUpdateRef = useRef(0);
+  const progressFillRef = useRef<HTMLSpanElement | null>(null);
   const previewImageRef = useRef<HTMLElement | null>(null);
   const carouselStageRef = useRef<HTMLDivElement | null>(null);
   const entryStartedRef = useRef(false);
@@ -277,6 +281,8 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     setCarouselHasNavigated(false);
     setPaused(false);
     setVideoTime(0);
+    videoTimeRef.current = 0;
+    lastVideoStateUpdateRef.current = 0;
     setVideoDuration(0);
     setScrubTime(null);
     setIsScrubbing(false);
@@ -600,7 +606,20 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
     if (!(media instanceof HTMLVideoElement) || !Number.isFinite(media.duration)) return;
     const nextTime = Math.min(Math.max(position, 0), media.duration);
     media.currentTime = nextTime;
+    videoTimeRef.current = nextTime;
     setVideoTime(nextTime);
+  };
+  const updateVideoProgress = (event: ReactSyntheticEvent<HTMLVideoElement>) => {
+    const current = event.currentTarget.currentTime;
+    videoTimeRef.current = current;
+    if (videoDuration && progressFillRef.current) {
+      progressFillRef.current.style.width = `${(current / videoDuration) * 100}%`;
+    }
+    const now = performance.now();
+    if (now - lastVideoStateUpdateRef.current >= 200) {
+      lastVideoStateUpdateRef.current = now;
+      setVideoTime(current);
+    }
   };
   const getTrackTime = (event: ReactPointerEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -653,7 +672,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
               data-reveal
               onLoadedData={() => setVideoLoaded(true)}
               onLoadedMetadata={(event) => setVideoDuration(event.currentTarget.duration)}
-              onTimeUpdate={(event) => setVideoTime(event.currentTarget.currentTime)}
+              onTimeUpdate={updateVideoProgress}
               onPlay={() => setPaused(false)}
               onPause={() => setPaused(true)}
               style={{ viewTransitionName: 'selected-shot' } as CSSProperties}
@@ -734,7 +753,7 @@ function ProjectPreview({ project, origin, nativeTransition, closing, onClose, o
                 onPointerLeave={() => { if (!isScrubbing) setScrubTime(null); }}
                 onKeyDown={handleTrackKeyDown}
               >
-                <span style={{ width: `${videoDuration ? (videoTime / videoDuration) * 100 : 0}%` }} />
+                <span ref={progressFillRef} style={{ width: `${videoDuration ? (videoTime / videoDuration) * 100 : 0}%` }} />
                 {scrubTime !== null && <output className="preview__timestamp" style={{ left: `${videoDuration ? (scrubTime / videoDuration) * 100 : 0}%` }}>{formatVideoTime(scrubTime)}</output>}
               </div>
             </div>
