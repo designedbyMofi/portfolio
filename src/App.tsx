@@ -147,7 +147,7 @@ const projects: Project[] = [
   { image: '/assets/project-07.png', alt: 'Messaging mobile screen', hoverDescription: 'Mobile messaging experience', kind: 'mobile', motion: 'video' },
   { image: '/assets/project-03.png', alt: 'Find the one you trust mobile flow', hoverDescription: 'Mobile website menu dropdown', kind: 'mobile', motion: 'video' },
   { image: '/assets/project-13.png', alt: 'B2B product engineering agency landing page.', hoverDescription: 'B2B web agency landing page', kind: 'web', motion: 'video', video: '/assets/dysol.mov' },
-  { image: '/assets/project-14.png', alt: 'Using the world one video call at a time', hoverDescription: 'Web video collaboration app', kind: 'web', motion: 'video' },
+  { image: '/assets/project-14.png', alt: 'Using the world one video call at a time', hoverDescription: 'Web video collaboration app', kind: 'web', motion: 'video', video: '/assets/clearlink-landing.mov' },
   { image: '/assets/project-12.png', alt: 'Elevate your social media presence', hoverDescription: 'Web social media landing page', kind: 'web', motion: 'video' },
   { image: '/assets/project-09.png', alt: 'Insurance web app dashboard', hoverDescription: 'Web insurance operations dashboard', kind: 'web', motion: 'video' },
   { image: '/assets/project-10.png', alt: 'Form builder web app', hoverDescription: 'Web form builder app', kind: 'web', motion: 'carousel' },
