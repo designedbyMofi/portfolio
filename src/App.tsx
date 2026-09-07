@@ -28,6 +28,8 @@ const viewFromPath = (): PortfolioView => {
 
 const isVurtCaseStudyPath = () => window.location.pathname === '/projects/vurt';
 
+const projectShareKey = (project: Project) => project.image.split('/').pop()?.replace(/\.[^.]+$/, '') ?? project.image;
+
 let uiAudioContext: AudioContext | null = null;
 let uiSoundMuted = false;
 
@@ -969,16 +971,27 @@ function Footer() {
   );
 }
 
-function ScrolledHeader({ active, projectDetail, previewOpen, onBack, onClosePreview, onNavigate }: { active: PortfolioView; projectDetail: boolean; previewOpen: boolean; onBack: () => void; onClosePreview: () => void; onNavigate: (view: PortfolioView) => void }) {
+function ScrolledHeader({ active, projectDetail, previewOpen, sharedProject, onBack, onClosePreview, onNavigate }: { active: PortfolioView; projectDetail: boolean; previewOpen: boolean; sharedProject: Project | null; onBack: () => void; onClosePreview: () => void; onNavigate: (view: PortfolioView) => void }) {
   const [visible, setVisible] = useState(projectDetail || previewOpen);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const copyResetTimerRef = useRef<number | null>(null);
 
   const shareProject = async () => {
-    const url = window.location.href;
-    if (navigator.share) {
-      await navigator.share({ title: 'Vurt — Mofifoluwa', url }).catch(() => undefined);
-      return;
-    }
-    await navigator.clipboard?.writeText(url);
+    const isShotPreview = Boolean(sharedProject && projects.some((project) => project.image === sharedProject.image));
+    const url = isShotPreview
+      ? `${window.location.origin}/?shot=${encodeURIComponent(projectShareKey(sharedProject!))}`
+      : window.location.href;
+    const sharePromise = navigator.share
+      ? navigator.share({ title: sharedProject?.alt ?? 'Mofifoluwa — Product designer', url }).catch(() => undefined)
+      : Promise.resolve();
+    await navigator.clipboard?.writeText?.(url)?.catch(() => undefined);
+    setLinkCopied(true);
+    if (copyResetTimerRef.current) window.clearTimeout(copyResetTimerRef.current);
+    copyResetTimerRef.current = window.setTimeout(() => {
+      setLinkCopied(false);
+      copyResetTimerRef.current = null;
+    }, 1800);
+    await sharePromise;
   };
 
   useEffect(() => {
@@ -1000,7 +1013,7 @@ function ScrolledHeader({ active, projectDetail, previewOpen, onBack, onClosePre
           <span className="scrolled-header__muted">·</span>
           <a href={bookingLink} onClick={(event) => event.preventDefault()} data-cal-namespace="30min" data-cal-link="mofifoluwa-olawuyi-74cy24/30min" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>Book a call</a>
         </div>
-        {(projectDetail || previewOpen) && <button className="scrolled-header__share has-tooltip" data-tooltip="Share" onClick={shareProject} aria-label="Share project"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z" /></svg></button>}
+        {(projectDetail || previewOpen) && <button className={`scrolled-header__share has-tooltip${linkCopied ? ' is-copied' : ''}`} data-tooltip={linkCopied ? 'Link copied' : 'Share'} onClick={shareProject} aria-label={linkCopied ? 'Shot link copied' : 'Share project'}><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z" /></svg></button>}
       </div>
     </div>
   );
@@ -1396,6 +1409,18 @@ export default function App() {
   const initialViewRef = useRef(view);
 
   useEffect(() => {
+    const sharedShot = new URLSearchParams(window.location.search).get('shot');
+    if (!sharedShot) return;
+    const project = projects.find((candidate) => projectShareKey(candidate) === sharedShot);
+    if (!project) return;
+    document.documentElement.classList.add('app-ready');
+    document.documentElement.classList.remove('initial-shots');
+    setSelectedProject(project);
+    setPreviewOrigin(null);
+    setPreviewClosing(false);
+  }, []);
+
+  useEffect(() => {
     const page = projectDetail
       ? {
           title: 'Vurt v3: Designing trust into currency exchange — Mofifoluwa',
@@ -1463,7 +1488,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const initialShots = initialViewRef.current === 'shots';
+    const initialShots = initialViewRef.current === 'shots' && !new URLSearchParams(window.location.search).has('shot');
     if (initialShots) document.documentElement.classList.add('initial-shots');
     const readyTimer = window.setTimeout(() => document.documentElement.classList.add('app-ready'), 1050);
     return () => {
@@ -1734,7 +1759,7 @@ export default function App() {
 
   return (
     <>
-      <ScrolledHeader active={view} projectDetail={projectDetail} previewOpen={Boolean(selectedProject)} onBack={closeVurtCaseStudy} onClosePreview={closeProject} onNavigate={navigate} />
+      <ScrolledHeader active={view} projectDetail={projectDetail} previewOpen={Boolean(selectedProject)} sharedProject={selectedProject} onBack={closeVurtCaseStudy} onClosePreview={closeProject} onNavigate={navigate} />
       <main className={view === 'resume' ? 'resume-main' : view === 'projects' ? (projectDetail ? 'case-study-main' : 'projects-main') : 'shots-main'}>
         {view === 'resume' ? <ResumePage direction={navigationDirection} /> : view === 'projects' ? (projectDetail ? <VurtCaseStudy direction={navigationDirection} onOpenImage={openProject} /> : <ProjectsLanding onOpenVurt={openVurtCaseStudy} direction={navigationDirection} />) : (
           <div className="content-shell">
