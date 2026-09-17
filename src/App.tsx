@@ -87,7 +87,20 @@ const playUiSound = async (sound: UiSound) => {
 
 const projects: Project[] = [
   { image: '/assets/project-01.png', alt: 'MFB product promotion mobile screen', hoverDescription: 'Mobile product promotion screen', kind: 'mobile', motion: 'static' },
-  { image: '/assets/project-02.png', alt: 'Pay an influencer mobile flow', hoverDescription: 'Mobile influencer payment flow', kind: 'mobile', motion: 'static' },
+  {
+    image: '/assets/project-02.png',
+    alt: 'Pay an influencer mobile flow',
+    hoverDescription: 'Mobile influencer payment flow',
+    kind: 'mobile',
+    motion: 'carousel',
+    carouselImages: [
+      '/assets/influencer-payment-01.jpg',
+      '/assets/influencer-payment-02.jpg',
+      '/assets/influencer-payment-03.jpg',
+      '/assets/influencer-payment-04.jpg',
+      '/assets/influencer-payment-05.jpg',
+    ],
+  },
   { image: '/assets/project-04.png', alt: 'Internal company communication platform', hoverDescription: 'Mobile team communication app', kind: 'mobile', motion: 'video', video: '/assets/communication-preview.mov' },
   {
     image: '/assets/thrift-onboarding.jpg',
