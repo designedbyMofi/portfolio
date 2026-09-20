@@ -90,7 +90,7 @@ const projects: Project[] = [
   {
     image: '/assets/project-02.png',
     alt: 'Pay an influencer mobile flow',
-    hoverDescription: 'Mobile influencer payment flow',
+    hoverDescription: 'AI Likeness Protection & Licensing',
     kind: 'mobile',
     motion: 'carousel',
     carouselImages: [
