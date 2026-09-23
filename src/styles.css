@@ -862,27 +862,27 @@ html.app-ready .profile__portrait {
   box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 }
 
-/* Shot images stay visible during the reveal. Animate when the observer marks
-   them in view so the blur remains perceptible even on the first paint. */
-.shots-main .project-card__image[data-reveal] {
+/* A tiny version of each shot fills the frame until its full image is decoded.
+   The blur clears on load, never just because the card entered the viewport. */
+.shots-main .project-card__image {
+  background: var(--shot-placeholder) center / cover no-repeat;
   filter: blur(8px);
   opacity: 1;
+  transition: filter .55s cubic-bezier(.2, .8, .2, 1), transform .22s ease;
+}
+
+.shots-main .project-card__image.is-loaded {
+  background-image: none;
+  filter: none;
+}
+
+.shots-main .project-card__image.is-cached {
   transition: transform .22s ease;
 }
 
-.shots-main .project-card__image[data-reveal].is-in-view {
-  animation: shot-image-reveal .7s cubic-bezier(.2, .8, .2, 1) both;
-}
-
-@keyframes shot-image-reveal {
-  from { filter: blur(8px); }
-  to { filter: blur(0); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .shots-main .project-card__image[data-reveal] {
-    filter: none;
-    animation: none;
+  .shots-main .project-card__image {
+    transition: transform .22s ease;
   }
 }
 

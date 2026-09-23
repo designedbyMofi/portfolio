@@ -208,9 +208,27 @@ const toolsList = ['Figma, FigJam', 'Adobe Creative Suite', 'Claude Code', 'Code
 
 function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: PreviewOrigin, image: HTMLImageElement) => void }) {
   const [hovered, setHovered] = useState(false);
+  const [loadedImage, setLoadedImage] = useState<string | null>(null);
+  const [alreadyReady, setAlreadyReady] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
   const hasCarousel = Boolean(project.carouselImages?.length);
   const hasVideo = Boolean(project.video);
   const icon = hasCarousel ? '/assets/type-carousel.svg' : '/assets/type-video.svg';
+  const placeholder = project.image.replace('/assets/', '/assets/shot-previews/').replace(/\.[^.]+$/, '.jpg');
+
+  useLayoutEffect(() => {
+    const image = imageRef.current;
+    if (!image) return;
+    const markLoaded = () => {
+      if (image.complete && image.naturalWidth > 0) setLoadedImage(project.image);
+    };
+    image.addEventListener('load', markLoaded);
+    if (image.complete && image.naturalWidth > 0) {
+      setAlreadyReady(true);
+      markLoaded(); // Cached images should not replay a loading transition.
+    }
+    return () => image.removeEventListener('load', markLoaded);
+  }, [project.image]);
 
   return (
     <button
@@ -227,7 +245,14 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
       }}
       aria-label={`Open ${project.alt}`}
     >
-      <img className="project-card__image" src={project.image} alt={project.alt} data-reveal />
+      <img
+        ref={imageRef}
+        className={`project-card__image${loadedImage === project.image ? ' is-loaded' : ''}${alreadyReady ? ' is-cached' : ''}`}
+        src={project.image}
+        alt={project.alt}
+        loading="lazy"
+        style={{ '--shot-placeholder': `url("${placeholder}")` } as CSSProperties}
+      />
       {(hasCarousel || hasVideo) && (
         <span className="project-card__type" aria-label={project.motion}>
           <img src={icon} alt="" />
