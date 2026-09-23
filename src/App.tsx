@@ -209,6 +209,8 @@ const toolsList = ['Figma, FigJam', 'Adobe Creative Suite', 'Claude Code', 'Code
 function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: PreviewOrigin, image: HTMLImageElement) => void }) {
   const [hovered, setHovered] = useState(false);
   const [imageReady, setImageReady] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
+  const cardRef = useRef<HTMLButtonElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const hasCarousel = Boolean(project.carouselImages?.length);
   const hasVideo = Boolean(project.video);
@@ -232,9 +234,26 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
     };
   }, [project.image]);
 
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+    if (!('IntersectionObserver' in window)) {
+      setHasEntered(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setHasEntered(true);
+      observer.disconnect();
+    }, { threshold: 0.08 });
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <button
-      className={`project-card project-card--${project.kind}${hovered ? ' is-hovered' : ''}${imageReady ? ' is-image-ready' : ''}`}
+      ref={cardRef}
+      className={`project-card project-card--${project.kind}${hovered ? ' is-hovered' : ''}${imageReady && hasEntered ? ' is-image-ready' : ''}`}
       style={{ '--shot-placeholder': `url("${placeholder}")` } as CSSProperties}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
