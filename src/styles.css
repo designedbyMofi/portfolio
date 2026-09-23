@@ -42,22 +42,22 @@ body {
   background: var(--canvas);
 }
 
-.images-loading img:not(.project-card__image),
-.images-resolving img:not(.project-card__image) {
+.images-loading img,
+.images-resolving img {
   transition: filter .65s cubic-bezier(.2, .8, .2, 1), opacity .5s ease, transform .35s cubic-bezier(.2, .8, .2, 1) !important;
 }
 
-.images-loading img:not(.project-card__image) {
+.images-loading img {
   filter: blur(16px) !important;
   opacity: .52;
 }
 
-.images-resolving img:not(.project-card__image) {
+.images-resolving img {
   filter: blur(0) !important;
   opacity: 1;
 }
 
-.images-resolving img[data-reveal]:not(.is-in-view):not(.project-card__image) {
+.images-resolving img[data-reveal]:not(.is-in-view) {
   filter: blur(18px) !important;
   opacity: .38;
 }
@@ -180,19 +180,6 @@ html.initial-shots:not(.app-ready) .profile__bio {
 
 .portfolio-bottom--down {
   animation-name: portfolio-bottom-enter-down;
-}
-
-/* The shots grid is taller than a viewport. Keeping its entrance animation
-   and will-change layer alive makes Chrome rasterize the whole grid as one
-   surface, which can go blank during a fast scroll. */
-.shots-main>.content-shell,
-.shots-main .portfolio-bottom {
-  will-change: auto;
-}
-
-.shots-main .portfolio-bottom,
-html.initial-shots:not(.app-ready) .shots-main>.content-shell {
-  animation: none;
 }
 
 .case-study--forward,
@@ -862,30 +849,6 @@ html.app-ready .profile__portrait {
   box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
 }
 
-/* Shot images stay visible during the reveal. Animate when the observer marks
-   them in view so the blur remains perceptible even on the first paint. */
-.shots-main .project-card__image[data-reveal] {
-  filter: blur(8px);
-  opacity: 1;
-  transition: transform .22s ease;
-}
-
-.shots-main .project-card__image[data-reveal].is-in-view {
-  animation: shot-image-reveal .7s cubic-bezier(.2, .8, .2, 1) both;
-}
-
-@keyframes shot-image-reveal {
-  from { filter: blur(8px); }
-  to { filter: blur(0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .shots-main .project-card__image[data-reveal] {
-    filter: none;
-    animation: none;
-  }
-}
-
 .is-preview-source {
   /* Keep the source out of the mobile compositor while the preview image
      animates from its measured card rect. Visibility avoids introducing an
@@ -973,8 +936,9 @@ html.app-ready .profile__portrait {
 }
 
 .footer {
-  position: relative;
+  position: sticky;
   z-index: 0;
+  bottom: 0;
   height: 629px;
   background: var(--ink);
   color: var(--shade-400);
