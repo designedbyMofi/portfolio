@@ -208,13 +208,34 @@ const toolsList = ['Figma, FigJam', 'Adobe Creative Suite', 'Claude Code', 'Code
 
 function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: PreviewOrigin, image: HTMLImageElement) => void }) {
   const [hovered, setHovered] = useState(false);
+  const [imageReady, setImageReady] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
   const hasCarousel = Boolean(project.carouselImages?.length);
   const hasVideo = Boolean(project.video);
   const icon = hasCarousel ? '/assets/type-carousel.svg' : '/assets/type-video.svg';
+  const placeholder = project.image.replace('/assets/', '/assets/shot-previews/').replace(/\.[^.]+$/, '.jpg');
+
+  useLayoutEffect(() => {
+    const image = imageRef.current;
+    if (!image) return;
+    let active = true;
+    const revealLoadedImage = async () => {
+      if (!image.naturalWidth) return;
+      try { await image.decode(); } catch { /* A loaded image can still render if decode() rejects. */ }
+      if (active) setImageReady(true);
+    };
+    image.addEventListener('load', revealLoadedImage);
+    if (image.complete && image.naturalWidth) void revealLoadedImage();
+    return () => {
+      active = false;
+      image.removeEventListener('load', revealLoadedImage);
+    };
+  }, [project.image]);
 
   return (
     <button
-      className={`project-card project-card--${project.kind}${hovered ? ' is-hovered' : ''}`}
+      className={`project-card project-card--${project.kind}${hovered ? ' is-hovered' : ''}${imageReady ? ' is-image-ready' : ''}`}
+      style={{ '--shot-placeholder': `url("${placeholder}")` } as CSSProperties}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => setHovered(true)}
@@ -227,7 +248,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: (origin: P
       }}
       aria-label={`Open ${project.alt}`}
     >
-      <img className="project-card__image" src={project.image} alt={project.alt} data-reveal />
+      <img ref={imageRef} className="project-card__image" src={project.image} alt={project.alt} loading="lazy" />
       {(hasCarousel || hasVideo) && (
         <span className="project-card__type" aria-label={project.motion}>
           <img src={icon} alt="" />
